@@ -49,7 +49,7 @@ function config_webscraper() {
     sudo lighty-enable-mod fastcgi-php
     
     sudo chown -R www-data:www-data "/var/www"
-    sudo chmod -R 775 "/var/www"
+    sudo chmod -R 775 "/var/www/html"
     sudo usermod -a -G www-data pi
     
     cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
