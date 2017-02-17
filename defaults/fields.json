@@ -1,0 +1,88 @@
+[
+  {
+    "id" : "name",
+    "name" : "Name",
+    "type" : "string",
+    "maxlength" : 255,
+    "validator" : "data-fv-notempty"
+  },
+  {
+    "id" : "genre",
+    "name" : "Genre",
+    "type" : "string",
+    "maxlength" : 255
+  },
+  {
+    "id" : "developer",
+    "name" : "Developer",
+    "type" : "string",
+    "maxlength" : 255
+  },
+  {
+    "id" : "publisher",
+    "name" : "Publisher",
+    "type" : "string",
+    "maxlength" : 255
+  },
+  {
+    "id" : "releasedate",
+    "name" : "Release Date",
+    "type" : "date"
+  },
+  {
+    "id" : "players",
+    "name" : "Players",
+    "type" : "integer"
+  },
+  {
+    "id" : "rating",
+    "name" : "Rating",
+    "type" : "double"
+  },
+  {
+    "id" : "desc",
+    "name" : "Description",
+    "type" : "text",
+    "rowcount" : 10
+  },
+  {
+    "id" : "path",
+    "name" : "Rom Path",
+    "type" : "string"
+  },
+  {
+    "id" : "image",
+    "name" : "Image Path",
+    "type" : "string"
+  },
+  {
+    "id" : "video",
+    "name" : "Video Path",
+    "type" : "string"
+  },
+  {
+    "id" : "marquee",
+    "name" : "Marquee Path",
+    "type" : "string"
+  },
+  {
+    "id" : "thumbnail",
+    "name" : "Thumbnail Path",
+    "type" : "string"
+  },
+  {
+    "id" : "playcount",
+    "name" : "Play Count",
+    "type" : "integer"
+  },
+  {
+    "id" : "lastplayed",
+    "name" : "Last Played",
+    "type" : "date"
+  },
+  {
+    "id" : "favorite",
+    "name" : "Favorite",
+    "type" : "boolean"
+  }
+]

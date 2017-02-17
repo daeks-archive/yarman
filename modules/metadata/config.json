@@ -1,0 +1,9 @@
+{
+  "id" : "metadata",
+  "name" : "Metadata Editor",
+  "menu" : {
+    "position" : "left",
+    "order" : 1,
+    "icon" : "gamepad"
+    }
+}

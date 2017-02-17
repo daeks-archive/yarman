@@ -1,0 +1,203 @@
+<?php
+
+	class page {
+	
+		public static $time;
+		public static $devices = 'hidden-xs hidden-sm display-md display-lg';
+		public static $show_search = false;
+	
+		public static function start($infobox = '', $js = null, $cache = FILE_CACHE) {
+			self::$time = microtime(true);
+			echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
+			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+			echo '<html xmlns="http://www.w3.org/1999/xhtml">';
+      echo '<meta charset="utf-8">';
+      echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">';
+      echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
+			echo '<head>';
+			
+			$module = modules::loadCurrent();
+			if($module != null) {
+        echo '<title>'.NAME.' - '.$module->name.'</title>';
+			} else {
+        echo '<title>'.NAME.'</title>';
+			}
+			
+			echo '<link rel="icon" type="image/x-icon" href="favicon.ico" />';
+			echo '<meta name="robots" content="noindex">';
+      
+      $jsinclude = array(JS, INC);
+      if($module != null) {
+        array_push($jsinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
+			}
+			foreach($jsinclude as $path) {
+        foreach (scandir($path) as $include){
+          if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'JS'){
+            $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.$include;
+            if(FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include,-2))) {
+              $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include,-2);
+            }          
+            echo '<script type="text/javascript" src="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'"></script>';
+          }
+        }
+			}
+			
+			$cssinclude = array(CSS, INC);
+      if($module != null) {
+        array_push($cssinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
+			}
+			foreach($cssinclude as $path) {
+        foreach (scandir($path) as $include){
+          if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'CSS'){
+            $ref = str_replace(BASE.DIRECTORY_SEPARATOR,'',$path).URL_SEPARATOR.$include;
+            if(FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include,-3))) {
+              $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include,-3);
+            }  
+            echo '<link type="text/css" href="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'" rel="stylesheet" media="screen" />';
+          }
+        }
+			}
+					
+			echo '</head>';
+			echo '<body '.(isset($js)?'onload="'.$js.'"':'').'>';
+			
+			$module = modules::loadModule();
+      $modules = modules::getModules();
+      
+      $menuright = array();
+      $menuleft = array();
+      foreach ($modules as $moduleconfig) {
+        $tmp = json_decode(file_get_contents($moduleconfig));
+        $item = "";
+        if(isset($tmp->menu)) {
+          if($tmp->menu->position == 'left') {
+            if($module != null && $tmp->id == $module->id) {
+              $item .= '<li class="active">';
+            } else {
+              $item .= '<li>';
+            }
+            $item .= '<a href="'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
+            if($tmp->menu->icon != '') {
+              $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
+            }
+            $item .= $tmp->name;
+            $item .= '</a></li>';
+            if (!array_key_exists($tmp->menu->order,$menuleft)) {
+              $menuleft[$tmp->menu->order] = $item;
+            }
+          }
+          
+          if($tmp->menu->position == 'right') {
+            $item .= '<li><a href="'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
+            if($tmp->menu->icon != '') {
+              $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
+            }
+            $item .= $tmp->name;
+            $item .= '</a></li>';
+            if (!array_key_exists($tmp->menu->order,$menuright)) {
+              $menuright[$tmp->menu->order] = $item;
+            }
+          }          
+        }
+      }
+      
+      echo '<div class="navbar navbar-inverse navbar-fixed-top display-xs display-sm display-md display-lg" role="navigation">';
+			echo '<div class="navbar-header">';
+			//echo '<a class="navbar-brand" href="'.URL_SEPARATOR.'">'.NAME.'</a>';
+			echo '<a class="navbar-brand" href="'.URL_SEPARATOR.'"><img style="max-width:30px; margin-top: -7px;" src="../../'.BRAND.'"> '.NAME.'</a>';
+      echo '</div>';
+			// START RIGHT
+			echo '<div class="navbar-right '.self::$devices.'">';
+      echo '<ul class="nav navbar-nav">';
+      // RENDER RIGHT
+      ksort($menuright);
+      foreach($menuright as $item) {
+        echo $item;
+      }
+      echo '<li class="dropdown">';
+      echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i></a>';
+      echo '<ul class="dropdown-menu">';
+      echo '<li class="disabled"><a href="#">Restart Emulationstation</a></li>';
+      echo '<li role="separator" class="divider"></li>';
+      echo '<li class="disabled"><a href="#">Reboot</a></li>';
+      echo '</ul>';
+      echo '</li>';
+      echo '</ul>';
+      echo '</div>';
+      // END RIGHT
+      // START LEFT
+      echo '<div class="navbar-left '.self::$devices.'" stlye="display: none!important;">';
+      echo '<ul class="nav navbar-nav">';
+      // RENDER LEFT
+      ksort($menuleft);
+      foreach($menuleft as $item) {
+        echo $item;
+      }
+      echo '<li><div style="width:10px"></div></li>';
+      echo '</ul>';
+      echo '</div>';
+      // END LEFT
+      // START SEARCHBAR
+      echo '<div class="col-sm-4 col-md-4 pull-right">';
+      echo '<form class="navbar-search '.self::$devices.'" style="margin-top:8px;">';
+      echo '<div class="input-group">';
+      if(isset($module->search)) {
+        echo '<input type="text" class="form-control search" placeholder="Search" data-query="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$module->id.URL_SEPARATOR.$module->search->query.'" data-type="'.$module->search->type.'" data-target="'.$module->search->target.'">';
+      } else {
+        if(self::$show_search) {
+          echo '<input type="text" disabled class="form-control search" placeholder="No Search available " data-query="" data-target="">';
+        }
+      }
+      if(isset($module->search) || self::$show_search) {
+        echo '<div class="input-group-btn">';
+        echo '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">';
+        if(isset($module->search->icon)) {
+          echo '<img class="searchicon" src="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$module->id.URL_SEPARATOR.$module->search->icon.'" />&nbsp;';
+        } else {
+          echo '<img class="searchicon" src="/core/img/holder.png" />&nbsp;';
+        }
+        echo '<span class="caret"></span></button>';
+        echo '<ul class="dropdown-menu pull-right">';
+        // RENDER SEARCH
+        foreach ($modules as $moduleconfig) {
+          $tmp = json_decode(file_get_contents($moduleconfig));
+          if(isset($tmp->search)) {
+            echo '<li><a href="#" class="changesearch" data-query="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$tmp->search->query.'" data-type="'.$tmp->search->type.'"';
+            echo ' data-target="'.$tmp->search->target.'" data-icon="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$tmp->search->icon.'"><img src="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$tmp->search->icon.'" /> '.$tmp->search->name.'</a></li>';
+          }
+        }  
+        echo '</ul>';
+        echo '</div>';
+      } 
+      echo '</div>';
+      echo '</form>';
+      echo '</div>';
+      // END SEARCHBAR
+      echo '</div>';
+      echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"></div></div></div>';
+      echo '<div class="container-fluid '.self::$devices.'">';
+      echo '<div id="infobox" class="infobox">'.$infobox.'</div>';
+		}
+						
+		public static function end() {
+      echo '</div>';
+      echo '<div class="container-fluid display-xs display-sm hidden-md hidden-lg">';
+      echo '<div class="display-xs hidden-sm hidden-md hidden-lg not-supported">';
+      echo '<div class="alert alert-danger"><b>Mobile devices are currently not supported.</b><br>Please use a larger screen environment.</div>';
+      echo '</div>';
+      echo '<div class="hidden-xs display-sm hidden-md hidden-lg not-supported">';
+      echo '<div class="alert alert-danger"><b>Tablet devices are currently not supported.</b><br>Please use a larger screen environment.</div>';
+      echo '</div>';
+      echo '</div>';
+      echo '<div class="footer navbar-fixed-bottom">';
+      echo '<div class="container-fluid">';
+      echo '<p class="text-muted"> <i id="loading" class="fa fa-spinner fa-spin hidden"></i> (c) '.date('Y',time()).' daeks - generated in '.number_format(microtime(true) - self::$time, 5).'s</p>';
+      echo '</div>';
+      echo '</div>';
+			echo '</body>';
+			echo '</html>';
+		}
+		
+	}
+
+?>

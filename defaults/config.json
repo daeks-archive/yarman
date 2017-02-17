@@ -1,0 +1,18 @@
+[
+  {
+    "id" : "es_path",
+    "value" : "/home/pi/.emulationstation"
+  },
+  {
+    "id" : "roms_path",
+    "value" : "/home/pi/RetroPie/roms"
+  },
+  {
+    "id" : "media_path",
+    "value" : "/home/pi/.emulationstation/downloaded_images"
+  },
+  {
+    "id" : "metadata_path",
+    "value" : "/home/pi/.emulationstation/gamelists"
+  }
+]

@@ -1,0 +1,86 @@
+  foreach (roms::getRoms('snes') as $rom){
+    echo '<option value="'.$rom.'">'.$rom.'</option>';
+  }
+
+echo '<form role="form">
+				<div class="row">
+				<div class="col-sm-8">
+				        				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Name
+					</label>
+					<input type="text" class="form-control" id="exampleInputEmail1" value="Aladdin" />
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">
+						Genre
+					</label>
+					<input type="text" class="form-control" id="exampleInputPassword1" value="Plattform"/>
+				</div>
+								<div class="form-group">
+					<label for="exampleInputPassword1">
+						Developer
+					</label>
+					<input type="text" class="form-control" id="exampleInputPassword1" value="Capcom"/>
+				</div>
+								<div class="form-group">
+					<label for="exampleInputPassword1">
+						Publisher
+					</label>
+					<input type="text" class="form-control" id="exampleInputPassword1" value="Capcom"/>
+				</div>
+				</div>
+				<div class="col-sm-4">
+					 <a href="#" class="thumbnail">
+      <img src="/media.php?sys=snes&file=Aladdin%20(Germany)-image.jpg" alt="...">
+    </a>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-6">
+    <div class="form-group">
+					<label for="exampleInputPassword1">
+						Release Date
+					</label>
+					<input type="text" class="form-control" id="exampleInputPassword1" value="19931102T000000"/>
+				</div>
+    </div>
+    <div class="col-sm-6">
+    <div class="form-group">
+					<label for="exampleInputPassword1">
+						Players
+					</label>
+					<input type="text" class="form-control" id="exampleInputPassword1" value="1"/>
+				</div>
+    </div>
+    </div>
+    
+    <div class="row">
+    <div class="col-sm-12">
+				<div class="form-group">
+    <label for="exampleTextarea">Description</label>
+    <textarea class="form-control" id="exampleTextarea" rows="6">Disneys Aladdin is based on the 1992 Disney animated film. For the GBA and the SNES editions development was handled by Capcom. Like other versions, the game is a side-scrolling platformer where the player controls Aladdin through locations from the movie like the city of Agrabah, the Cave of Wonders, and Jafars palace. Some locations not appearing in the film include a trippy, candy-colored world inside the Genies lamp and an ancient pyramid. Enemies standing in Aladdins way include the Sultans guards, animals and various magical creatures. They can be dispatched by jumping on top of them or by throwing apples at them. Besides jumping and throwing, another one of Aladdins abilities consists of him pulling out a blanket and using it to slow his fall.</textarea>
+  </div>
+  </div>
+    </div>
+    
+    <div class="row">
+    <div class="col-sm-6">
+    <div class="form-group">
+					<label for="exampleInputPassword1">
+						Play Count
+					</label>
+					<input type="text" class="form-control" id="exampleInputPassword1" value="0"/>
+				</div>
+    </div>
+    <div class="col-sm-6">
+    <div class="form-group">
+					<label for="exampleInputPassword1">
+						Last Played
+					</label>
+					<input type="text" class="form-control" id="exampleInputPassword1" value="1"/>
+				</div>
+    </div>
+    </div>
+    
+			</form>';

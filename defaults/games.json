@@ -1,0 +1,17 @@
+[
+  {
+    "id" : "snes",
+    "name" : "Super Nintendo",
+    "whitelist" : "snes sfc"
+  },
+  {
+    "id" : "nes",
+    "name" : "Nintendo",
+    "whitelist" : "nes"
+  },
+  {
+    "id" : "nds",
+    "name" : "Nintendo DS",
+    "whitelist" : "nds"
+  }
+]
