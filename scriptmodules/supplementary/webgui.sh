@@ -26,7 +26,7 @@ function config_webgui() {
     sudo chmod -R 775 "/var/www/html"
     sudo usermod -a -G www-data pi
     
-    rm -R "/var/www/html/inde.html"
+    rm "/var/www/html/index.html"
     cp "$md_build/webgui" "/var/www/html"
 }
 
