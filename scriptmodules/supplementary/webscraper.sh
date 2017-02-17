@@ -14,7 +14,7 @@ rp_module_desc="WebScraper GUI"
 rp_module_section="exp"
 
 function depends_webscraper() {
-    getDepends lighttpd sqlite3 php5 php5-common php5-cgi php5-sqlite 
+    getDepends apache2 sqlite3 php5 php5-sqlite 
 }
 
 function remove_share_samba() {
@@ -41,13 +41,11 @@ _EOF_
 }
 
 function restart_webscraper() {
-    service lighttpd force-reload
+    service apache2 restart
 }
 
 function config_webscraper() {
-    sudo lighty-enable-mod fastcgi
-    sudo lighty-enable-mod fastcgi-php
-    
+
     sudo chown -R www-data:www-data "/var/www"
     sudo chmod -R 775 "/var/www/html"
     sudo usermod -a -G www-data pi
