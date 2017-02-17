@@ -1,16 +1,16 @@
 <?php
     
-	class modules {
-   		
-		public static function getModules() {
+  class modules {
+
+    public static function getModules() {
       $tmp = array();
       foreach (scandir(MODULES) as $include){
-				if(is_dir(MODULES.DIRECTORY_SEPARATOR.$include) && is_file(MODULES.DIRECTORY_SEPARATOR.$include.DIRECTORY_SEPARATOR.MODULE)){
+        if(is_dir(MODULES.DIRECTORY_SEPARATOR.$include) && is_file(MODULES.DIRECTORY_SEPARATOR.$include.DIRECTORY_SEPARATOR.MODULE)){
           array_push($tmp, MODULES.DIRECTORY_SEPARATOR.$include.DIRECTORY_SEPARATOR.MODULE);
-				}
-			}
-			return $tmp;
-		}
+        }
+      }
+      return $tmp;
+    }
     
     public static function loadCurrent() {
       return self::loadModule(null);
@@ -39,8 +39,8 @@
             return null;
           }
       }
-		}
-		
-	}
+    }
+    
+  }
     
 ?>

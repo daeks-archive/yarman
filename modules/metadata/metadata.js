@@ -12,8 +12,8 @@ $(function () {
   $(window).trigger('resize');
   
   $('#sys').on('change', function(e) {
-		e.preventDefault();
-		$('#tab').html('');
-		return false;
-	});
+    e.preventDefault();
+    $('#tab').html('');
+    return false;
+  });
 });

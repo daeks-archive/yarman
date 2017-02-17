@@ -1,7 +1,7 @@
 <?php
     
-	class roms {
-	
+  class roms {
+  
     public static function getSystems($sys) {
       $systems = array_slice(scandir(db::read('config', 'roms_path')), 2);
       $array = array();
@@ -29,7 +29,7 @@
       }
       return utils::msort($array, array('name' => SORT_ASC));
     }
-	
+
     public static function getRoms($sys) {
       $array = array();
       $whitelist = db::read('games', $sys, 'whitelist');
@@ -62,6 +62,6 @@
       }
     }
     
-	}
+  }
     
 ?>

@@ -1,8 +1,8 @@
 <?php
     
-	class form {
+  class form {
 
-		public static function getField($config, $id, $value = '') {
+    public static function getField($config, $id, $value = '') {
       foreach($config as $obj) {
         if($obj['id'] == $id) {
           $data = '';
@@ -125,6 +125,6 @@
       return $data;
     }
     
-	}
+  }
     
 ?>

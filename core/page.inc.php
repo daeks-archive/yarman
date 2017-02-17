@@ -1,36 +1,36 @@
 <?php
 
-	class page {
-	
-		public static $time;
-		public static $devices = 'hidden-xs hidden-sm display-md display-lg';
-		public static $show_search = false;
-	
-		public static function start($infobox = '', $js = null, $cache = FILE_CACHE) {
-			self::$time = microtime(true);
-			echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
-			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-			echo '<html xmlns="http://www.w3.org/1999/xhtml">';
+  class page {
+  
+    public static $time;
+    public static $devices = 'hidden-xs hidden-sm display-md display-lg';
+    public static $show_search = false;
+  
+    public static function start($infobox = '', $js = null, $cache = FILE_CACHE) {
+      self::$time = microtime(true);
+      echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
+      echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+      echo '<html xmlns="http://www.w3.org/1999/xhtml">';
       echo '<meta charset="utf-8">';
       echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">';
       echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
-			echo '<head>';
-			
-			$module = modules::loadCurrent();
-			if($module != null) {
+      echo '<head>';
+      
+      $module = modules::loadCurrent();
+      if($module != null) {
         echo '<title>'.NAME.' - '.$module->name.'</title>';
-			} else {
+      } else {
         echo '<title>'.NAME.'</title>';
-			}
-			
-			echo '<link rel="icon" type="image/x-icon" href="favicon.ico" />';
-			echo '<meta name="robots" content="noindex">';
+      }
+      
+      echo '<link rel="icon" type="image/x-icon" href="favicon.ico" />';
+      echo '<meta name="robots" content="noindex">';
       
       $jsinclude = array(JS, INC);
       if($module != null) {
         array_push($jsinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
-			}
-			foreach($jsinclude as $path) {
+      }
+      foreach($jsinclude as $path) {
         foreach (scandir($path) as $include){
           if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'JS'){
             $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.$include;
@@ -40,13 +40,13 @@
             echo '<script type="text/javascript" src="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'"></script>';
           }
         }
-			}
-			
-			$cssinclude = array(CSS, INC);
+      }
+    
+      $cssinclude = array(CSS, INC);
       if($module != null) {
         array_push($cssinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
-			}
-			foreach($cssinclude as $path) {
+      }
+      foreach($cssinclude as $path) {
         foreach (scandir($path) as $include){
           if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'CSS'){
             $ref = str_replace(BASE.DIRECTORY_SEPARATOR,'',$path).URL_SEPARATOR.$include;
@@ -56,12 +56,12 @@
             echo '<link type="text/css" href="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'" rel="stylesheet" media="screen" />';
           }
         }
-			}
-					
-			echo '</head>';
-			echo '<body '.(isset($js)?'onload="'.$js.'"':'').'>';
-			
-			$module = modules::loadModule();
+      }
+          
+      echo '</head>';
+      echo '<body '.(isset($js)?'onload="'.$js.'"':'').'>';
+      
+      $module = modules::loadModule();
       $modules = modules::getModules();
       
       $menuright = array();
@@ -102,12 +102,12 @@
       }
       
       echo '<div class="navbar navbar-inverse navbar-fixed-top display-xs display-sm display-md display-lg" role="navigation">';
-			echo '<div class="navbar-header">';
-			//echo '<a class="navbar-brand" href="'.URL_SEPARATOR.'">'.NAME.'</a>';
-			echo '<a class="navbar-brand" href="'.URL_SEPARATOR.'"><img style="max-width:30px; margin-top: -7px;" src="../../'.BRAND.'"> '.NAME.'</a>';
+      echo '<div class="navbar-header">';
+      //echo '<a class="navbar-brand" href="'.URL_SEPARATOR.'">'.NAME.'</a>';
+      echo '<a class="navbar-brand" href="'.URL_SEPARATOR.'"><img style="max-width:30px; margin-top: -7px;" src="../../'.BRAND.'"> '.NAME.'</a>';
       echo '</div>';
-			// START RIGHT
-			echo '<div class="navbar-right '.self::$devices.'">';
+      // START RIGHT
+      echo '<div class="navbar-right '.self::$devices.'">';
       echo '<ul class="nav navbar-nav">';
       // RENDER RIGHT
       ksort($menuright);
@@ -177,9 +177,9 @@
       echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"></div></div></div>';
       echo '<div class="container-fluid '.self::$devices.'">';
       echo '<div id="infobox" class="infobox">'.$infobox.'</div>';
-		}
-						
-		public static function end() {
+    }
+            
+    public static function end() {
       echo '</div>';
       echo '<div class="container-fluid display-xs display-sm hidden-md hidden-lg">';
       echo '<div class="display-xs hidden-sm hidden-md hidden-lg not-supported">';
@@ -194,10 +194,10 @@
       echo '<p class="text-muted"> <i id="loading" class="fa fa-spinner fa-spin hidden"></i> (c) '.date('Y',time()).' daeks - generated in '.number_format(microtime(true) - self::$time, 5).'s</p>';
       echo '</div>';
       echo '</div>';
-			echo '</body>';
-			echo '</html>';
-		}
-		
-	}
+      echo '</body>';
+      echo '</html>';
+    }
+    
+  }
 
 ?>

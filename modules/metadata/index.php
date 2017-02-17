@@ -20,14 +20,14 @@
     echo ' value="'.$sys['id'].'">'.$sys['name'].'</option>';
   }
   echo '</select>';
-	echo '</div>';
-	// RENDER FILTER
+  echo '</div>';
+  // RENDER FILTER
   echo '<div class="col-sm-4">';
   echo '<div class="input-group">';
   echo '<span class="input-group-addon"><i class="fa fa-filter fa-fw"></i></span>';
   echo '<select name="filter" id="filter" class="form-control">';
   echo '<option selected value="all">All</option>';
-	echo '</select></div>';
+  echo '</select></div>';
   echo '</div>';
   echo '</div>';
   
@@ -45,7 +45,7 @@
       echo ' value="'.$rom.'">'.$rom.'</option>';
     }
   }
-	echo '</select>';
+  echo '</select>';
   echo '</div>';
   // END LEFT SIDE
    

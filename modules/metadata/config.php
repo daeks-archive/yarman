@@ -2,12 +2,12 @@
   
   require_once(dirname(realpath(__DIR__)).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config.php');
   $module = modules::loadCurrent();
-	
-	if($module != null) {
+  
+  if($module != null) {
     define('CONTROLLER', 'controller.php');
     define('DIALOG', 'dialog.php');
     
     config::includes(MODULES.DIRECTORY_SEPARATOR.$module->id);
-	}
+  }
  
 ?>

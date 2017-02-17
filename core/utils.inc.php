@@ -1,7 +1,7 @@
 <?php
     
-	class utils {
-	
+  class utils {
+  
     public static function msort($array, $cols) {
       $colarr = array();
       foreach ($cols as $col => $order) {
@@ -24,15 +24,15 @@
       }
       return $ret;
     }
-		
-		public static function ajax($status, $data = null, $event = null) {
+    
+    public static function ajax($status, $data = null, $event = null) {
       $array = array();
       $array['status'] = $status;
       $array['data'] = (($data == null) ? '' : htmlentities($data));
       $array['event'] = (($event == null) ? '' : $event);
       echo json_encode($array);
-		}
+    }
     
-	}
+  }
     
 ?>
