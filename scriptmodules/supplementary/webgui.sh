@@ -18,7 +18,7 @@ function depends_webgui() {
 }
 
 function sources_webgui() {
-    gitPullOrClone "$md_build/webgui" "https://github.com/daeks/RetroPie-WebGui-abort"
+    gitPullOrClone "$md_build/webgui" "https://github.com/daeks/RetroPie-WebGui"
 }
 
 function config_webgui() {
