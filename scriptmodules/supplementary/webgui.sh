@@ -21,15 +21,16 @@ function sources_webgui() {
     gitPullOrClone "$md_build/webgui" "https://github.com/daeks/RetroPie-WebGui"
 }
 
-function config_webgui() {
-    sudo chown -R www-data:www-data "/var/www"
-    sudo chmod -R 775 "/var/www/html"
-    sudo usermod -a -G www-data pi
+function configure_webgui() {
+    chown -R www-data:www-data "/var/www"
+    chmod -R 775 "/var/www/html"
+    usermod -a -G www-data pi
     
     rm "/var/www/html/index.html"
     cp "$md_build/webgui" "/var/www/html"
 }
 
 function remove_webgui() {
+    aptRemove apache2 sqlite3 php5 php5-sqlite
     rm -R "/var/www"
 }
