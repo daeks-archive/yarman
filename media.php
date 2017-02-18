@@ -2,7 +2,7 @@
 
   require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
   if(isset($_GET['sys']) && isset($_GET['file'])) {
-    $_GET['file'] = urldecode($_GET['file']);
+    $_GET['file'] = rawurldecode($_GET['file']);
     $obj = db::read('config', 'media_path').DIRECTORY_SEPARATOR.$_GET['sys'].DIRECTORY_SEPARATOR.$_GET['file'];
     if (file_exists($obj) && is_readable($obj) && basename($_GET['sys']) == $_GET['sys'] && basename($_GET['file']) == $_GET['file']) {
       switch (pathinfo($obj, PATHINFO_EXTENSION)) {

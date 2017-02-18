@@ -2,7 +2,7 @@
     
   class form {
 
-    public static function getField($config, $id, $value = '') {
+    public static function getField($config, $id, $value = '', $system = '') {
       foreach($config as $obj) {
         if($obj['id'] == $id) {
           $data = '';
@@ -21,6 +21,9 @@
             break;
             case 'date':
               $data = self::getDate($obj, $value);
+            break;
+            case 'image':
+              $data = self::getImage($system, $value);
             break;
             case 'boolean':
               $data = self::getBoolean($obj, $value);
@@ -98,6 +101,29 @@
     }
     
     public static function getDate($obj, $value = '') {
+      if($value != '') {
+        $date = date_parse_from_format('YmdTHiS', $value);
+        if($date['year'] > 0) {
+          $value = $date['year'];
+          if($date['month'] > 0) {
+            $value = $value.'-'.sprintf("%02d", $date['month']);
+          }
+          if($date['day'] > 0) {
+            $value = $value.'-'.sprintf("%02d", $date['day']);
+          }
+          if($date['hour'] > 0) {
+            $value = $value.' '.sprintf("%02d", $date['hour']);
+          }
+          if($date['minute'] > 0) {
+            $value = $value.':'.sprintf("%02d", $date['minute']);
+          }
+          if($date['second'] > 0) {
+            $value = $value.':'.sprintf("%02d", $date['second']);
+          }
+        } else {
+          $value = '';
+        }
+      }
       $data = '<div class="form-group">';
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
@@ -115,13 +141,33 @@
     }
     
     public static function getBoolean($obj, $value = '') {
-      $data = '<div class="checkbox">';
+      $data = '<div class="form-group">';
       if(isset($obj['name']) && $obj['name'] != '') {
-        $data .= '<label><input type="checkbox" id="'.$obj['id'].'" /> '.$obj['name'].'</label>';
-      } else {
-        $data .= '<input type="checkbox" id="'.$obj['id'].'" />';
+        $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
+      $data .= '<select type="text" class="form-control" id="'.$obj['id'].'">"';
+      $data .= '<option';
+      if($value == 'true') {
+        $data .= ' selected';
+      }
+      $data .= ' value="true">True</option>';
+      $data .= '<option';
+      if($value == '' || $value == 'false') {
+        $data .= ' selected';
+      }
+      $data .= ' value="false">False</option>';
+      $data .= '</select>';
       $data .= '</div>';
+      return $data;
+    }
+    
+    public static function getImage($system, $image) {
+      $data = '';
+      if($image != '') {
+        $data .= '<div class="thumbnail">';
+        $data .= '<img style="max-height: 275px" src="/media.php?sys='.$system.'&file='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
+        $data .= '</div>';
+      }
       return $data;
     }
     

@@ -50,6 +50,9 @@
     public static function getMetadata($sys, $id) {
       $xml = simplexml_load_file(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$sys.DIRECTORY_SEPARATOR.'gamelist.xml');
       $array = json_decode(json_encode($xml),TRUE);
+      if(!isset($array['game'][0]['path'])) {
+        $array['game'] = array($array['game']);
+      }
       foreach($array['game'] as $item) {
         if (substr_compare($item['path'], $id, strlen($item['path'])-strlen($id), strlen($id)) === 0) {
           foreach ($item as $key=>$value) {
@@ -58,7 +61,7 @@
             }
           }
           return $item;
-        }	
+        }
       }
     }
     

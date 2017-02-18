@@ -46,94 +46,56 @@
       return $data;
     }
   
-    public static function renderMetadata($system, $id) {
+    public static function render($container, $system, $id) {
       $rom = roms::getMetadata($system, $id);
       $fields = db::read('fields');
       
-      $data = self::start('metadata');
-
+      $fieldset = array(); 
+      // 1 8 4 1 5
+      foreach ($fields as $field) {
+        if(isset($field['grid']) && isset($field['container'])) {
+          if($field['container'] == $container) {
+            $parts = explode(' ', $field['grid']);
+            if(sizeof($parts) == 5) {
+              if(array_key_exists($parts[0], $fieldset)) {
+                if($parts[3] == "left") {
+                  $fieldset[$parts[0]][$parts[3]."-col-sm-".$parts[1]][$parts[4]] = $field;
+                } else if ($parts[3] == "right") {
+                  $fieldset[$parts[0]][$parts[3]."-col-sm-".$parts[2]][$parts[4]] = $field;
+                }
+              } else {
+                if($parts[1] == "12" && $parts[2] == "0") {
+                  $fieldset[$parts[0]] = array($parts[3]."-col-sm-".$parts[1] => array($parts[4] => $field));
+                } else {
+                  if($parts[3] == "left") {
+                    $fieldset[$parts[0]] = array("left-col-sm-".$parts[1] => array($parts[4] => $field), "right-col-sm-".$parts[2] => array());
+                  } else if ($parts[3] == "right") {
+                    $fieldset[$parts[0]] = array("left-col-sm-".$parts[1] => array(), "right-col-sm-".$parts[2] => array($parts[4] => $field));
+                  }
+                }
+              }
+            }
+          }
+        }
+      }   
+      
+      $data = self::start($container);
+      
       $data .= '<div class="row">';
       $data .= '<div class="col-sm-12">';
       
-      $data .= '<form id="data" name="data" role="form">';
-      $data .= '<div class="row">';
-      $data .= '<div class="col-sm-8">';
-      $data .= form::getField($fields, 'name', (isset($rom['name'])?$rom['name']:''));
-      $data .= form::getField($fields, 'genre', (isset($rom['genre'])?$rom['genre']:''));
-      $data .= form::getField($fields, 'developer', (isset($rom['developer'])?$rom['developer']:''));
-      $data .= form::getField($fields, 'publisher', (isset($rom['publisher'])?$rom['publisher']:''));
-      $data .= '</div>';
-      $data .= '<div class="col-sm-4">';
-      if(pathinfo((isset($rom['image'])?$rom['image']:''), PATHINFO_BASENAME) != '') {
-        $data .= '<a href="#" class="thumbnail">';
-        $data .= '<img src="/media.php?sys='.$system.'&file='.urlencode(pathinfo($rom['image'], PATHINFO_BASENAME)).'">';
-        $data .= '</a>';
+      $data .= '<form id="data" name="data" role="form" class="scrollbar" style="overflow-y: auto !important; overflow-x: hidden !important;">';
+      foreach($fieldset as $key=>$row) {
+        $data .= '<div class="row">';
+        foreach($row as $key=>$column) {
+          $data .= '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
+          foreach($column as $key=>$field) {
+            $data .= form::getField($fields, $field['id'], (isset($rom[$field['guid']])?$rom[$field['guid']]:''), $system);
+          }
+          $data .= '</div>';
+        }
+        $data .= '</div>';
       }
-      $data .= '</div>';
-      $data .= '</div>';
-      
-      $data .= '<div class="row">';
-      $data .= '<div class="col-sm-6">';
-      $data .= form::getField($fields, 'releasedate', (isset($rom['releasedate'])?$rom['releasedate']:''));
-      $data .= '</div>';
-      $data .= '<div class="col-sm-6">';
-      $data .= form::getField($fields, 'players', (isset($rom['players'])?$rom['players']:''));
-      $data .= '</div>';
-      $data .= '</div>';
-      
-      $data .= '<div class="row">';
-      $data .= '<div class="col-sm-12">';
-      $data .= form::getField($fields, 'desc', (isset($rom['desc'])?$rom['desc']:''));
-      $data .= '</div>';
-      $data .= '</div>';
-      
-      $data .= '<div class="row">';
-      $data .= '<div class="col-sm-6">';
-      $data .= form::getField($fields, 'playcount', (isset($rom['playcount'])?$rom['playcount']:''));
-      $data .= '</div>';
-      $data .= '<div class="col-sm-6">';
-      $data .= form::getField($fields, 'lastplayed', (isset($rom['lastplayed'])?$rom['lastplayed']:''));
-      $data .= '</div>';
-      $data .= '</div>';
-
-      //foreach (utils::msort(db::read('fields'), array('id' => SORT_ASC)) as $field){
-      //  $data .= form::getField($field, $rom[$field['id']]);
-      //}
-      $data .= '</form>';
-      
-      $data .= '</div>';
-      $data .= '</div>';
-
-      $data .= self::end();
-      
-      return $data;
-    }
-    
-    public static function renderMedia($system, $id) {
-      $rom = roms::getMetadata($system, $id);
-      $fields = db::read('fields');
-      
-      $data = self::start('media');
-
-      $data .= '<div class="row">';
-      $data .= '<div class="col-sm-12">';
-      
-      $data .= '<form id="data" name="data" role="form">';
-      $data .= '<div class="row">';
-      $data .= '<div class="col-sm-8">';
-      $data .= form::getField($fields, 'image', (isset($rom['image'])?$rom['image']:''));
-      $data .= form::getField($fields, 'video', (isset($rom['video'])?$rom['video']:''));
-      $data .= form::getField($fields, 'marquee', (isset($rom['marquee'])?$rom['marquee']:''));
-      $data .= form::getField($fields, 'thumbnail', (isset($rom['thumbnail'])?$rom['thumbnail']:''));
-      $data .= '</div>';
-      $data .= '<div class="col-sm-4">';
-      if(pathinfo((isset($rom['image'])?$rom['image']:''), PATHINFO_BASENAME) != '') {
-        $data .= '<a href="#" class="thumbnail">';
-        $data .= '<img src="/media.php?sys='.$system.'&file='.urlencode(pathinfo($rom['image'], PATHINFO_BASENAME)).'">';
-        $data .= '</a>';
-      }
-      $data .= '</div>';
-      $data .= '</div>';
       $data .= '</form>';
       
       $data .= '</div>';

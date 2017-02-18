@@ -4,9 +4,11 @@ $(function () {
    
   $("#romlist").attr("size", size);
   $("#romlist").css("height", height);
+  $("#data").css("height", height);
    
   $(window).resize(function() {
     $("#romlist").css("height", $(document).height() - 170);
+    $("#data").css("height", $(document).height() - 170);
   });
 
   $(window).trigger('resize');

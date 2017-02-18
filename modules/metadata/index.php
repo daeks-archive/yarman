@@ -53,18 +53,13 @@
   echo '<div class="col-sm-8" id="tab" name="tab">';
   if(cache::getClientVariable($module->id.'_system') != '' && cache::getClientVariable($module->id.'_id') != '') {
     if(cache::getClientVariable($module->id.'_tab') != '') {
-      if(cache::getClientVariable($module->id.'_tab') == 'metadata') {
-        echo metadata::renderMetadata(cache::getClientVariable($module->id.'_system'), cache::getClientVariable($module->id.'_id'));
-      }
-      if(cache::getClientVariable($module->id.'_tab') == 'media') {
-        echo metadata::renderMedia(cache::getClientVariable($module->id.'_system'), cache::getClientVariable($module->id.'_id'));
-      }
+      echo metadata::render(cache::getClientVariable($module->id.'_tab'), cache::getClientVariable($module->id.'_system'), cache::getClientVariable($module->id.'_id'));
     } else {
-      echo metadata::renderMetadata(cache::getClientVariable($module->id.'_system'), cache::getClientVariable($module->id.'_id'));
+      echo metadata::render('metadata', cache::getClientVariable($module->id.'_system'), cache::getClientVariable($module->id.'_id'));
     }
   } else {
     if(cache::getClientVariable($module->id.'_system') != '') {
-      echo metadata::renderMetadata(cache::getClientVariable($module->id.'_system'), $first);
+      echo metadata::render('metadata', cache::getClientVariable($module->id.'_system'), $first);
     }
   }
   echo '</div>';

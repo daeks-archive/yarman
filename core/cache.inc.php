@@ -4,18 +4,18 @@
   
     public static function setClientVariable($key, $val, $time = COOKIE_LIFETIME) {
       $_SESSION[$key] = $val;
-      setcookie ($key, $val, time() + $time, URL_SEPARATOR);
+      setcookie ($key, rawurlencode($val), time() + $time, URL_SEPARATOR);
     }
     
-    public static function deleteClientVariable($key) {
+    public static function unsetClientVariable($key) {
       unset($_SESSION[$key]);
-      setcookie ($key, '', -1);
+      setcookie ($key, '', -1, URL_SEPARATOR);
     }
     
     public static function getClientVariable($key) {
       if(isset($_COOKIE[$key])) {
-        $_SESSION[$key] = $_COOKIE[$key];
-        return $_COOKIE[$key];
+        $_SESSION[$key] = rawurldecode($_COOKIE[$key]);
+        return rawurldecode($_COOKIE[$key]);
       } else {
         return '';
       }
