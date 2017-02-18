@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 # This file is part of The RetroPie Project
@@ -14,20 +15,22 @@ rp_module_desc="RetroPie WebGUI"
 rp_module_section="exp"
 
 function depends_webgui() {
-    getDepends apache2 sqlite3 php5 php5-sqlite 
+    getDepends apache2 sqlite3 php5 php5-sqlite
 }
 
 function sources_webgui() {
-    gitPullOrClone "$md_build/webgui" "https://github.com/daeks/RetroPie-WebGui"
+    gitPullOrClone "$md_build" "https://github.com/daeks/RetroPie-WebGui"
+}
+
+function install_webgui() {
+    rm "/var/www/html/index.html"
+    cp -r "$md_build/." "/var/www/html"
 }
 
 function configure_webgui() {
     chown -R www-data:www-data "/var/www"
     chmod -R 775 "/var/www/html"
     usermod -a -G www-data pi
-    
-    rm "/var/www/html/index.html"
-    cp "$md_build/webgui" "/var/www/html"
 }
 
 function remove_webgui() {
