@@ -23,7 +23,7 @@
               $data = self::getDate($obj, $value);
             break;
             case 'image':
-              $data = self::getImage($system, $value);
+              $data = self::getImage($obj, $system, $value);
             break;
             case 'boolean':
               $data = self::getBoolean($obj, $value);
@@ -161,11 +161,14 @@
       return $data;
     }
     
-    public static function getImage($system, $image) {
+    public static function getImage($obj, $system, $image) {
       $data = '';
       if($image != '') {
+        if(isset($obj['name']) && $obj['name'] != '') {
+          $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+        }
         $data .= '<div class="thumbnail">';
-        $data .= '<img style="max-height: 275px" src="/media.php?sys='.$system.'&file='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
+        $data .= '<img style="max-height: 245px" src="/media.php?sys='.$system.'&file='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
         $data .= '</div>';
       }
       return $data;
