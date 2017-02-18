@@ -84,7 +84,7 @@
       $data .= '<div class="row">';
       $data .= '<div class="col-sm-12">';
       
-      $data .= '<form id="data" name="data" role="form" class="scrollbar" style="overflow-y: auto !important; overflow-x: hidden !important;">';
+      $data .= '<form id="data" name="data" role="form" class="scrollbar" data-toggle="validator" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
       foreach($fieldset as $key=>$row) {
         $data .= '<div class="row">';
         foreach($row as $key=>$column) {
@@ -96,7 +96,7 @@
         }
         $data .= '</div>';
       }
-      $data .= '</form>';
+      $data .= '</fieldset></form>';
       
       $data .= '</div>';
       $data .= '</div>';

@@ -16,6 +16,13 @@ $(function() {
           } else {
             var data = $('<textarea/>').html(obj.data).val();
             target.html(data);
+            $('form[data-toggle="validator"]').formValidation({
+              feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+              }
+            });
           }
         } else if (obj.status == 500) {
           toast('danger', false, obj.data);
@@ -45,6 +52,13 @@ $(function() {
           } else {
             var data = $('<textarea/>').html(obj.data).val();
             target.html(data);
+            $('form[data-toggle="validator"]').formValidation({
+              feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+              }
+            });
           }
         } else if (obj.status == 500) {
           toast('danger', false, obj.data);

@@ -42,7 +42,7 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" value="'.$value.'"';
+      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' '.$obj['validator'];
       }
@@ -59,7 +59,7 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" value="'.$value.'"';
+      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' '.$obj['validator'];
       }
@@ -76,7 +76,7 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" value="'.$value.'"';
+      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' '.$obj['validator'];
       }
@@ -93,7 +93,7 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<textarea class="form-control" id="'.$obj['id'].'" rows="'.$obj['rowcount'].'">';
+      $data .= '<textarea class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" rows="'.$obj['rowcount'].'">';
       $data .= $value;
       $data .= '</textarea>';
       $data .= '</div>';
@@ -128,7 +128,7 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" value="'.$value.'"';
+      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' '.$obj['validator'];
       }
@@ -145,7 +145,7 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<select type="text" class="form-control" id="'.$obj['id'].'">"';
+      $data .= '<select type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'">"';
       $data .= '<option';
       if($value == 'true') {
         $data .= ' selected';
