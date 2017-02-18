@@ -9,8 +9,8 @@
   define('JS', BASE.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'js');
   define('CSS', BASE.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'css');
   define('DATA', BASE.DIRECTORY_SEPARATOR.'data');
+  define('CACHE', DATA.DIRECTORY_SEPARATOR.'cache');
   define('DEFAULTS', BASE.DIRECTORY_SEPARATOR.'defaults');
-  define('CACHE', BASE.DIRECTORY_SEPARATOR.'cache');
   define('MODULES', BASE.DIRECTORY_SEPARATOR.'modules');
 
   define('MODULE', 'config.json');
