@@ -14,12 +14,14 @@ This is a webbased frontend for RetroPie containing several functions to maintai
 
 To be able to access the www directory add the following lines to /etc/samba/smb.conf
 
-```[www]
-  comment = www
-  path = "/var/www/html"
-  writeable = yes
-  guest ok = yes
-  create mask = 0644
-  directory mask = 0755
-  force user = pi
-  hide dot files = no```
+```
+[www]
+comment = www
+path = "/var/www/html"
+writeable = yes
+guest ok = yes
+create mask = 0644
+directory mask = 0755
+force user = pi
+hide dot files = no
+```
