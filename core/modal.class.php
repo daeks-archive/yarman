@@ -16,7 +16,7 @@
       echo '<div class="modal-footer">';
       echo '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
       if($title != null) {
-        echo '<button data-target="modal-data" data-validate="modal" class="btn btn-'.$color.'" type="submit">'.$title.'</button>';
+        echo '<button data-query="modal-data" data-validate="modal" class="btn btn-'.$color.'" type="submit">'.$title.'</button>';
       }
       echo '</div>';
     }
