@@ -21,7 +21,7 @@
           $array[$system] = $tmp;
         }
       }
-      foreach(db::read('games') as $system) {
+      foreach(db::read('systems') as $system) {
         if(array_key_exists($system['id'], $array)) {
           $array[$system['id']]['name'] = $system['name'];
           $array[$system['id']]['whitelist'] = $system['whitelist'];

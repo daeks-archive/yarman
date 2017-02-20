@@ -4,20 +4,33 @@
   
     public static function getAll($system) {
       $array = array();
-      $whitelist = db::read('games', $system, 'whitelist');
-      foreach (scandir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system) as $rom) {
-        if(is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$rom)) {
+      $whitelist = db::read('systems', $system, 'whitelist');
+      $blacklist = db::read('systems', $system, 'blacklist');
+      foreach (scandir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system) as $item) {
+        if(is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$item)) {
           if(isset($whitelist) && $whitelist != '') {
-            if(strpos($whitelist, pathinfo($rom, PATHINFO_EXTENSION)) !== false) {
-              array_push($array, $rom);
+            if(strpos($whitelist, pathinfo($item, PATHINFO_EXTENSION)) !== false) {
+              if(isset($blacklist) && $blacklist != '') {
+                if(strpos($blacklist, pathinfo($item, PATHINFO_EXTENSION)) === false) {
+                  array_push($array, $item);
+                }
+              } else {
+                array_push($array, $item);
+              }
             }
           } else {
-            array_push($array, $rom);
+            array_push($array, $item);
           }
         }
-        if(is_dir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$rom)) {
-          if($rom != '.' && $rom != '..') {
-            array_push($array, $rom);
+        if(is_dir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$item)) {
+          if($item != '.' && $item != '..') {
+            if(isset($blacklist) && $blacklist != '') {
+              if(strpos($blacklist, $item) === false) {
+                array_push($array, $item);
+              }
+            } else {
+              array_push($array, $item);
+            }
           }
         }
       }

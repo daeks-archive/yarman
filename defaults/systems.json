@@ -17,7 +17,8 @@
   {
     "id" : "arcade",
     "name" : "Arcade",
-    "whitelist" : ""
+    "whitelist" : "",
+    "blacklist" : "mame2003"
   },
   {
     "id" : "apple2",
@@ -117,12 +118,14 @@
   {
     "id" : "mame-mame4all",
     "name" : "MAME (mame4all)",
-    "whitelist" : ""
+    "whitelist" : "",
+    "blacklist" : "artworks samples"
   },
   {
     "id" : "mame-libretro",
     "name" : "MAME (libretro)",
-    "whitelist" : ""
+    "whitelist" : "",
+    "blacklist" : "mame2003"
   },
   {
     "id" : "mastersystem",
