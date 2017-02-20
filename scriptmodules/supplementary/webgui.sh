@@ -31,6 +31,8 @@ function configure_webgui() {
     chown -R www-data:www-data "/var/www"
     chmod -R 775 "/var/www/html"
     usermod -a -G www-data pi
+    usermod -a -G video www-data
+    service apache2 restart
 }
 
 function remove_webgui() {
