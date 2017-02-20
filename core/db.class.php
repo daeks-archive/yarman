@@ -9,7 +9,7 @@
         $array = json_decode(file_get_contents(DEFAULTS.DIRECTORY_SEPARATOR.$module.self::$format), true);
         if($id != null) {
           foreach ($array as $item) {
-            if($item[$key] == $id) {
+            if(isset($item[$key]) && isset($item[$column]) && $item[$key] == $id) {
               return $item[$column];
             }
           }
