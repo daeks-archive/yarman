@@ -7,6 +7,9 @@
         if($obj['id'] == $id) {
           $data = '';
           switch ($obj['type']) {
+            case 'hidden':
+              $data = self::getHidden($obj, $value);
+            break;
             case 'string':
               $data = self::getString($obj, $value);
             break;
@@ -37,6 +40,11 @@
       }
     }
     
+    public static function getHidden($obj, $value = '') {
+      $data = '<input type="hidden" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"/>';
+      return $data;
+    }
+    
     public static function getString($obj, $value = '') {
       $data = '<div class="form-group">';
       if(isset($obj['name']) && $obj['name'] != '') {
@@ -44,7 +52,10 @@
       }
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
-        $data .= ' '.$obj['validator'];
+        $data .= ' data-fv '.$obj['validator'];
+      }
+      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+        $data .= ' disabled';
       }
       if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
@@ -61,7 +72,10 @@
       }
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
-        $data .= ' '.$obj['validator'];
+        $data .= ' data-fv '.$obj['validator'];
+      }
+      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+        $data .= ' disabled';
       }
       if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
@@ -78,7 +92,10 @@
       }
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
-        $data .= ' '.$obj['validator'];
+        $data .= ' data-fv '.$obj['validator'];
+      }
+      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+        $data .= ' disabled';
       }
       if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
@@ -93,7 +110,11 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<textarea class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" rows="'.$obj['rowcount'].'">';
+      $data .= '<textarea class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" rows="'.$obj['rowcount'].'"';
+      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+        $data .= ' disabled';
+      }
+      $data .= '>';
       $data .= $value;
       $data .= '</textarea>';
       $data .= '</div>';
@@ -130,7 +151,10 @@
       }
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
-        $data .= ' '.$obj['validator'];
+        $data .= ' data-fv '.$obj['validator'];
+      }
+      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+        $data .= ' disabled';
       }
       if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
@@ -145,7 +169,11 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<select type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'">"';
+      $data .= '<select type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'"';
+      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+        $data .= ' disabled';
+      }
+      $data .= '>"';
       $data .= '<option';
       if($value == 'true') {
         $data .= ' selected';

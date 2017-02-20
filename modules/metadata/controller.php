@@ -9,7 +9,7 @@
           cache::setClientVariable($module->id.'_system', $_GET['system']);
           cache::unsetClientVariable($module->id.'_id');
           $data = '';
-          foreach (roms::getRoms($_GET['system']) as $rom){
+          foreach (roms::getAll($_GET['system']) as $rom){
             $data .= '<option value="'.$rom.'">'.$rom.'</option>';
           }
           utils::ajax(200, $data);
@@ -17,7 +17,11 @@
           utils::ajax(200, '');
         }
       break;
+      case 'presave':
+        utils::ajax(200, '', "$('[data-toggle=\"post\"]').submit();");
+      break;
       default:
+        utils::ajax(500, 'invalid action - '.$_GET['action']);
       break;
     }
   }

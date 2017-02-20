@@ -1,5 +1,10 @@
 [
   {
+    "id" : "id",
+    "guid" : "path",
+    "type" : "hidden"
+  },
+  {
     "id" : "name",
     "guid" : "name",
     "name" : "Name",
@@ -74,6 +79,7 @@
     "guid" : "path",
     "name" : "Rom Path",
     "type" : "string",
+    "readonly": true,
     "validator" : "data-fv-notempty",
     "container" : "media",
     "grid" : "1 8 4 left 1"

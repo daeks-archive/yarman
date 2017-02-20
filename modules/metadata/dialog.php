@@ -22,6 +22,16 @@
           }
         }
       break;
+      case 'confirmsave':
+        modal::start('Save Changes', CONTROLLER.'?action=presave');
+        echo 'Do you really want to save?';
+        modal::end('Save', 'success');
+      break;
+      case 'confirmdelete':
+        modal::start('Delete Item', CONTROLLER.'?action=delete');
+        echo 'Do you really want to delete?';
+        modal::end('Delete', 'danger');
+      break;
       default:
       break;
     }

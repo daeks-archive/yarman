@@ -4,7 +4,6 @@
   
     public static $time;
     public static $devices = 'hidden-xs hidden-sm display-md display-lg';
-    public static $show_search = false;
   
     public static function start($infobox = '', $js = null, $cache = FILE_CACHE) {
       self::$time = microtime(true);
@@ -76,7 +75,7 @@
             } else {
               $item .= '<li>';
             }
-            $item .= '<a href="'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
+            $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
             if($tmp->menu->icon != '') {
               $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
             }
@@ -88,7 +87,7 @@
           }
           
           if($tmp->menu->position == 'right') {
-            $item .= '<li><a href="'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
+            $item .= '<li><a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
             if($tmp->menu->icon != '') {
               $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
             }
@@ -137,42 +136,6 @@
       echo '</ul>';
       echo '</div>';
       // END LEFT
-      // START SEARCHBAR
-      echo '<div class="col-sm-4 col-md-4 pull-right">';
-      echo '<form class="navbar-search '.self::$devices.'" style="margin-top:8px;">';
-      echo '<div class="input-group">';
-      if(isset($module->search)) {
-        echo '<input type="text" class="form-control search" placeholder="Search" data-query="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$module->id.URL_SEPARATOR.$module->search->query.'" data-type="'.$module->search->type.'" data-target="'.$module->search->target.'">';
-      } else {
-        if(self::$show_search) {
-          echo '<input type="text" disabled class="form-control search" placeholder="No Search available " data-query="" data-target="">';
-        }
-      }
-      if(isset($module->search) || self::$show_search) {
-        echo '<div class="input-group-btn">';
-        echo '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">';
-        if(isset($module->search->icon)) {
-          echo '<img class="searchicon" src="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$module->id.URL_SEPARATOR.$module->search->icon.'" />&nbsp;';
-        } else {
-          echo '<img class="searchicon" src="/core/img/holder.png" />&nbsp;';
-        }
-        echo '<span class="caret"></span></button>';
-        echo '<ul class="dropdown-menu pull-right">';
-        // RENDER SEARCH
-        foreach ($modules as $moduleconfig) {
-          $tmp = json_decode(file_get_contents($moduleconfig));
-          if(isset($tmp->search)) {
-            echo '<li><a href="#" class="changesearch" data-query="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$tmp->search->query.'" data-type="'.$tmp->search->type.'"';
-            echo ' data-target="'.$tmp->search->target.'" data-icon="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$tmp->search->icon.'"><img src="'.URL_SEPARATOR.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$tmp->search->icon.'" /> '.$tmp->search->name.'</a></li>';
-          }
-        }  
-        echo '</ul>';
-        echo '</div>';
-      } 
-      echo '</div>';
-      echo '</form>';
-      echo '</div>';
-      // END SEARCHBAR
       echo '</div>';
       echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"></div></div></div>';
       echo '<div class="container-fluid '.self::$devices.'">';

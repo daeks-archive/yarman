@@ -25,10 +25,10 @@
       $data .= '</div>';
       $data .= '<div class="col-sm-4">';
       $data .= '<div class="btn-toolbar btn-group-sm" role="toolbar">';
-      $data .= '<button class="btn btn-success disabled" type="button"><em class="fa fa-save"></em> Save</button>';
+      $data .= '<button class="btn btn-success" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmsave" data-target="#modal" disabled><em class="fa fa-save"></em> Save</button>';
       $data .= '<div class="btn-group btn-group-sm pull-right">';
       $data .= '<button class="btn btn-default disabled" type="button">Add Image</button>';
-      $data .= '<button class="btn btn-danger disabled" type="button"><em class="fa fa-trash"></em></button>';
+      $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em></button>';
       $data .= '</div>';
       $data .= '</div>';
       $data .= '</div>';
@@ -57,33 +57,40 @@
             $parts = explode(' ', $field['grid']);
             if(sizeof($parts) == 5) {
               if(array_key_exists($parts[0], $fieldset)) {
-                if($parts[3] == "left") {
-                  $fieldset[$parts[0]][$parts[3]."-col-sm-".$parts[1]][$parts[4]] = $field;
-                } else if ($parts[3] == "right") {
-                  $fieldset[$parts[0]][$parts[3]."-col-sm-".$parts[2]][$parts[4]] = $field;
+                if($parts[3] == 'left') {
+                  $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[1]][$parts[4]] = $field;
+                } else if ($parts[3] == 'right') {
+                  $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[2]][$parts[4]] = $field;
                 }
               } else {
-                if($parts[1] == "12" && $parts[2] == "0") {
-                  $fieldset[$parts[0]] = array($parts[3]."-col-sm-".$parts[1] => array($parts[4] => $field));
+                if($parts[1] == '12' && $parts[2] == '0') {
+                  $fieldset[$parts[0]] = array($parts[3].'-col-sm-'.$parts[1] => array($parts[4] => $field));
                 } else {
-                  if($parts[3] == "left") {
-                    $fieldset[$parts[0]] = array("left-col-sm-".$parts[1] => array($parts[4] => $field), "right-col-sm-".$parts[2] => array());
-                  } else if ($parts[3] == "right") {
-                    $fieldset[$parts[0]] = array("left-col-sm-".$parts[1] => array(), "right-col-sm-".$parts[2] => array($parts[4] => $field));
+                  if($parts[3] == 'left') {
+                    $fieldset[$parts[0]] = array('left-col-sm-'.$parts[1] => array($parts[4] => $field), 'right-col-sm-'.$parts[2] => array());
+                  } else if ($parts[3] == 'right') {
+                    $fieldset[$parts[0]] = array('left-col-sm-'.$parts[1] => array(), 'right-col-sm-'.$parts[2] => array($parts[4] => $field));
                   }
                 }
               }
             }
           }
         }
-      }   
+        if(isset($field['type']) && $field['type'] == 'hidden') {
+          if(array_key_exists('0', $fieldset)) {
+            array_push($fieldset['0']['left-col-sm-12'], $field);
+          } else {
+            $fieldset['0'] = array ('left-col-sm-12' => array($field));
+          }
+        }
+      }
       
       $data = self::start($container);
       
       $data .= '<div class="row">';
       $data .= '<div class="col-sm-12">';
       
-      $data .= '<form id="rom-data" name="rom-data" role="form" class="scrollbar" data-toggle="validator" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
+      $data .= '<form id="rom-data" name="rom-data" role="form" class="scrollbar" data-validate="form" data-toggle="post" data-query="'.CONTROLLER.'?action=save" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
       foreach($fieldset as $key=>$row) {
         $data .= '<div class="row">';
         foreach($row as $key=>$column) {
