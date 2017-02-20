@@ -29,6 +29,10 @@
           if(typeof $('#' + e.target.id).attr('data-fv') == 'undefined') {
             $('button[data-validate="form"]').prop('disabled', false);
           }
+        })
+        .on('changeDate', function(e){
+          $('#' + e.target.id).datepicker('hide').trigger('input');
+          $('button[data-validate="form"]').prop('disabled', false);
         });
       };
       
