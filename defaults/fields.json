@@ -46,6 +46,7 @@
     "guid" : "releasedate",
     "name" : "Release Date",
     "type" : "date",
+    "validator" : "data-fv-date data-fv-date-format=\"YYYY/MM/DD\"",
     "container" : "metadata",
     "grid" : "2 6 6 left 1"
   },
@@ -137,6 +138,7 @@
     "guid" : "lastplayed",
     "name" : "Last Played",
     "type" : "date",
+    "readonly": true,
     "container" : "metadata",
     "grid" : "5 6 6 right 1"
   },

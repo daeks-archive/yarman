@@ -122,34 +122,41 @@
     }
     
     public static function getDate($obj, $value = '') {
+      $parsed = '';
       if($value != '') {
         $date = date_parse_from_format('YmdTHiS', $value);
         if($date['year'] > 0) {
-          $value = $date['year'];
+          $parsed = $date['year'];
           if($date['month'] > 0) {
-            $value = $value.'-'.sprintf("%02d", $date['month']);
+            $parsed = $parsed.'/'.sprintf("%02d", $date['month']);
           }
           if($date['day'] > 0) {
-            $value = $value.'-'.sprintf("%02d", $date['day']);
+            $parsed = $parsed.'/'.sprintf("%02d", $date['day']);
           }
           if($date['hour'] > 0) {
-            $value = $value.' '.sprintf("%02d", $date['hour']);
+            $parsed = $parsed.' '.sprintf("%02d", $date['hour']);
           }
           if($date['minute'] > 0) {
-            $value = $value.':'.sprintf("%02d", $date['minute']);
+            $parsed = $parsed.':'.sprintf("%02d", $date['minute']);
           }
           if($date['second'] > 0) {
-            $value = $value.':'.sprintf("%02d", $date['second']);
+            $parsed = $parsed.':'.sprintf("%02d", $date['second']);
+          }
+          if(strlen($parsed) == 4) {
+            $parsed = $parsed.'/01/01';
           }
         } else {
-          $value = '';
+          $parsed = '';
         }
       }
       $data = '<div class="form-group">';
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
+      $data .= '<input type="hidden" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"/>';
+      $data .= '<div class="input-group">';
+      $data .= '<span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>';
+      $data .= '<input type="text" class="form-control" data-provider="datepicker" id="'.$obj['id'].'_display" name="'.$obj['id'].'_display" value="'.$parsed.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' data-fv '.$obj['validator'];
       }
@@ -160,6 +167,7 @@
         $data .= ' maxlength="'.$obj['maxlength'].'"';
       }
       $data .= '/>';
+      $data .= '</div>';
       $data .= '</div>';
       return $data;
     }
