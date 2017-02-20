@@ -19,6 +19,7 @@
                   var data = $('<textarea/>').html(obj.data).val();
                   target.html(data);
                   core.validator.init();
+                  core.form.init();
                 }
               } else if (obj.status == 500) {
                 core.message.toast('danger', false, obj.data);
@@ -49,6 +50,7 @@
                   var data = $('<textarea/>').html(obj.data).val();
                   target.html(data);
                   core.validator.init();
+                  core.form.init();
                 }
               } else if (obj.status == 500) {
                 core.message.toast('danger', false, obj.data);

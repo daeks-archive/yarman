@@ -64,6 +64,7 @@
         if (offset < bottomMargin) offset = bottomMargin;
         $dialog.css("margin-top", offset);
         core.validator.reinit();
+        core.form.init();
       };
       
       return {
