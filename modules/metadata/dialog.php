@@ -4,7 +4,7 @@
   
   if(isset($_GET['action'])) {
     switch ($_GET['action']) {
-      case 'tab':
+      case 'render':
         if(isset($_GET['tab'])) {
           cache::setClientVariable($module->id.'_tab', $_GET['tab']);
           if(isset($_GET['id'])) {

@@ -168,7 +168,7 @@
           $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
         }
         $data .= '<div class="thumbnail">';
-        $data .= '<img style="max-height: 245px" src="/media.php?sys='.$system.'&file='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
+        $data .= '<img style="max-height: 245px" src="/core/proxy.php?sys='.$system.'&file='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
         $data .= '</div>';
       }
       return $data;

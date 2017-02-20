@@ -4,6 +4,6 @@
   "menu" : {
     "position" : "left",
     "order" : 1,
-    "icon" : "gamepad"
+    "icon" : "files-o"
     }
 }

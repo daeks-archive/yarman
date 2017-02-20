@@ -26,17 +26,9 @@
   
     public static function includes($path) {
       foreach (scandir($path) as $include){
-        if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($path.DIRECTORY_SEPARATOR.$include, '.inc.') !== false && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'PHP'){
+        if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($path.DIRECTORY_SEPARATOR.$include, '.class.') !== false && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'PHP'){
           require_once($path.DIRECTORY_SEPARATOR.$include);
         }
-      }
-    }
-    
-    public static function libraries($path) {
-      foreach (scandir($path) as $include){
-        if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($path.DIRECTORY_SEPARATOR.$include, '.lib.') !== false && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'PHP'){
-          require_once($path.DIRECTORY_SEPARATOR.$include);
-          }
       }
     }
 

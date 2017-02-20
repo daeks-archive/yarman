@@ -15,21 +15,20 @@
       if($tab == 'metadata') {
         $data .= 'class="active"';
       }
-      $data .= '><a href="#" data-toggle="async" data-query="'.DIALOG.'?action=tab&tab=metadata" data-target="#tab">Metadata</a></li>';
+      $data .= '><a href="#" data-toggle="async" data-query="'.DIALOG.'?action=render&tab=metadata" data-target="#panel-right">Metadata</a></li>';
       $data .= '<li ';
       if($tab == 'media') {
         $data .= 'class="active"';
       }
-      $data .= '><a href="#" data-toggle="async" data-query="'.DIALOG.'?action=tab&tab=media" data-target="#tab">Media</a></li>';
+      $data .= '><a href="#" data-toggle="async" data-query="'.DIALOG.'?action=render&tab=media" data-target="#panel-right">Media</a></li>';
       $data .= '</ul>';
       $data .= '</div>';
       $data .= '<div class="col-sm-4">';
       $data .= '<div class="btn-toolbar btn-group-sm" role="toolbar">';
-      $data .= '<button class="btn btn-success disabled" type="button"><em class="fa fa-play"></em> Start Game</button>';
+      $data .= '<button class="btn btn-success disabled" type="button"><em class="fa fa-save"></em> Save</button>';
       $data .= '<div class="btn-group btn-group-sm pull-right">';
-      $data .= '<button class="btn btn-primary disabled" type="button">Save</button>';
-      $data .= '<button class="btn btn-default disabled" type="button">Scrape</button>';
-      $data .= '<button class="btn btn-danger disabled" type="button"><em class="fa fa-trash"></em> Delete</button>';
+      $data .= '<button class="btn btn-default disabled" type="button">Add Image</button>';
+      $data .= '<button class="btn btn-danger disabled" type="button"><em class="fa fa-trash"></em></button>';
       $data .= '</div>';
       $data .= '</div>';
       $data .= '</div>';
@@ -84,7 +83,7 @@
       $data .= '<div class="row">';
       $data .= '<div class="col-sm-12">';
       
-      $data .= '<form id="data" name="data" role="form" class="scrollbar" data-toggle="validator" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
+      $data .= '<form id="rom-data" name="rom-data" role="form" class="scrollbar" data-toggle="validator" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
       foreach($fieldset as $key=>$row) {
         $data .= '<div class="row">';
         foreach($row as $key=>$column) {

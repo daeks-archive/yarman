@@ -1,6 +1,6 @@
 <?php
 
-  require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
+  require_once(dirname(realpath(__DIR__)).DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'config.php');
   if(isset($_GET['sys']) && isset($_GET['file'])) {
     $_GET['file'] = rawurldecode($_GET['file']);
     $obj = db::read('config', 'media_path').DIRECTORY_SEPARATOR.$_GET['sys'].DIRECTORY_SEPARATOR.$_GET['file'];

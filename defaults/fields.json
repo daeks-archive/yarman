@@ -74,6 +74,7 @@
     "guid" : "path",
     "name" : "Rom Path",
     "type" : "string",
+    "validator" : "data-fv-notempty",
     "container" : "media",
     "grid" : "1 8 4 left 1"
   },
@@ -83,14 +84,6 @@
     "name" : "Image Preview",
     "type" : "image",
     "container" : "metadata",
-    "grid" : "1 8 4 right 1"
-  },
-  {
-    "id" : "image_media",
-    "guid" : "image",
-    "name" : "Image Preview",
-    "type" : "image",
-    "container" : "media",
     "grid" : "1 8 4 right 1"
   },
   {

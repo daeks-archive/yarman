@@ -5,19 +5,19 @@
   page::start();
   
   echo '<div class="row">';
-  echo '<div class="col-sm-4">';
+  echo '<div class="col-sm-4" id="panel-left" name="panel-left">';
   // RENDER LEFT SIDE
   echo '<div class="row">';
   echo '<div class="col-sm-8">';
   // RENDER SYSTEMS
-  echo '<select name="sys" id="sys" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&system=" data-target="#romlist">';
+  echo '<select name="nav-system" id="nav-system" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&system=" data-target="#nav-romlist">';
   echo '<option value="" selected>-- Select System --</option>';
-  foreach (roms::getSystems() as $sys){
+  foreach (systems::getAll() as $system){
     echo '<option';
-    if(cache::getClientVariable($module->id.'_system') == $sys['id']) {
+    if(cache::getClientVariable($module->id.'_system') == $system['id']) {
       echo ' selected';
     }
-    echo ' value="'.$sys['id'].'">'.$sys['name'].'</option>';
+    echo ' value="'.$system['id'].'">'.$system['name'].'</option>';
   }
   echo '</select>';
   echo '</div>';
@@ -32,10 +32,10 @@
   echo '</div>';
   
   // RENDER ROMLIST
-  echo '<br><select name="romlist" id="romlist" class="form-control" data-toggle="select" data-query="'.DIALOG.'?action=tab&tab=metadata&id=" data-target="#tab">';
+  echo '<br><select name="nav-romlist" id="nav-romlist" class="form-control" data-toggle="select" data-query="'.DIALOG.'?action=render&tab=metadata&id=" data-target="#panel-right">';
   $first = null;
   if(cache::getClientVariable($module->id.'_system') != '') {
-    $romlist = roms::getRoms(cache::getClientVariable($module->id.'_system'));
+    $romlist = roms::getAll(cache::getClientVariable($module->id.'_system'));
     $first = $romlist[0];
     foreach ($romlist as $rom) {
       echo '<option';
@@ -50,7 +50,7 @@
   // END LEFT SIDE
    
   // RENDER RIGHT SIDE
-  echo '<div class="col-sm-8" id="tab" name="tab">';
+  echo '<div class="col-sm-8" id="panel-right" name="panel-right">';
   if(cache::getClientVariable($module->id.'_system') != '' && cache::getClientVariable($module->id.'_id') != '') {
     if(cache::getClientVariable($module->id.'_tab') != '') {
       echo metadata::render(cache::getClientVariable($module->id.'_tab'), cache::getClientVariable($module->id.'_system'), cache::getClientVariable($module->id.'_id'));
