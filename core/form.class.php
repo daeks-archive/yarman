@@ -28,6 +28,9 @@
             case 'image':
               $data = self::getImage($obj, $system, $value);
             break;
+            case 'upload':
+              $data = self::getUpload($obj, $system, $value);
+            break;
             case 'boolean':
               $data = self::getBoolean($obj, $value);
             break;
@@ -153,10 +156,9 @@
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
-      $data .= '<input type="hidden" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"/>';
       $data .= '<div class="input-group">';
       $data .= '<span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>';
-      $data .= '<input type="text" class="form-control" data-provider="datepicker" id="'.$obj['id'].'_display" name="'.$obj['id'].'_display" value="'.$parsed.'"';
+      $data .= '<input type="text" class="form-control" data-provider="datepicker" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$parsed.'"';
       if(isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' data-fv '.$obj['validator'];
       }
@@ -204,9 +206,34 @@
           $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
         }
         $data .= '<div class="thumbnail">';
-        $data .= '<img style="max-height: 245px" src="/core/proxy.php?sys='.$system.'&file='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
+        $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&system='.$system.'&id='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
         $data .= '</div>';
       }
+      return $data;
+    }
+    
+    public static function getUpload($obj, $system, $value = '') {
+      $data = '<div class="form-group">';
+      if(isset($obj['name']) && $obj['name'] != '') {
+        $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+      }
+      $data .= '<div class="input-group">';
+      $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
+      if(isset($obj['validator']) && $obj['validator'] != '') {
+        $data .= ' data-fv '.$obj['validator'];
+      }
+      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+        $data .= ' disabled';
+      }
+      if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+        $data .= ' maxlength="'.$obj['maxlength'].'"';
+      }
+      $data .= '/>';
+      $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file"><i class="fa fa-file-image-o fa-fw"></i>';
+      $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&system='.$system.'&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
+      $data .= '</span></label>';
+      $data .= '</div>';
+      $data .= '</div>';
       return $data;
     }
     

@@ -23,15 +23,19 @@ function sources_webgui() {
 }
 
 function install_webgui() {
-    rm "/var/www/html/index.html"
+    if [ -d "/var/www/html/data" ]; then
+      cp -r "/var/www/html/data/." "$md_build/data"
+    fi
+    rm -rf "/var/www/html/*"
     cp -r "$md_build/." "/var/www/html"
 }
 
 function configure_webgui() {
-    chown -R www-data:www-data "/var/www"
+    chown -R $user:$user "/var/www"
     chmod -R 775 "/var/www/html"
-    usermod -a -G www-data pi
-    usermod -a -G video www-data
+    usermod -a -G www-data $user
+    sed -i 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=$user/g' /etc/apache2/envvars
+    sed -i 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=$user/g' /etc/apache2/envvars
     service apache2 restart
 }
 

@@ -46,11 +46,11 @@
     }
   
     public static function render($container, $system, $id) {
-      $rom = roms::getMetadata($system, $id);
+      $rom = rom::readMetadata($system, $id);
       $fields = db::read('fields');
       
       $fieldset = array(); 
-      // 1 8 4 1 5
+
       foreach ($fields as $field) {
         if(isset($field['grid']) && isset($field['container'])) {
           if($field['container'] == $container) {
@@ -96,7 +96,7 @@
         foreach($row as $key=>$column) {
           $data .= '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
           foreach($column as $key=>$field) {
-            $data .= form::getField($fields, $field['id'], (isset($rom[$field['guid']])?$rom[$field['guid']]:''), $system);
+            $data .= form::getField($fields, $field['id'], (isset($rom['fields'][$field['guid']])?$rom['fields'][$field['guid']]:''), $system);
           }
           $data .= '</div>';
         }

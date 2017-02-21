@@ -3,7 +3,7 @@
   "name" : "Metadata Editor",
   "menu" : {
     "position" : "left",
-    "order" : 1,
+    "order" : 2,
     "icon" : "files-o"
     }
 }

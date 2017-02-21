@@ -1,7 +1,7 @@
 <?php
   
   require_once(dirname(realpath(__DIR__)).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config.php');
-  $module = modules::loadCurrent();
+  $module = module::read();
   
   if($module != null) {
     define('CONTROLLER', 'controller.php');

@@ -1,8 +1,8 @@
 <?php
     
-  class systems {
+  class system {
   
-    public static function getAll() {
+    public static function readAll() {
       $systems = array_slice(scandir(db::read('config', 'roms_path')), 2);
       $array = array();
       foreach ($systems as $system) {

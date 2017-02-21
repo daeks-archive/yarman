@@ -2,7 +2,8 @@
   {
     "id" : "id",
     "guid" : "path",
-    "type" : "hidden"
+    "type" : "hidden",
+    "readonly" : true
   },
   {
     "id" : "name",
@@ -97,7 +98,8 @@
     "id" : "image",
     "guid" : "image",
     "name" : "Image Path",
-    "type" : "string",
+    "type" : "upload",
+    "whitelist" : ".jpg .png",
     "container" : "media",
     "grid" : "1 8 4 left 2"
   },
@@ -105,7 +107,8 @@
     "id" : "video",
     "guid" : "video",
     "name" : "Video Path",
-    "type" : "string",
+    "type" : "upload",
+    "whitelist" : ".mp4",
     "container" : "media",
     "grid" : "1 8 4 left 3"
   },
@@ -113,7 +116,8 @@
     "id" : "marquee",
     "guid" : "marquee",
     "name" : "Marquee Path",
-    "type" : "string",
+    "type" : "upload",
+    "whitelist" : ".jpg .png",
     "container" : "media",
     "grid" : "1 8 4 left 4"
   },
@@ -121,7 +125,8 @@
     "id" : "thumbnail",
     "guid" : "thumbnail",
     "name" : "Thumbnail Path",
-    "type" : "string",
+    "type" : "upload",
+    "whitelist" : ".jpg .png",
     "container" : "media",
     "grid" : "1 8 4 left 5"
   },

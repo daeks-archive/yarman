@@ -15,7 +15,7 @@
       echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
       echo '<head>';
       
-      $module = modules::loadCurrent();
+      $module = module::read();
       if($module != null) {
         echo '<title>'.NAME.' - '.$module->name.'</title>';
       } else {
@@ -60,8 +60,8 @@
       echo '</head>';
       echo '<body '.(isset($js)?'onload="'.$js.'"':'').'>';
       
-      $module = modules::loadModule();
-      $modules = modules::getModules();
+      $module = module::read();
+      $modules = module::readAll();
       
       $menuright = array();
       $menuleft = array();

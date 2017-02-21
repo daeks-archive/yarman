@@ -12,7 +12,7 @@
   // RENDER SYSTEMS
   echo '<select name="nav-system" id="nav-system" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&system=" data-target="#nav-romlist">';
   echo '<option value="" selected>-- Select System --</option>';
-  foreach (systems::getAll() as $system){
+  foreach (system::readAll() as $system){
     echo '<option';
     if(cache::getClientVariable($module->id.'_system') == $system['id']) {
       echo ' selected';
@@ -35,7 +35,7 @@
   echo '<br><select name="nav-romlist" id="nav-romlist" class="form-control" data-toggle="select" data-query="'.DIALOG.'?action=render&tab=metadata&id=" data-target="#panel-right">';
   $first = null;
   if(cache::getClientVariable($module->id.'_system') != '') {
-    $romlist = roms::getAll(cache::getClientVariable($module->id.'_system'));
+    $romlist = rom::readSystem(cache::getClientVariable($module->id.'_system'));
     $first = $romlist[0];
     foreach ($romlist as $rom) {
       echo '<option';

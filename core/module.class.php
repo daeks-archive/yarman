@@ -1,8 +1,8 @@
 <?php
     
-  class modules {
+  class module {
 
-    public static function getModules() {
+    public static function readAll() {
       $tmp = array();
       foreach (scandir(MODULES) as $include){
         if(is_dir(MODULES.DIRECTORY_SEPARATOR.$include) && is_file(MODULES.DIRECTORY_SEPARATOR.$include.DIRECTORY_SEPARATOR.MODULE)){
@@ -11,12 +11,8 @@
       }
       return $tmp;
     }
-    
-    public static function loadCurrent() {
-      return self::loadModule(null);
-    }
-    
-    public static function loadModule($module = null) {
+        
+    public static function read($module = null) {
       if($module == null) {
         if(isset($_SERVER['REQUEST_URI'])) {
           $location = explode(URL_SEPARATOR, $_SERVER['REQUEST_URI']);
