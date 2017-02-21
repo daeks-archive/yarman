@@ -45,8 +45,8 @@
       return $data;
     }
   
-    public static function render($container, $system, $id) {
-      $rom = rom::readMetadata($system, $id);
+    public static function render($container, $emulator, $id) {
+      $rom = rom::readMetadata($emulator, $id);
       $fields = db::read('fields');
       
       $fieldset = array(); 
@@ -96,7 +96,7 @@
         foreach($row as $key=>$column) {
           $data .= '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
           foreach($column as $key=>$field) {
-            $data .= form::getField($fields, $field['id'], (isset($rom['fields'][$field['guid']])?$rom['fields'][$field['guid']]:''), $system);
+            $data .= form::getField($fields, $field['id'], (isset($rom['fields'][$field['guid']])?$rom['fields'][$field['guid']]:''), $emulator);
           }
           $data .= '</div>';
         }

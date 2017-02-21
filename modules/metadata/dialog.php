@@ -10,11 +10,11 @@
           if(isset($_GET['id'])) {
             $_GET['id'] = rawurldecode($_GET['id']);
             cache::setClientVariable($module->id.'_id', $_GET['id']);
-            $data = metadata::render($_GET['tab'], cache::getClientVariable($module->id.'_system'), $_GET['id']);
+            $data = metadata::render($_GET['tab'], cache::getClientVariable($module->id.'_emulator'), $_GET['id']);
             utils::ajax(200, $data);
           } else {
-            if(cache::getClientVariable($module->id.'_system') != '' && cache::getClientVariable($module->id.'_id') != '') {
-              $data = metadata::render($_GET['tab'], cache::getClientVariable($module->id.'_system'), cache::getClientVariable($module->id.'_id'));
+            if(cache::getClientVariable($module->id.'_emulator') != '' && cache::getClientVariable($module->id.'_id') != '') {
+              $data = metadata::render($_GET['tab'], cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'));
               utils::ajax(200, $data);
             } else {
               utils::ajax(500, 'No ID specified');

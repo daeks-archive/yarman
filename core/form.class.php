@@ -2,7 +2,7 @@
     
   class form {
 
-    public static function getField($config, $id, $value = '', $system = '') {
+    public static function getField($config, $id, $value = '', $emulator = '') {
       foreach($config as $obj) {
         if($obj['id'] == $id) {
           $data = '';
@@ -26,10 +26,10 @@
               $data = self::getDate($obj, $value);
             break;
             case 'image':
-              $data = self::getImage($obj, $system, $value);
+              $data = self::getImage($obj, $emulator, $value);
             break;
             case 'upload':
-              $data = self::getUpload($obj, $system, $value);
+              $data = self::getUpload($obj, $emulator, $value);
             break;
             case 'boolean':
               $data = self::getBoolean($obj, $value);
@@ -199,20 +199,20 @@
       return $data;
     }
     
-    public static function getImage($obj, $system, $image) {
+    public static function getImage($obj, $emulator, $image) {
       $data = '';
       if($image != '') {
         if(isset($obj['name']) && $obj['name'] != '') {
           $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
         }
         $data .= '<div class="thumbnail">';
-        $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&system='.$system.'&id='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
+        $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&emulator='.$emulator.'&id='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
         $data .= '</div>';
       }
       return $data;
     }
     
-    public static function getUpload($obj, $system, $value = '') {
+    public static function getUpload($obj, $emulator, $value = '') {
       $data = '<div class="form-group">';
       if(isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
@@ -230,7 +230,7 @@
       }
       $data .= '/>';
       $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file"><i class="fa fa-file-image-o fa-fw"></i>';
-      $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&system='.$system.'&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
+      $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&emulator='.$emulator.'&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
       $data .= '</span></label>';
       $data .= '</div>';
       $data .= '</div>';

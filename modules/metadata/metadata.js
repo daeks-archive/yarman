@@ -16,7 +16,7 @@
 
         $(window).trigger('resize');
         
-        $('#nav-system').on('change', function(e) {
+        $('#nav-emulator').on('change', function(e) {
           e.preventDefault();
           $('#panel-right').html('');
           return false;
@@ -24,7 +24,7 @@
       };
       
       var reset = function() {
-        $('#nav-system').trigger('change');
+        $('#nav-emulator').trigger('change');
       }
       
       return {

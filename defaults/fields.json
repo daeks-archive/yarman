@@ -135,6 +135,7 @@
     "guid" : "playcount",
     "name" : "Play Count",
     "type" : "integer",
+    "readonly" : true,
     "container" : "metadata",
     "grid" : "5 6 6 left 1"
   },

@@ -2,12 +2,12 @@
     
   class rom {
   
-    public static function readSystem($system) {
+    public static function readEmulator($emulator) {
       $array = array();
-      $whitelist = db::read('systems', $system, 'whitelist');
-      $blacklist = db::read('systems', $system, 'blacklist');
-      foreach (scandir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system) as $item) {
-        if(is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$item)) {
+      $whitelist = db::read('emulators', $emulator, 'whitelist');
+      $blacklist = db::read('emulators', $emulator, 'blacklist');
+      foreach (scandir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
+        if(is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
           if(isset($whitelist) && $whitelist != '') {
             if(strpos($whitelist, pathinfo($item, PATHINFO_EXTENSION)) !== false) {
               if(isset($blacklist) && $blacklist != '') {
@@ -22,7 +22,7 @@
             array_push($array, $item);
           }
         }
-        if(is_dir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$item)) {
+        if(is_dir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
           if($item != '.' && $item != '..') {
             if(isset($blacklist) && $blacklist != '') {
               if(strpos($blacklist, $item) === false) {
@@ -37,8 +37,8 @@
       return $array;
     }
     
-    public static function readMetadata($system, $id) {
-      $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');
+    public static function readMetadata($emulator, $id) {
+      $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
       foreach($xml as $item) {
         if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
           return $item;
@@ -46,9 +46,9 @@
       }
     }
     
-    public static function writeMetadata($system, $id, $data) {
-      copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
-      $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');
+    public static function writeMetadata($emulator, $id, $data) {
+      copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
+      $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
       
       $output = array();
       foreach($xml as $item) {
@@ -75,14 +75,14 @@
         }
         array_push($output, $item);
       }
-      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');     
+      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');     
     }
     
-    public static function remove($system, $id) {
-      unlink(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$id);
+    public static function remove($emulator, $id) {
+      unlink(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
       
-      copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
-      $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');
+      copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
+      $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
       
       $output = array();
       foreach($xml as $item) {
@@ -99,7 +99,7 @@
           array_push($output, $item);
         }
       }
-      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');     
+      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');     
     }
     
   }
