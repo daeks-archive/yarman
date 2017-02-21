@@ -27,8 +27,8 @@
       $data .= '<div class="btn-toolbar btn-group-sm" role="toolbar">';
       $data .= '<button class="btn btn-success" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmsave" data-target="#modal" disabled><em class="fa fa-save"></em> Save</button>';
       $data .= '<div class="btn-group btn-group-sm pull-right">';
-      $data .= '<button class="btn btn-default disabled" type="button">Add Image</button>';
-      $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em></button>';
+      //$data .= '<button class="btn btn-default disabled" type="button">Add Image</button>';
+      $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em> Delete</button>';
       $data .= '</div>';
       $data .= '</div>';
       $data .= '</div>';
