@@ -17,7 +17,7 @@
     if(cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
       echo ' selected';
     }
-    echo ' value="'.$emulator['id'].'">'.$emulator['name'].'</option>';
+    echo ' value="'.$emulator['id'].'">'.$emulator['name'].' ('.$emulator['count'].')</option>';
   }
   echo '</select>';
   echo '</div>';
