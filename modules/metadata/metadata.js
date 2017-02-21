@@ -23,8 +23,13 @@
         });
       };
       
+      var reset = function() {
+        $('#nav-system').trigger('change');
+      }
+      
       return {
-        init: init
+        init: init,
+        reset: reset
       };
     })();
 

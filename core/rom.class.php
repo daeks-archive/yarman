@@ -78,6 +78,30 @@
       return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');     
     }
     
+    public static function remove($system, $id) {
+      unlink(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$id);
+      
+      copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
+      $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');
+      
+      $output = array();
+      foreach($xml as $item) {
+        if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
+          foreach ($item['fields'] as $key => $value) {
+            $field = db::read('fields', $key, 'type');
+            if($field == 'upload') {
+              if($value != '') {
+                unlink($value);
+              }
+            }            
+          }
+        } else {
+          array_push($output, $item);
+        }
+      }
+      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.'gamelist.xml');     
+    }
+    
   }
     
 ?>

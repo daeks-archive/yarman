@@ -24,6 +24,11 @@
         rom::writeMetadata(cache::getClientVariable($module->id.'_system'), $_POST['id'], $_POST);
         utils::ajax(200, 'Successfully Saved Gamelist', 'true');
       break;
+      case 'delete':
+        rom::remove(cache::getClientVariable($module->id.'_system'), $_GET['id']);
+        cache::unsetClientVariable($module->id.'_id');
+        utils::ajax(200, 'Successfully Deleted Rom', 'core.metadata.reset();');
+      break;
       default:
         utils::ajax(500, 'invalid Action - '.$_GET['action']);
       break;
