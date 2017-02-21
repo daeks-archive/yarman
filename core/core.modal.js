@@ -65,6 +65,7 @@
         $dialog.css("margin-top", offset);
         core.validator.reinit();
         core.form.init();
+        core.proxy.init();
         $('button[data-query="modal-data"]').on('click', function(event) {
           $('#modal-data').submit();
         });

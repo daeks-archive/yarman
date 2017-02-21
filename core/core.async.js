@@ -20,6 +20,7 @@
                   target.html(data);
                   core.validator.init();
                   core.form.init();
+                  core.proxy.init();
                 }
               } else if (obj.status == 500) {
                 core.message.toast('danger', false, obj.data);
@@ -51,6 +52,7 @@
                   target.html(data);
                   core.validator.init();
                   core.form.init();
+                  core.proxy.init();
                 }
               } else if (obj.status == 500) {
                 core.message.toast('danger', false, obj.data);
