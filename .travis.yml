@@ -9,7 +9,6 @@ install:
 script:
   - ./vendor/bin/phpcs ./
       --standard=ruleset.xml
-      --exclude="$CS_EXCLUDE"
       --ignore="vendor/*"
       --colors
       --extensions=php
