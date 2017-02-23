@@ -35,4 +35,3 @@ function remove_webgui() {
     sed -i "/php/d" /etc/rc.local
     rm -R "$md_inst"
 }
-1
