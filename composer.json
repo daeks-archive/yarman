@@ -1,0 +1,25 @@
+{
+  "name": "daeks/RetroPie-WebGUI",
+  "type": "application",
+  "keywords": ["retropie"],
+  "homepage": "https://retropie.org.uk/",
+  "license": "MIT",
+  "description": "WebGUI for RetroPie Project",
+  "minimum-stability": "dev",
+  "require":
+  {
+    "php": ">=5.2.0"
+  },
+  "require-dev":
+  {
+  	"phing/phing": "2.*",
+    "squizlabs/php_codesniffer": "*"
+  },
+  "extra":
+  {
+    "installer-paths":
+    {
+      "apps/{$name}": ["daeks/RetroPie-WebGUI"]
+    }
+  }
+}
