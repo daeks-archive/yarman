@@ -10,7 +10,7 @@
     <exclude name="PSR2.Files.ClosingTag"/>
     <exclude name="PSR2.Files.EndFileNewline"/>
     <exclude name="PSR2.ControlStructures.SwitchDeclaration"/>
-    <!-- <exclude name="PSR2.ControlStructures.SwitchDeclaration"/> -->
+    <exclude name="PSR2.ControlStructures.ControlStructureSpacing"/>
     <exclude name="PEAR.Classes.ClassDeclaration"/>
   </rule>
   <rule ref="Generic.WhiteSpace.ScopeIndent">

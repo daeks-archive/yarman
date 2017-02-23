@@ -18,17 +18,8 @@ function depends_webgui() {
     getDepends sqlite3 php5 php5-sqlite
 }
 
-function sources_webgui() {
-    gitPullOrClone "$md_build" "https://github.com/daeks/RetroPie-WebGui"
-}
-
-function install_webgui() {
-    if [ -d "$md_inst/data" ]; then
-      cp -r "$md_inst/data/." "$md_build/data"
-    fi
-    rm -rf "$md_inst/*"
-    cp -r "$md_build/." "$md_inst"
-    chown -R $user:$user "$md_inst"
+function install_bin_webgui() {
+    gitPullOrClone "$md_inst" "https://github.com/daeks/RetroPie-WebGui"
 }
 
 function configure_webgui() {
