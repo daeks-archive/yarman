@@ -3,6 +3,7 @@
  <rule ref="PSR2">
   <exclude name="Generic.WhiteSpace.ScopeIndent"/>
   <exclude name="PSR2.Files.ClosingTag"/>
+  <exclude name="PSR2.Files.EndFileNewline"/>
  </rule>
  <rule ref="Generic.WhiteSpace.ScopeIndent">
   <properties>
