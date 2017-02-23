@@ -41,6 +41,5 @@ function configure_webgui() {
 }
 
 function remove_webgui() {
-    aptRemove apache2 sqlite3 php5 php5-sqlite
-    rm -R "/var/www"
+    rm -rf "/var/www/html/*"
 }

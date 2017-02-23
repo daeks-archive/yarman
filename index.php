@@ -28,13 +28,13 @@ echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"
 echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" width="150"></div>';
 echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" width="150"></div>';
 echo '</div>';
-echo '<p>CPU Frequency: <b>'.system::getCPUFreq().'MHz</b></p>';
 panel::end();
 
 echo '</div>';
 echo '<div class="col-sm-5">';
 
 panel::start('Temperature');
+echo '<p>CPU Frequency: <b>'.system::getCPUFreq().'MHz</b></p>';
 echo '<div class="row">';
 echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getCPUTemp().'" width="150"></div>';
 echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getGPUTemp().'" width="150"></div>';
@@ -47,6 +47,21 @@ echo '</div>';
 echo '</div>';
 echo '<div class="col-sm-4">';
 
+panel::start('<b>Latest RetroPie News</b>', 'info');
+if (network::pingRemoteUrl(db::read('config', 'news_feed'))) {
+  $xml = xml::dump(cache::setRemoteCache('newsfeed', db::read('config', 'news_feed')));
+  if (isset($xml['channel']) && isset($xml['channel']['item'])) {
+    foreach (array_slice($xml['channel']['item'], 0, 3) as $news) {
+      echo '<a href="'.$news['link'].'" target="_blank" style="text-decoration: none !important;"><div>';
+      echo '<span style="color: black"><b>'.$news['title'].'</b></span> <div class="pull-right">read more</div>';
+      echo '</div></a>';
+    }
+    echo '<div><a href="'.db::read('config', 'news_feed').'" target="_blank" style="text-decoration: none !important;">...read more...</a></div>';
+  }
+} else {
+  echo "Failed to retrive newsfeed. Your device is currently offline.";
+}
+panel::end();
 
 panel::start('RetroPie Monitor', 'info');
 $emulators = emulator::readAll();
