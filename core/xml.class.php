@@ -6,7 +6,7 @@
     public static function read($name)
     {
       $xml = new DOMDocument();
-      if ($xml->load($name))  {
+      if ($xml->load($name)) {
         return self::parse($xml);
       } else {
         return array();
@@ -18,9 +18,9 @@
       $xpath = new DOMXpath($xml);
       $output = array();
       
-      foreach(array('game', 'folder') as $type) {
+      foreach (array('game', 'folder') as $type) {
         $items = $xpath->query($type);
-        foreach($items as $item) {
+        foreach ($items as $item) {
           $output[] = array('type' => $type, 'attributes' => self::parse_attributes($item), 'fields' => self::parse_fields($item));
         }
       }
@@ -31,7 +31,7 @@
     {
       $output = array();
       if ($node->hasAttributes()) {
-        foreach($node->attributes as $attr) {
+        foreach ($node->attributes as $attr) {
           $output[$attr->nodeName] = $attr->nodeValue;
         }
       }
@@ -41,7 +41,7 @@
     private static function parse_fields($node)
     {
       $output = array();
-      foreach($node->childNodes as $child) {
+      foreach ($node->childNodes as $child) {
         if ($child->nodeType == XML_ELEMENT_NODE) {
           $output[$child->nodeName] = $child->nodeValue;
         }
@@ -51,17 +51,17 @@
 
     public static function write($root, $data, $name)
     {
-      $output = new DOMDocument('1.0','UTF-8');
+      $output = new DOMDocument('1.0', 'UTF-8');
       $output->formatOutput = true;
 
       $rootelement = $output->appendChild($output->createElement($root));
 
-      foreach($data as $row) {
+      foreach ($data as $row) {
         $childelement = $rootelement->appendChild($output->createElement($row['type']));
-        foreach($row['attributes'] as $key => $value) {
+        foreach ($row['attributes'] as $key => $value) {
           $childelement->setAttribute($key, $value);
         }
-        foreach($row['fields'] as $key => $value) {
+        foreach ($row['fields'] as $key => $value) {
           $f = $childelement->appendChild($output->createElement($key));
           $f->appendChild($output->createTextNode(str_replace(chr(13), '', $value)));
         }

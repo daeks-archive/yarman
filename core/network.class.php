@@ -7,17 +7,17 @@
 
     public static function success($data = null, $event = null)
     {
-      self::send(200,$data,$event);
+      self::send(200, $data, $event);
     }
 
     public static function error($data, $event = null)
     {
-      self::send(500,$data,$event);
+      self::send(500, $data, $event);
     }
 
     public static function fatal($data, $event = null)
     {
-      self::send(999,$data,$event);
+      self::send(999, $data, $event);
     }
 
     public static function send($status, $data, $event)
@@ -57,7 +57,7 @@
       } else {
           fclose($socket);
           return "OK";
-      } 
+      }
     }
     
     public static function getContentLength($url)
@@ -68,7 +68,7 @@
     public static function getContent($url, $getstartbytes = false)
     {
       if (extension_loaded('curl')) {
-        $ch = curl_init(); 
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         if ($getstartbytes) {
           curl_setopt($curl, CURLOPT_HTTPHEADER, array('Range: bytes=0-32768'));
@@ -76,10 +76,10 @@
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_USERAGENT, self::$agent); 
-        return curl_exec($ch); 
+        curl_setopt($ch, CURLOPT_USERAGENT, self::$agent);
+        return curl_exec($ch);
       } else {
-        return file_get_contents($url); 
+        return file_get_contents($url);
       }
     }
     

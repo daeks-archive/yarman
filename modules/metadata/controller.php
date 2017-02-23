@@ -9,7 +9,7 @@
           cache::setClientVariable($module->id.'_emulator', network::get('emulator'));
           cache::unsetClientVariable($module->id.'_id');
           $data = '';
-          foreach (emulator::readRomlist(network::get('emulator')) as $rom){
+          foreach (emulator::readRomlist(network::get('emulator')) as $rom) {
             $data .= '<option value="'.$rom.'">'.$rom.'</option>';
           }
           network::success($data);

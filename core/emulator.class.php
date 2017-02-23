@@ -48,7 +48,7 @@
           $array[$emulator] = $tmp;
         }
       }
-      foreach(db::read('emulators') as $emulator) {
+      foreach (db::read('emulators') as $emulator) {
         if (array_key_exists($emulator['id'], $array)) {
           $array[$emulator['id']]['name'] = $emulator['name'];
           $array[$emulator['id']]['whitelist'] = $emulator['whitelist'];
@@ -67,7 +67,7 @@
           if (isset($whitelist) && $whitelist != '') {
             if (strpos($whitelist, pathinfo($item, PATHINFO_EXTENSION)) !== false) {
               if (isset($blacklist) && $blacklist != '') {
-                if(strpos($blacklist, pathinfo($item, PATHINFO_EXTENSION)) === false) {
+                if (strpos($blacklist, pathinfo($item, PATHINFO_EXTENSION)) === false) {
                   array_push($array, $item);
                 }
               } else {

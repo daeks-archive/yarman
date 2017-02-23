@@ -6,7 +6,7 @@
     public static function read($emulator, $id)
     {
       $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
-      foreach($xml as $item) {
+      foreach ($xml as $item) {
         if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
           return $item;
         }
@@ -19,17 +19,17 @@
       $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
       
       $output = array();
-      foreach($xml as $item) {
+      foreach ($xml as $item) {
         if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
           foreach ($data as $key => $value) {
             $field = db::read('fields', $key, 'type');
             if ($field == 'date') {
               if (trim($value) != '') {
-                $value = date_format(date_create($value),'Ymd\THis');
+                $value = date_format(date_create($value), 'Ymd\THis');
               } else {
                 $value = '00000000T000000';
               }
-            }            
+            }
             if ($field != 'hidden') {
               if (isset($item['fields'][$key])) {
                 $item['fields'][$key] = trim($value);
@@ -43,7 +43,7 @@
         }
         array_push($output, $item);
       }
-      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');     
+      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
     }
     
     public static function delete($emulator, $id)
@@ -54,7 +54,7 @@
       $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
       
       $output = array();
-      foreach($xml as $item) {
+      foreach ($xml as $item) {
         if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
           foreach ($item['fields'] as $key => $value) {
             $field = db::read('fields', $key, 'type');
@@ -62,13 +62,13 @@
               if ($value != '') {
                 unlink($value);
               }
-            }            
+            }
           }
         } else {
           array_push($output, $item);
         }
       }
-      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');     
+      return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
     }
     
   }

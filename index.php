@@ -51,7 +51,7 @@
   panel::start('RetroPie Monitor', 'info');
   $emulators = emulator::readAll();
   $total_roms = 0;
-  foreach($emulators as $emulator) {
+  foreach ($emulators as $emulator) {
     $total_roms += $emulator['count'];
   }
   echo '<p><div>Total Emulators: <div class="pull-right"><b>'.sizeof($emulators).'</b></div></div>';
@@ -62,9 +62,9 @@
   $storage = system::getStorage();
   $sto_percent = round($storage['used']/$storage['total']*100, 2);
   $storage_color = '';
-  if($sto_percent > 70 && $sto_percent < 85 ) {
+  if ($sto_percent > 70 && $sto_percent < 85) {
     $storage_color = 'progress-bar-warning';
-  } else if($sto_percent >= 85) {
+  } elseif ($sto_percent >= 85) {
     $storage_color = 'progress-bar-danger';
   }
   echo '<p>Used: <b>'.round($storage['used']/1024/1024, 2).'GB</b> ('.$sto_percent.'%) Free: <b>'.round($storage['free']/1024/1024, 2).'GB</b> Total: <b>'.round($storage['total']/1024/1024, 2).'GB</b></p>';
@@ -77,9 +77,9 @@
   $memory = system::getMemory();
   $mem_percent = round($memory['used']/$memory['total']*100, 2);
   $memory_color = '';
-  if($mem_percent > 70 && $mem_percent < 85 ) {
+  if ($mem_percent > 70 && $mem_percent < 85) {
     $memory_color = 'progress-bar-warning';
-  } else if($mem_percent >= 85) {
+  } elseif ($mem_percent >= 85) {
     $memory_color = 'progress-bar-danger';
   }
   echo '<p>Used: <b>'.round($memory['used']/1024, 2).'MB</b> ('.$mem_percent.'%) Free: <b>'.round($memory['free']/1024, 2).'MB</b> Total: <b>'.round($memory['total']/1024, 2).'MB</b></p>';
@@ -92,9 +92,9 @@
   $swap = system::getSwap();
   $swap_percent = round($swap['used']/$swap['total']*100, 2);
   $swap_color = '';
-  if($swap_percent > 70 && $swap_percent < 85 ) {
+  if ($swap_percent > 70 && $swap_percent < 85) {
     $swap_color = 'progress-bar-warning';
-  } else if($swap_percent >= 85) {
+  } elseif ($swap_percent >= 85) {
     $swap_color = 'progress-bar-danger';
   }
   echo '<p>Used: <b>'.round($swap['used']/1024, 2).'MB</b> ('.$swap_percent.'%) Free: <b>'.round($swap['free']/1024, 2).'MB</b> Total: <b>'.round($swap['total']/1024, 2).'MB</b></p>';

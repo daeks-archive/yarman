@@ -61,7 +61,9 @@
         var offset = ($(window).height() - $dialog.height()) / 2;
         var bottomMargin = $dialog.css('marginBottom');
         bottomMargin = parseInt(bottomMargin);
-        if (offset < bottomMargin) offset = bottomMargin;
+        if (offset < bottomMargin) {
+          offset = bottomMargin;
+        }
         $dialog.css("margin-top", offset);
         core.validator.reinit();
         core.form.init();

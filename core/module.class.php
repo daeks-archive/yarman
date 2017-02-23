@@ -6,8 +6,8 @@
     public static function readAll()
     {
       $tmp = array();
-      foreach (scandir(MODULES) as $include){
-        if (is_dir(MODULES.DIRECTORY_SEPARATOR.$include) && is_file(MODULES.DIRECTORY_SEPARATOR.$include.DIRECTORY_SEPARATOR.MODULE)){
+      foreach (scandir(MODULES) as $include) {
+        if (is_dir(MODULES.DIRECTORY_SEPARATOR.$include) && is_file(MODULES.DIRECTORY_SEPARATOR.$include.DIRECTORY_SEPARATOR.MODULE)) {
           array_push($tmp, MODULES.DIRECTORY_SEPARATOR.$include.DIRECTORY_SEPARATOR.MODULE);
         }
       }

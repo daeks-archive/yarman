@@ -12,7 +12,7 @@
   // RENDER EMULATORS
   echo '<select name="nav-emulator" id="nav-emulator" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&emulator=" data-target="#nav-romlist">';
   echo '<option value="" selected>-- Select Emulator --</option>';
-  foreach (emulator::readAll() as $emulator){
+  foreach (emulator::readAll() as $emulator) {
     echo '<option';
     if (cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
       echo ' selected';

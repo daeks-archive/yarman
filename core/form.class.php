@@ -5,7 +5,7 @@
 
     public static function getField($config, $id, $value = '', $emulator = '')
     {
-      foreach($config as $obj) {
+      foreach ($config as $obj) {
         if ($obj['id'] == $id) {
           $data = '';
           switch ($obj['type']) {
@@ -37,7 +37,7 @@
               $data = self::getBoolean($obj, $value);
             break;
             default:
-            break;      
+            break;
           }
           return $data;
           break;

@@ -31,13 +31,13 @@
       if ($module != null) {
         array_push($jsinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
       }
-      foreach($jsinclude as $path) {
-        foreach (scandir($path) as $include){
-          if (is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'JS'){
-            $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.$include;
+      foreach ($jsinclude as $path) {
+        foreach (scandir($path) as $include) {
+          if (is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'JS') {
+            $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR, '', $path)).URL_SEPARATOR.$include;
             if (FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include,-2))) {
-              $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include,-2);
-            }          
+              $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR, '', $path)).URL_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include, -2);
+            }
             echo '<script type="text/javascript" src="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'"></script>';
           }
         }
@@ -47,13 +47,13 @@
       if ($module != null) {
         array_push($cssinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
       }
-      foreach($cssinclude as $path) {
-        foreach (scandir($path) as $include){
-          if (is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'CSS'){
-            $ref = str_replace(BASE.DIRECTORY_SEPARATOR,'',$path).URL_SEPARATOR.$include;
-            if (FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include,-3))) {
-              $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include,-3);
-            }  
+      foreach ($cssinclude as $path) {
+        foreach (scandir($path) as $include) {
+          if (is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'CSS') {
+            $ref = str_replace(BASE.DIRECTORY_SEPARATOR, '', $path).URL_SEPARATOR.$include;
+            if (FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include, -3))) {
+              $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR, '', $path)).URL_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include, -3);
+            }
             echo '<link type="text/css" href="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'" rel="stylesheet" media="screen" />';
           }
         }
@@ -83,7 +83,7 @@
             }
             $item .= $tmp->name;
             $item .= '</a></li>';
-            if (!array_key_exists($tmp->menu->order,$menuleft)) {
+            if (!array_key_exists($tmp->menu->order, $menuleft)) {
               $menuleft[$tmp->menu->order] = $item;
             }
           }
@@ -95,10 +95,10 @@
             }
             $item .= $tmp->name;
             $item .= '</a></li>';
-            if (!array_key_exists($tmp->menu->order,$menuright)) {
+            if (!array_key_exists($tmp->menu->order, $menuright)) {
               $menuright[$tmp->menu->order] = $item;
             }
-          }          
+          }
         }
       }
       
@@ -112,7 +112,7 @@
       echo '<ul class="nav navbar-nav">';
       // RENDER RIGHT
       ksort($menuright);
-      foreach($menuright as $item) {
+      foreach ($menuright as $item) {
         echo $item;
       }
       echo '<li class="dropdown">';
@@ -131,7 +131,7 @@
       echo '<ul class="nav navbar-nav">';
       // RENDER LEFT
       ksort($menuleft);
-      foreach($menuleft as $item) {
+      foreach ($menuleft as $item) {
         echo $item;
       }
       echo '<li><div style="width:10px"></div></li>';
@@ -157,7 +157,7 @@
       echo '</div>';
       echo '<div class="footer navbar-fixed-bottom">';
       echo '<div class="container-fluid">';
-      echo '<p class="text-muted"> <i id="loading" class="fa fa-spinner fa-spin hidden"></i> (c) '.date('Y',time()).' daeks - generated in '.number_format(microtime(true) - self::$time, 5).'s</p>';
+      echo '<p class="text-muted"> <i id="loading" class="fa fa-spinner fa-spin hidden"></i> (c) '.date('Y', time()).' daeks - generated in '.number_format(microtime(true) - self::$time, 5).'s</p>';
       echo '</div>';
       echo '</div>';
       echo '</body>';
