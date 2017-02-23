@@ -11,7 +11,7 @@
 #
 
 rp_module_id="webgui"
-rp_module_desc="RetroPie WebGUI"
+rp_module_desc="RetroPie WebGUI on port 8080"
 rp_module_section="exp"
 
 function depends_webgui() {
