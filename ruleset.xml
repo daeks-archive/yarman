@@ -60,7 +60,7 @@
   <severity>0</severity>
  </rule>
  <rule ref="PEAR.Functions.ValidDefaultValue"/>
- <rule ref="Squiz.Functions.MultiLineFunctionDeclaration"/>
+ <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
  <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
  <rule ref="PSR2.Methods.FunctionCallSignature.SpaceAfterCloseBracket">
   <severity>0</severity>
