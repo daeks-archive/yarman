@@ -32,9 +32,9 @@ function install_webgui() {
 }
 
 function configure_webgui() {
-    php -S "$(hostname -I):8001" -t "$md_inst" > /dev/null 2>&1 &
-    
-    local config="php -S \"$(hostname -I):8001\" -t \"$md_inst\" > /dev/null 2>&1 &"
+    php -S "$(hostname -I | xargs):8080" -t "$md_inst" > /dev/null 2>&1 &
+
+    local config="php -S \"\$\(hostname -I \| xargs\):8080\" -t \"$md_inst\" > /dev/null 2>\&1 \&"
     sed -i "s|^exit 0$|${config}\\nexit 0|" /etc/rc.local
 }
 
