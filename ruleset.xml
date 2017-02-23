@@ -37,7 +37,7 @@
  <rule ref="Generic.WhiteSpace.ScopeIndent">
   <properties>
    <property name="ignoreIndentationTokens" type="array" value="T_COMMENT,T_DOC_COMMENT_OPEN_TAG"/>
-   <property name="indent" type="int" value="2"/>
+   <property name="indent" value="2"/>
   </properties>
  </rule>
  <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
