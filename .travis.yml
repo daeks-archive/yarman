@@ -41,7 +41,7 @@ before_script:
 
 # check formatting and Syntax
 script:
-  - ./vendor/bin/phpcs
+  - ./vendor/bin/phpcs ./
       --standard=PSR2
       --exclude="$CS_EXCLUDE"
       --ignore="$CS_INGNORE"
