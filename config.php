@@ -22,8 +22,7 @@
   config::includes(INC);
   session::construct();
 
-  class config
-  {
+  class config {
     public static function includes($path) {
       foreach (scandir($path) as $include) {
         if (is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($path.DIRECTORY_SEPARATOR.$include, '.class.') !== false && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'PHP') {
