@@ -23,6 +23,7 @@ function install_bin_webgui() {
 }
 
 function configure_webgui() {
+    killall php
     php -S "$(hostname -I | xargs):8080" -t "$md_inst" > /dev/null 2>&1 &
 
     local config="php -S \"\$\(hostname -I \| xargs\):8080\" -t \"$md_inst\" > /dev/null 2>\&1 \&"
