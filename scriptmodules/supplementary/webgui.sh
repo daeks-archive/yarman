@@ -34,8 +34,8 @@ function configure_webgui() {
     chown -R $user:$user "/var/www"
     chmod -R 775 "/var/www/html"
     usermod -a -G www-data $user
-    sed -i 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=$user/g' /etc/apache2/envvars
-    sed -i 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=$user/g' /etc/apache2/envvars
+    sed -i 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=${user}/g' /etc/apache2/envvars
+    sed -i 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=${user}/g' /etc/apache2/envvars
     service apache2 restart
 }
 
