@@ -1,16 +1,16 @@
 <?php
-    
-  class session
+  
+class session
+{
+  public static function construct()
   {
-    public static function construct()
-    {
-      if (defined('COOKIE_LIFETIME')) {
-        ini_set('session.cookie_lifetime', COOKIE_LIFETIME);
-      }
-      if (!session_id()) {
-        session_start();
-      }
+    if (defined('COOKIE_LIFETIME')) {
+      ini_set('session.cookie_lifetime', COOKIE_LIFETIME);
+    }
+    if (!session_id()) {
+      session_start();
     }
   }
-    
+}
+  
 ?>
