@@ -21,19 +21,19 @@
             }
           }
         }
-      break;
+        break;
       case 'confirmsave':
         modal::start('Save Changes', CONTROLLER.'?action=presave');
         echo 'Do you really want to save '.pathinfo(cache::getClientVariable($module->id.'_id'), PATHINFO_BASENAME).'?';
         modal::end('Save', 'success');
-      break;
+        break;
       case 'confirmdelete':
         modal::start('Delete Item', CONTROLLER.'?action=delete&id='.pathinfo(cache::getClientVariable($module->id.'_id'), PATHINFO_BASENAME));
         echo 'Do you really want to delete '.pathinfo(cache::getClientVariable($module->id.'_id'), PATHINFO_BASENAME).'?';
         modal::end('Delete', 'danger');
-      break;
+        break;
       default:
-      break;
+        break;
     }
   }
 

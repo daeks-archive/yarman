@@ -8,7 +8,7 @@
       $colarr = array();
       foreach ($cols as $col => $order) {
         $colarr[$col] = array();
-        foreach ($array as $k => $row) { 
+        foreach ($array as $k => $row) {
           $colarr[$col]['_'.$k] = strtolower($row[$col]);
         }
       }

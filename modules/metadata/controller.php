@@ -16,22 +16,22 @@
         } else {
           network::success('');
         }
-      break;
+        break;
       case 'presave':
         network::success('', "$('[data-toggle=\"post\"]').submit();");
-      break;
+        break;
       case 'save':
         rom::write(cache::getClientVariable($module->id.'_emulator'), network::post('id'), $_POST);
         network::success('Successfully Saved Gamelist', 'true');
-      break;
+        break;
       case 'delete':
         rom::delete(cache::getClientVariable($module->id.'_emulator'), network::get('id'));
         cache::unsetClientVariable($module->id.'_id');
         network::success('Successfully Deleted Rom', 'core.metadata.reset();');
-      break;
+        break;
       default:
         network::error('invalid Action - '.network::get('action'));
-      break;
+        break;
     }
   }
 

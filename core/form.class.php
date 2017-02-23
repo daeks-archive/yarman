@@ -11,33 +11,33 @@
           switch ($obj['type']) {
             case 'hidden':
               $data = self::getHidden($obj, $value);
-            break;
+              break;
             case 'string':
               $data = self::getString($obj, $value);
-            break;
+              break;
             case 'integer':
               $data = self::getInteger($obj, $value);
-            break;
+              break;
             case 'double':
               $data = self::getDouble($obj, $value);
-            break;
+              break;
             case 'text':
               $data = self::getText($obj, $value);
-            break;
+              break;
             case 'date':
               $data = self::getDate($obj, $value);
-            break;
+              break;
             case 'image':
               $data = self::getImage($obj, $emulator, $value);
-            break;
+              break;
             case 'upload':
               $data = self::getUpload($obj, $emulator, $value);
-            break;
+              break;
             case 'boolean':
               $data = self::getBoolean($obj, $value);
-            break;
+              break;
             default:
-            break;
+              break;
           }
           return $data;
           break;

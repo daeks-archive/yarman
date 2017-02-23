@@ -20,6 +20,7 @@
                 break;
               default:
                 $mime = false;
+                break;
             }
             
             if ($mime) {
@@ -33,7 +34,7 @@
             }
           }
         }
-      break;
+        break;
       case 'dialog':
         echo '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
         echo '<h4 class="modal-title" id="modallabel">Upload Dialog</h4>';
@@ -44,7 +45,7 @@
         echo '<div class="modal-footer">';
         echo '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
         echo '</div>';
-      break;
+        break;
       case 'upload':
         if (network::get('emulator') != '' && network::get('type') != '' && isset($_FILES['object']) && $_FILES['object']['error'][0] == 0) {
           $output = $_FILES['object']['name'][0];
@@ -62,9 +63,9 @@
         } else {
           network::error('General Error', 'true');
         }
-      break;
+        break;
       default:
-      break;
+        break;
     }
   }
 

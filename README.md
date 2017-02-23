@@ -10,7 +10,7 @@ This is a webbased frontend for RetroPie containing several functions to maintai
   
 - Start RetroPie Setup and go to the experimental section for installing.
 
-# Add www share to samba
+# (Optional) Add www share to samba
 
 To be able to access the www directory add the following lines to /etc/samba/smb.conf
 
