@@ -12,7 +12,8 @@ class xml
     }
   }
   
-  public static function dump($name) {
+  public static function dump($name)
+  {
     $xml = simplexml_load_file($name);
     return json_decode(json_encode($xml), true);
   }

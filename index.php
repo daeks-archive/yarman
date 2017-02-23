@@ -56,7 +56,7 @@ if (network::pingRemoteUrl(db::read('config', 'news_feed'))) {
       echo '<span style="color: black"><b>'.$news['title'].'</b></span> <div class="pull-right">read more</div>';
       echo '</div></a>';
     }
-    echo '<div><a href="'.db::read('config', 'news_feed').'" target="_blank" style="text-decoration: none !important;">...read more...</a></div>'; 
+    echo '<div><a href="'.db::read('config', 'news_feed').'" target="_blank" style="text-decoration: none !important;">...read more...</a></div>';
   }
 } else {
   echo "Failed to retrive newsfeed. Your device is currently offline.";
