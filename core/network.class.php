@@ -59,12 +59,12 @@ class network
     }
   }
   
-  public static function getContentLength($url)
+  public static function getRemoteContentLength($url)
   {
     return (isset(get_headers($url, 1)['Content-Length']) ? get_headers($url, 1)['Content-Length'] : 0);
   }
 
-  public static function getContent($url, $getstartbytes = false)
+  public static function getRemoteContent($url, $getstartbytes = false)
   {
     if (extension_loaded('curl')) {
       $ch = curl_init();

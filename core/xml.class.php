@@ -12,12 +12,17 @@ class xml
     }
   }
   
-  private static function parse($xml)
+  public static function dump($name) {
+    $xml = simplexml_load_file($name);
+    return json_decode(json_encode($xml), true);
+  }
+  
+  private static function parse($xml, $types = array('game', 'folder'))
   {
     $xpath = new DOMXpath($xml);
     $output = array();
     
-    foreach (array('game', 'folder') as $type) {
+    foreach ($types as $type) {
       $items = $xpath->query($type);
       foreach ($items as $item) {
         $output[] = array('type' => $type, 'attributes' => self::parse_attributes($item), 'fields' => self::parse_fields($item));

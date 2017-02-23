@@ -15,4 +15,9 @@
     "id" : "metadata_path",
     "value" : "/home/pi/.emulationstation/gamelists"
   }
+  ,
+  {
+    "id" : "news_feed",
+    "value" : "https://retropie.org.uk/feed/"
+  }
 ]
