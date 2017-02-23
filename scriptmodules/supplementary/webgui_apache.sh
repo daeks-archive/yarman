@@ -11,7 +11,8 @@
 #
 
 rp_module_id="webgui"
-rp_module_desc="RetroPie WebGUI"
+rp_module_desc="RetroPie WebGUI on port 80"
+rp_module_help="PHP and JQuery based web frontend for managing your retropie installation"
 rp_module_section="exp"
 
 function depends_webgui() {
