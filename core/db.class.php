@@ -2,7 +2,6 @@
     
   class db
   {
-  
     public static $format = '.json';
   
     public static function read($module, $id = null, $column = 'value', $key = 'id')
@@ -20,7 +19,6 @@
         }
       }
     }
-    
   }
     
 ?>

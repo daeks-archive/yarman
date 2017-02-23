@@ -24,7 +24,6 @@
 
   class config
   {
-  
     public static function includes($path)
     {
       foreach (scandir($path) as $include) {
@@ -33,7 +32,6 @@
         }
       }
     }
-    
   }
 
 ?>

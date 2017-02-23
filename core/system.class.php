@@ -2,7 +2,6 @@
 
   class system
   {
-
     public static function getCPUTemp()
     {
       return round(shell_exec('cat /sys/class/thermal/thermal_zone0/temp')/1000, 2);
@@ -78,7 +77,6 @@
       
       return $output;
     }
-    
   }
 
 ?>

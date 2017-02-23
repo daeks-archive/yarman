@@ -2,7 +2,6 @@
     
   class module
   {
-
     public static function readAll()
     {
       $tmp = array();
@@ -39,7 +38,6 @@
         }
       }
     }
-    
   }
     
 ?>

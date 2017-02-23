@@ -2,7 +2,6 @@
     
   class rom
   {
-      
     public static function read($emulator, $id)
     {
       $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
@@ -70,7 +69,6 @@
       }
       return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
     }
-    
   }
     
 ?>

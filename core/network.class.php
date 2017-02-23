@@ -2,7 +2,6 @@
 
   class network
   {
-  
     public static $agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36';
 
     public static function success($data = null, $event = null)
@@ -82,7 +81,6 @@
         return file_get_contents($url);
       }
     }
-    
   }
 
 ?>

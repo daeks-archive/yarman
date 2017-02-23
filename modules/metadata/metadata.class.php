@@ -2,7 +2,6 @@
 
   class metadata
   {
-  
     public static function start($tab)
     {
       // RENDER RIGHT MENU
@@ -115,7 +114,6 @@
       
       return $data;
     }
-  
   }
 
 ?>

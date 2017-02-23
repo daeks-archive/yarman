@@ -2,7 +2,6 @@
     
   class form
   {
-
     public static function getField($config, $id, $value = '', $emulator = '')
     {
       foreach ($config as $obj) {
@@ -247,7 +246,6 @@
       $data .= '</div>';
       return $data;
     }
-    
   }
     
 ?>

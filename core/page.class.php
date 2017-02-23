@@ -2,7 +2,6 @@
 
   class page
   {
-  
     public static $time;
     public static $devices = 'hidden-xs hidden-sm display-md display-lg';
   
@@ -163,7 +162,6 @@
       echo '</body>';
       echo '</html>';
     }
-    
   }
 
 ?>

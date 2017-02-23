@@ -2,7 +2,6 @@
     
   class xml
   {
-  
     public static function read($name)
     {
       $xml = new DOMDocument();
@@ -69,7 +68,6 @@
 
       file_put_contents($name, $output->saveXML());
     }
-    
   }
     
 ?>

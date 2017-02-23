@@ -2,7 +2,6 @@
     
   class session
   {
-
     public static function construct()
     {
       if (defined('COOKIE_LIFETIME')) {
@@ -12,7 +11,6 @@
         session_start();
       }
     }
-    
   }
     
 ?>

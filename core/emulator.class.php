@@ -2,7 +2,6 @@
     
   class emulator
   {
-  
     public static function readAll()
     {
       $emulators = array_slice(scandir(db::read('config', 'roms_path')), 2);
@@ -92,7 +91,6 @@
       }
       return $array;
     }
-    
   }
     
 ?>

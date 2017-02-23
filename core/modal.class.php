@@ -2,7 +2,6 @@
 
   class modal
   {
-
     public static function start($title = 'Modal Title', $target = '', $method = 'GET')
     {
       echo '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
@@ -23,7 +22,6 @@
       }
       echo '</div>';
     }
-    
   }
 
 ?>

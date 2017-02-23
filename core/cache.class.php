@@ -2,7 +2,6 @@
 
   class cache
   {
-  
     public static function setClientVariable($key, $val, $time = COOKIE_LIFETIME)
     {
       $_SESSION[$key] = $val;
@@ -24,7 +23,6 @@
         return '';
       }
     }
- 
   }
 
 ?>

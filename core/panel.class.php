@@ -2,7 +2,6 @@
 
   class panel
   {
-    
     public static function start($title = '', $type = 'default')
     {
       echo '<div class="panel panel-'.$type.'">';
@@ -15,7 +14,6 @@
       echo '</div>';
       echo '</div>';
     }
-    
   }
 
 ?>

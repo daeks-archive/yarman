@@ -2,7 +2,6 @@
     
   class utils
   {
-  
     public static function msort($array, $cols)
     {
       $colarr = array();
@@ -30,7 +29,6 @@
       }
       return $ret;
     }
-        
   }
     
 ?>
