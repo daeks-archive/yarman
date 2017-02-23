@@ -2,22 +2,22 @@
 
   require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
   
-  if(isset($_GET['action'])) {
-    switch ($_GET['action']) {
+  if (network::get('action') != '') {
+    switch (network::get('action')) {
       case 'render':
-        if(isset($_GET['tab'])) {
-          cache::setClientVariable($module->id.'_tab', $_GET['tab']);
-          if(isset($_GET['id'])) {
-            $_GET['id'] = rawurldecode($_GET['id']);
-            cache::setClientVariable($module->id.'_id', $_GET['id']);
-            $data = metadata::render($_GET['tab'], cache::getClientVariable($module->id.'_emulator'), $_GET['id']);
-            utils::ajax(200, $data);
+        if (network::get('tab') != '') {
+          cache::setClientVariable($module->id.'_tab', network::get('tab'));
+          if (network::get('id') != '') {
+            $id = rawurldecode(network::get('id'));
+            cache::setClientVariable($module->id.'_id', $id);
+            $data = metadata::render(network::get('tab'), cache::getClientVariable($module->id.'_emulator'), $id);
+            network::success($data);
           } else {
-            if(cache::getClientVariable($module->id.'_emulator') != '' && cache::getClientVariable($module->id.'_id') != '') {
-              $data = metadata::render($_GET['tab'], cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'));
-              utils::ajax(200, $data);
+            if (cache::getClientVariable($module->id.'_emulator') != '' && cache::getClientVariable($module->id.'_id') != '') {
+              $data = metadata::render(network::get('tab'), cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'));
+              network::success($data);
             } else {
-              utils::ajax(500, 'No ID specified');
+              network::error('No ID specified');
             }
           }
         }

@@ -1,12 +1,12 @@
-(function($){
+(function ($) {
     
-    var async = (function() {
-      var init = function() {
-        $(document.body).on('click', '[data-toggle="async"]', function(e) {
+    var async = (function () {
+      var init = function () {
+        $(document.body).on('click', '[data-toggle="async"]', function (e) {
           e.preventDefault();
           var loadurl = $(this).attr('data-query');
           var target = $($(this).attr('data-target'));
-          $.get(loadurl, function(data) {
+          $.get(loadurl, function (data) {
             try {
               var obj = $.parseJSON(data);
               if (obj.status == 200) {
@@ -34,11 +34,11 @@
           return false;
         });
 
-        $('[data-toggle="select"]').on('change', function(e) {
+        $('[data-toggle="select"]').on('change', function (e) {
           e.preventDefault();
           var loadurl = $(this).attr('data-query') + encodeURIComponent($(this).val());
           var target = $($(this).attr('data-target'));
-          $.get(loadurl, function(data) {
+          $.get(loadurl, function (data) {
             try {
               var obj = $.parseJSON(data);
               if (obj.status == 200) {
@@ -66,11 +66,11 @@
           return false;
         });
         
-        $(document.body).on('submit', '[data-toggle="post"]', function(e){
+        $(document.body).on('submit', '[data-toggle="post"]', function (e) {
           e.preventDefault();
           var loadurl = $(this).attr('data-query');
           var target = $($(this).attr('data-target'));
-          $.post(loadurl, $(this).serialize(), function(data) {
+          $.post(loadurl, $(this).serialize(), function (data) {
             try {
               var obj = $.parseJSON(data);
               if (obj.status == 200) {
@@ -107,7 +107,7 @@
       }
     });
 
-    $(function() {
+    $(function () {
         core.async.init();
     });
 

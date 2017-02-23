@@ -1,0 +1,9 @@
+{
+  "id" : "help",
+  "name" : "",
+  "menu" : {
+    "position" : "right",
+    "order" : 999,
+    "icon" : "book"
+    }
+}

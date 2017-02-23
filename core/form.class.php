@@ -1,10 +1,12 @@
 <?php
     
-  class form {
+  class form
+  {
 
-    public static function getField($config, $id, $value = '', $emulator = '') {
+    public static function getField($config, $id, $value = '', $emulator = '')
+    {
       foreach($config as $obj) {
-        if($obj['id'] == $id) {
+        if ($obj['id'] == $id) {
           $data = '';
           switch ($obj['type']) {
             case 'hidden':
@@ -34,7 +36,7 @@
             case 'boolean':
               $data = self::getBoolean($obj, $value);
             break;
-            default;
+            default:
             break;      
           }
           return $data;
@@ -43,24 +45,26 @@
       }
     }
     
-    public static function getHidden($obj, $value = '') {
+    public static function getHidden($obj, $value = '')
+    {
       $data = '<input type="hidden" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"/>';
       return $data;
     }
     
-    public static function getString($obj, $value = '') {
+    public static function getString($obj, $value = '')
+    {
       $data = '<div class="form-group">';
-      if(isset($obj['name']) && $obj['name'] != '') {
+      if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
-      if(isset($obj['validator']) && $obj['validator'] != '') {
+      if (isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' data-fv '.$obj['validator'];
       }
-      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+      if (isset($obj['readonly']) && $obj['readonly'] == true) {
         $data .= ' disabled';
       }
-      if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+      if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
       }
       $data .= '/>';
@@ -68,19 +72,20 @@
       return $data;
     }
     
-    public static function getInteger($obj, $value = '') {
+    public static function getInteger($obj, $value = '')
+    {
       $data = '<div class="form-group">';
-      if(isset($obj['name']) && $obj['name'] != '') {
+      if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
-      if(isset($obj['validator']) && $obj['validator'] != '') {
+      if (isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' data-fv '.$obj['validator'];
       }
-      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+      if (isset($obj['readonly']) && $obj['readonly'] == true) {
         $data .= ' disabled';
       }
-      if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+      if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
       }
       $data .= '/>';
@@ -88,19 +93,20 @@
       return $data;
     }
     
-    public static function getDouble($obj, $value = '') {
+    public static function getDouble($obj, $value = '')
+    {
       $data = '<div class="form-group">';
-      if(isset($obj['name']) && $obj['name'] != '') {
+      if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
-      if(isset($obj['validator']) && $obj['validator'] != '') {
+      if (isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' data-fv '.$obj['validator'];
       }
-      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+      if (isset($obj['readonly']) && $obj['readonly'] == true) {
         $data .= ' disabled';
       }
-      if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+      if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
       }
       $data .= '/>';
@@ -108,13 +114,14 @@
       return $data;
     }
     
-    public static function getText($obj, $value = '') {
+    public static function getText($obj, $value = '')
+    {
       $data = '<div class="form-group">';
-      if(isset($obj['name']) && $obj['name'] != '') {
+      if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<textarea class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" rows="'.$obj['rowcount'].'"';
-      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+      if (isset($obj['readonly']) && $obj['readonly'] == true) {
         $data .= ' disabled';
       }
       $data .= '>';
@@ -124,28 +131,29 @@
       return $data;
     }
     
-    public static function getDate($obj, $value = '') {
+    public static function getDate($obj, $value = '')
+    {
       $parsed = '';
-      if($value != '') {
+      if ($value != '') {
         $date = date_parse_from_format('YmdTHiS', $value);
-        if($date['year'] > 0) {
+        if ($date['year'] > 0) {
           $parsed = $date['year'];
-          if($date['month'] > 0) {
+          if ($date['month'] > 0) {
             $parsed = $parsed.'/'.sprintf("%02d", $date['month']);
           }
-          if($date['day'] > 0) {
+          if ($date['day'] > 0) {
             $parsed = $parsed.'/'.sprintf("%02d", $date['day']);
           }
-          if($date['hour'] > 0) {
+          if ($date['hour'] > 0) {
             $parsed = $parsed.' '.sprintf("%02d", $date['hour']);
           }
-          if($date['minute'] > 0) {
+          if ($date['minute'] > 0) {
             $parsed = $parsed.':'.sprintf("%02d", $date['minute']);
           }
-          if($date['second'] > 0) {
+          if ($date['second'] > 0) {
             $parsed = $parsed.':'.sprintf("%02d", $date['second']);
           }
-          if(strlen($parsed) == 4) {
+          if (strlen($parsed) == 4) {
             $parsed = $parsed.'/01/01';
           }
         } else {
@@ -153,19 +161,19 @@
         }
       }
       $data = '<div class="form-group">';
-      if(isset($obj['name']) && $obj['name'] != '') {
+      if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<div class="input-group">';
       $data .= '<span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>';
       $data .= '<input type="text" class="form-control" data-provider="datepicker" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$parsed.'"';
-      if(isset($obj['validator']) && $obj['validator'] != '') {
+      if (isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' data-fv '.$obj['validator'];
       }
-      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+      if (isset($obj['readonly']) && $obj['readonly'] == true) {
         $data .= ' disabled';
       }
-      if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+      if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
       }
       $data .= '/>';
@@ -174,23 +182,24 @@
       return $data;
     }
     
-    public static function getBoolean($obj, $value = '') {
+    public static function getBoolean($obj, $value = '')
+    {
       $data = '<div class="form-group">';
-      if(isset($obj['name']) && $obj['name'] != '') {
+      if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<select type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'"';
-      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+      if (isset($obj['readonly']) && $obj['readonly'] == true) {
         $data .= ' disabled';
       }
       $data .= '>"';
       $data .= '<option';
-      if($value == 'true') {
+      if ($value == 'true') {
         $data .= ' selected';
       }
       $data .= ' value="true">True</option>';
       $data .= '<option';
-      if($value == '' || $value == 'false') {
+      if ($value == '' || $value == 'false') {
         $data .= ' selected';
       }
       $data .= ' value="false">False</option>';
@@ -199,10 +208,11 @@
       return $data;
     }
     
-    public static function getImage($obj, $emulator, $image) {
+    public static function getImage($obj, $emulator, $image)
+    {
       $data = '';
-      if($image != '') {
-        if(isset($obj['name']) && $obj['name'] != '') {
+      if ($image != '') {
+        if (isset($obj['name']) && $obj['name'] != '') {
           $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
         }
         $data .= '<div class="thumbnail">';
@@ -212,20 +222,21 @@
       return $data;
     }
     
-    public static function getUpload($obj, $emulator, $value = '') {
+    public static function getUpload($obj, $emulator, $value = '')
+    {
       $data = '<div class="form-group">';
-      if(isset($obj['name']) && $obj['name'] != '') {
+      if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<div class="input-group">';
       $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
-      if(isset($obj['validator']) && $obj['validator'] != '') {
+      if (isset($obj['validator']) && $obj['validator'] != '') {
         $data .= ' data-fv '.$obj['validator'];
       }
-      if(isset($obj['readonly']) && $obj['readonly'] == true) {
+      if (isset($obj['readonly']) && $obj['readonly'] == true) {
         $data .= ' disabled';
       }
-      if(isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+      if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
         $data .= ' maxlength="'.$obj['maxlength'].'"';
       }
       $data .= '/>';

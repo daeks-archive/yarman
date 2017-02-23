@@ -1,8 +1,8 @@
-(function($){
+(function ($) {
     
-    var proxy = (function() {
-      var init = function() {
-        $('[data-toggle="proxy"]').bind('initproxy',function() {
+    var proxy = (function () {
+      var init = function () {
+        $('[data-toggle="proxy"]').bind('initproxy',function () {
             $(this).fileupload({
               url: $(this).attr('data-query'),
               formData: {id : $($(this).attr('data-key')).val()},
@@ -44,7 +44,7 @@
       }
     });
 
-    $(function() {
+    $(function () {
         core.proxy.init();
     });
 

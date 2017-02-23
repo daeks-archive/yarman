@@ -15,7 +15,7 @@ rp_module_desc="RetroPie WebGUI"
 rp_module_section="exp"
 
 function depends_webgui() {
-    getDepends apache2 sqlite3 php5 php5-sqlite
+    getDepends sqlite3 php5 php5-sqlite
 }
 
 function sources_webgui() {
@@ -23,23 +23,23 @@ function sources_webgui() {
 }
 
 function install_webgui() {
-    if [ -d "/var/www/html/data" ]; then
-      cp -r "/var/www/html/data/." "$md_build/data"
+    if [ -d "$md_inst/data" ]; then
+      cp -r "$md_inst/data/." "$md_build/data"
     fi
-    rm -rf "/var/www/html/*"
-    cp -r "$md_build/." "/var/www/html"
+    rm -rf "$md_inst/*"
+    cp -r "$md_build/." "$md_inst"
+    chown -R $user:$user "$md_inst"
 }
 
 function configure_webgui() {
-    chown -R $user:$user "/var/www"
-    chmod -R 775 "/var/www/html"
-    sed -i "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=${user}/g" /etc/apache2/envvars
-    sed -i "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=${user}/g" /etc/apache2/envvars
-    systemctl daemon-reload
-    service apache2 restart
+    php -S "$(hostname -I):8001" -t "$md_inst" > /dev/null 2>&1 &
+    
+    local config="php -S \"$(hostname -I):8001\" -t \"$md_inst\" > /dev/null 2>&1 &"
+    sed -i "s|^exit 0$|${config}\\nexit 0|" /etc/rc.local
 }
 
 function remove_webgui() {
-    aptRemove apache2 sqlite3 php5 php5-sqlite
-    rm -R "/var/www"
+    killall php
+    aptRemove sqlite3 php5 php5-sqlite
+    rm -R "$md_inst"
 }

@@ -14,7 +14,7 @@
   echo '<option value="" selected>-- Select Emulator --</option>';
   foreach (emulator::readAll() as $emulator){
     echo '<option';
-    if(cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
+    if (cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
       echo ' selected';
     }
     echo ' value="'.$emulator['id'].'">'.$emulator['name'].' ('.$emulator['count'].')</option>';
@@ -34,12 +34,12 @@
   // RENDER ROMLIST
   echo '<br><select name="nav-romlist" id="nav-romlist" class="form-control" data-toggle="select" data-query="'.DIALOG.'?action=render&tab=metadata&id=" data-target="#panel-right">';
   $first = null;
-  if(cache::getClientVariable($module->id.'_emulator') != '') {
-    $romlist = rom::readEmulator(cache::getClientVariable($module->id.'_emulator'));
+  if (cache::getClientVariable($module->id.'_emulator') != '') {
+    $romlist = emulator::readRomlist(cache::getClientVariable($module->id.'_emulator'));
     $first = $romlist[0];
     foreach ($romlist as $rom) {
       echo '<option';
-      if(cache::getClientVariable($module->id.'_id') == $rom) {
+      if (cache::getClientVariable($module->id.'_id') == $rom) {
         echo ' selected';
       }
       echo ' value="'.$rom.'">'.$rom.'</option>';
@@ -51,14 +51,14 @@
    
   // RENDER RIGHT SIDE
   echo '<div class="col-sm-8" id="panel-right" name="panel-right">';
-  if(cache::getClientVariable($module->id.'_emulator') != '' && cache::getClientVariable($module->id.'_id') != '') {
-    if(cache::getClientVariable($module->id.'_tab') != '') {
+  if (cache::getClientVariable($module->id.'_emulator') != '' && cache::getClientVariable($module->id.'_id') != '') {
+    if (cache::getClientVariable($module->id.'_tab') != '') {
       echo metadata::render(cache::getClientVariable($module->id.'_tab'), cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'));
     } else {
       echo metadata::render('metadata', cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'));
     }
   } else {
-    if(cache::getClientVariable($module->id.'_emulator') != '') {
+    if (cache::getClientVariable($module->id.'_emulator') != '') {
       echo metadata::render('metadata', cache::getClientVariable($module->id.'_emulator'), $first);
     }
   }

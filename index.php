@@ -9,19 +9,18 @@
   echo '</div>';
   echo '<div class="col-sm-6">';
   
-  echo '<div class="panel panel-primary">';
-  echo '<div class="panel-heading"><h3 class="panel-title">Welcome</h3></div>';
-  echo '<div class="panel-body">';
+  panel::start('Beta Warning', 'danger');
   echo '<p>This is currenly in BETA phase. Please be aware that it could damage your roms, media or gamelists.</p>';
-  echo '<p>Need some more help? Checkout the <a href="https://retropie.org.uk/docs/" target="_blank">documentation</a>.</p>';
-  echo '</div>';
-  echo '</div>';
+  panel::end();
   
+  panel::start('Welcome to RetroPie', 'primary');
+  echo '<p>RetroPie allows you to turn your Raspberry Pi or PC into a retro-gaming machine. It builds upon Raspbian, EmulationStation, RetroArch and many other projects to enable you to play your favourite Arcade, home-console, and classic PC games with the minimum set-up. For power users it also provides a large variety of configuration tools to customise the system as you want.</p>';
+  panel::end();
+   
   echo '<div class="row">';
   echo '<div class="col-sm-7">';
-  echo '<div class="panel panel-default">';
-  echo '<div class="panel-heading"><h3 class="panel-title">CPU</h3></div>';
-  echo '<div class="panel-body">';
+  
+  panel::start('CPU');
   $load = system::getLoadAverage();
   echo '<p><b>Overview:</b> '.system::getUptime().'</p>';
   echo '<div style="display: table; width: 100%;">';
@@ -29,30 +28,27 @@
   echo '<div style="display: table-cell; width: 33%" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" width="100"></div>';
   echo '<div style="display: table-cell; width: 33%" id="'.uniqid().'" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" width="100"></div>';
   echo '</div>';
-  echo '</div>';
-  echo '</div>';
+  echo '<p>CPU Frequency: <b>'.system::getCPUFreq().'MHz</b></p>';
+  panel::end();
+  
   echo '</div>';
   echo '<div class="col-sm-5">';
-  echo '<div class="panel panel-default">';
-  echo '<div class="panel-heading"><h3 class="panel-title">Temperature</h3></div>';
-  echo '<div class="panel-body">';
   
+  panel::start('Temperature');
   echo '<div style="display: table; width: 100%;">';
   echo '<div style="display: table-cell; width: 50%" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getCPUTemp().'" width="100"></div>';
   echo '<div style="display: table-cell; width: 50%" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getGPUTemp().'" width="100"></div>';
   echo '</div>';
+  panel::end();
   
-  echo '</div>';
-  echo '</div>';
   echo '</div>';
   echo '</div>';
   
   echo '</div>';
   echo '<div class="col-sm-4">';
   
-  echo '<div class="panel panel-info">';
-  echo '<div class="panel-heading"><h3 class="panel-title">RetroPie Monitor</h3></div>';
-  echo '<div class="panel-body">';
+  
+  panel::start('RetroPie Monitor', 'info');
   $emulators = emulator::readAll();
   $total_roms = 0;
   foreach($emulators as $emulator) {
@@ -60,13 +56,9 @@
   }
   echo '<p><div>Total Emulators: <div class="pull-right"><b>'.sizeof($emulators).'</b></div></div>';
   echo '<div>Total Roms: <div class="pull-right"><b>'.$total_roms.'</b></div></div></p>';
-  echo '</div>';
-  echo '</div>';
-  
-  echo '<div class="panel panel-default">';
-  echo '<div class="panel-heading"><h3 class="panel-title">Storage</h3></div>';
-  echo '<div class="panel-body">';
-  
+  panel::end();
+   
+  panel::start('Storage');
   $storage = system::getStorage();
   $sto_percent = round($storage['used']/$storage['total']*100, 2);
   $storage_color = '';
@@ -79,14 +71,9 @@
   echo '<div class="progress">';
   echo '<div class="progress-bar '.$storage_color.'" role="progressbar" aria-valuenow="'.$storage['used'].'" aria-valuemin="0" aria-valuemax="'.$storage['total'].'" style="width: '.$sto_percent.'%;">'.$sto_percent.'%</div>';
   echo '</div>';
+  panel::end();
   
-  echo '</div>';
-  echo '</div>';
-  
-  echo '<div class="panel panel-default">';
-  echo '<div class="panel-heading"><h3 class="panel-title">Memory</h3></div>';
-  echo '<div class="panel-body">';
-  
+  panel::start('Memory');
   $memory = system::getMemory();
   $mem_percent = round($memory['used']/$memory['total']*100, 2);
   $memory_color = '';
@@ -99,14 +86,9 @@
   echo '<div class="progress">';
   echo '<div class="progress-bar '.$memory_color.'" role="progressbar" aria-valuenow="'.$memory['used'].'" aria-valuemin="0" aria-valuemax="'.$memory['total'].'" style="width: '.$mem_percent.'%;">'.$mem_percent.'%</div>';
   echo '</div>';
+  panel::end();
   
-  echo '</div>';
-  echo '</div>';
-  
-  echo '<div class="panel panel-default">';
-  echo '<div class="panel-heading"><h3 class="panel-title">Swap</h3></div>';
-  echo '<div class="panel-body">';
-  
+  panel::start('Swap');
   $swap = system::getSwap();
   $swap_percent = round($swap['used']/$swap['total']*100, 2);
   $swap_color = '';
@@ -119,9 +101,7 @@
   echo '<div class="progress">';
   echo '<div class="progress-bar '.$swap_color.'" role="progressbar" aria-valuenow="'.$swap['used'].'" aria-valuemin="0" aria-valuemax="'.$swap['total'].'" style="width: '.$swap_percent.'%;">'.$swap_percent.'%</div>';
   echo '</div>';
-  
-  echo '</div>';
-  echo '</div>';
+  panel::end();
   
   echo '</div>';
   echo '<div class="col-sm-1">';

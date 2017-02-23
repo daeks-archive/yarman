@@ -1,8 +1,8 @@
-(function($){
+(function ($) {
     
-    var charts = (function() {
-      var init = function() {
-        $('[data-provider="gauge"]').each(function() {
+    var charts = (function () {
+      var init = function () {
+        $('[data-provider="gauge"]').each(function () {
           var g = new JustGage({
             id: $(this).attr('id'),
             value: $(this).attr('data-query'),
@@ -28,7 +28,7 @@
       }
     });
 
-    $(function() {
+    $(function () {
         core.charts.init();
     });
 

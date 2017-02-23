@@ -2,35 +2,35 @@
 
   require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
   
-  if(isset($_GET['action'])) {
-    switch ($_GET['action']) {
+  if (network::get('action') != '') {
+    switch (network::get('action')) {
       case 'change':
-        if(isset($_GET['emulator']) && $_GET['emulator'] != '') {
-          cache::setClientVariable($module->id.'_emulator', $_GET['emulator']);
+        if (network::get('emulator') != '') {
+          cache::setClientVariable($module->id.'_emulator', network::get('emulator'));
           cache::unsetClientVariable($module->id.'_id');
           $data = '';
-          foreach (rom::reademulator($_GET['emulator']) as $rom){
+          foreach (emulator::readRomlist(network::get('emulator')) as $rom){
             $data .= '<option value="'.$rom.'">'.$rom.'</option>';
           }
-          utils::ajax(200, $data);
+          network::success($data);
         } else {
-          utils::ajax(200, '');
+          network::success('');
         }
       break;
       case 'presave':
-        utils::ajax(200, '', "$('[data-toggle=\"post\"]').submit();");
+        network::success('', "$('[data-toggle=\"post\"]').submit();");
       break;
       case 'save':
-        rom::writeMetadata(cache::getClientVariable($module->id.'_emulator'), $_POST['id'], $_POST);
-        utils::ajax(200, 'Successfully Saved Gamelist', 'true');
+        rom::write(cache::getClientVariable($module->id.'_emulator'), network::post('id'), $_POST);
+        network::success('Successfully Saved Gamelist', 'true');
       break;
       case 'delete':
-        rom::remove(cache::getClientVariable($module->id.'_emulator'), $_GET['id']);
+        rom::delete(cache::getClientVariable($module->id.'_emulator'), network::get('id'));
         cache::unsetClientVariable($module->id.'_id');
-        utils::ajax(200, 'Successfully Deleted Rom', 'core.metadata.reset();');
+        network::success('Successfully Deleted Rom', 'core.metadata.reset();');
       break;
       default:
-        utils::ajax(500, 'invalid Action - '.$_GET['action']);
+        network::error('invalid Action - '.network::get('action'));
       break;
     }
   }

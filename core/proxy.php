@@ -1,13 +1,13 @@
 <?php
 
   require_once(dirname(realpath(__DIR__)).DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'config.php');
-  if(isset($_GET['action'])) {
-    switch ($_GET['action']) {
+  if (network::get('action') != '') {
+    switch (network::get('action')) {
       case 'render':
-        if(isset($_GET['emulator']) && isset($_GET['id'])) {
-          $_GET['id'] = rawurldecode($_GET['id']);
-          $obj = db::read('config', 'media_path').DIRECTORY_SEPARATOR.$_GET['emulator'].DIRECTORY_SEPARATOR.$_GET['id'];
-          if (file_exists($obj) && is_readable($obj) && basename($_GET['emulator']) == $_GET['emulator'] && basename($_GET['id']) == $_GET['id']) {
+        if (network::get('emulator') != '' && network::get('id') != '') {
+          $id = rawurldecode(network::get('id'));
+          $obj = db::read('config', 'media_path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$id;
+          if (file_exists($obj) && is_readable($obj) && basename(network::get('emulator')) == network::get('emulator') && basename($id) == $id) {
             switch (pathinfo($obj, PATHINFO_EXTENSION)) {
               case 'jpg':
                 $mime = 'image/jpeg';
@@ -46,21 +46,21 @@
         echo '</div>';
       break;
       case 'upload':
-        if(isset($_GET['emulator']) && isset($_GET['type']) && isset($_FILES['object']) && $_FILES['object']['error'][0] == 0) {
+        if (network::get('emulator') != '' && network::get('type') != '' && isset($_FILES['object']) && $_FILES['object']['error'][0] == 0) {
           $output = $_FILES['object']['name'][0];
-          if(isset($_POST['id'])) {
-            $output = pathinfo($_POST['id'], PATHINFO_FILENAME).'-'.$_GET['type'].'.'.pathinfo($_FILES['object']['name'][0], PATHINFO_EXTENSION);
+          if (network::post('id') != '') {
+            $output = pathinfo(network::post('id'), PATHINFO_FILENAME).'-'.network::get('type').'.'.pathinfo($_FILES['object']['name'][0], PATHINFO_EXTENSION);
           } else {
-            $output = pathinfo($_FILES['object']['name'][0], PATHINFO_FILENAME).'-'.$_GET['type'].'.'.pathinfo($_FILES['object']['name'][0], PATHINFO_EXTENSION);
+            $output = pathinfo($_FILES['object']['name'][0], PATHINFO_FILENAME).'-'.network::get('type').'.'.pathinfo($_FILES['object']['name'][0], PATHINFO_EXTENSION);
           }
         
-          if(move_uploaded_file($_FILES['object']['tmp_name'][0], db::read('config', 'media_path').DIRECTORY_SEPARATOR.$_GET['emulator'].DIRECTORY_SEPARATOR.$output)) {
-              utils::ajax(200, db::read('config', 'media_path').DIRECTORY_SEPARATOR.$_GET['emulator'].DIRECTORY_SEPARATOR.$output);
+          if (move_uploaded_file($_FILES['object']['tmp_name'][0], db::read('config', 'media_path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$output)) {
+              network::success(db::read('config', 'media_path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$output);
           } else {
-            utils::ajax(500, 'Object could not be uploaded', 'true');
+            network::error('Object could not be uploaded', 'true');
           }
         } else {
-          utils::ajax(500, 'General Error', 'true');
+          network::error('General Error', 'true');
         }
       break;
       default:

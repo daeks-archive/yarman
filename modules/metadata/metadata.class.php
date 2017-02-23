@@ -1,8 +1,10 @@
 <?php
 
-  class metadata {
+  class metadata
+  {
   
-    public static function start($tab) {
+    public static function start($tab)
+    {
       // RENDER RIGHT MENU
       $data = '<div class="row">';
       $data .= '<div class="col-sm-12">';
@@ -12,12 +14,12 @@
       $data .= '<div class="col-sm-8">';
       $data .= '<ul class="nav nav-tabs">';
       $data .= '<li ';
-      if($tab == 'metadata') {
+      if ($tab == 'metadata') {
         $data .= 'class="active"';
       }
       $data .= '><a href="#" data-toggle="async" data-query="'.DIALOG.'?action=render&tab=metadata" data-target="#panel-right">Metadata</a></li>';
       $data .= '<li ';
-      if($tab == 'media') {
+      if ($tab == 'media') {
         $data .= 'class="active"';
       }
       $data .= '><a href="#" data-toggle="async" data-query="'.DIALOG.'?action=render&tab=media" data-target="#panel-right">Media</a></li>';
@@ -38,35 +40,37 @@
       return $data;
     }
     
-    public static function end() {
+    public static function end()
+    {
       $data = '</div>';
       $data .= '</div>';
       // END RNDER RIGHT
       return $data;
     }
   
-    public static function render($container, $emulator, $id) {
-      $rom = rom::readMetadata($emulator, $id);
+    public static function render($container, $emulator, $id)
+    {
+      $rom = rom::read($emulator, $id);
       $fields = db::read('fields');
       
       $fieldset = array(); 
 
       foreach ($fields as $field) {
-        if(isset($field['grid']) && isset($field['container'])) {
-          if($field['container'] == $container) {
+        if (isset($field['grid']) && isset($field['container'])) {
+          if ($field['container'] == $container) {
             $parts = explode(' ', $field['grid']);
-            if(sizeof($parts) == 5) {
-              if(array_key_exists($parts[0], $fieldset)) {
-                if($parts[3] == 'left') {
+            if (sizeof($parts) == 5) {
+              if (array_key_exists($parts[0], $fieldset)) {
+                if ($parts[3] == 'left') {
                   $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[1]][$parts[4]] = $field;
                 } else if ($parts[3] == 'right') {
                   $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[2]][$parts[4]] = $field;
                 }
               } else {
-                if($parts[1] == '12' && $parts[2] == '0') {
+                if ($parts[1] == '12' && $parts[2] == '0') {
                   $fieldset[$parts[0]] = array($parts[3].'-col-sm-'.$parts[1] => array($parts[4] => $field));
                 } else {
-                  if($parts[3] == 'left') {
+                  if ($parts[3] == 'left') {
                     $fieldset[$parts[0]] = array('left-col-sm-'.$parts[1] => array($parts[4] => $field), 'right-col-sm-'.$parts[2] => array());
                   } else if ($parts[3] == 'right') {
                     $fieldset[$parts[0]] = array('left-col-sm-'.$parts[1] => array(), 'right-col-sm-'.$parts[2] => array($parts[4] => $field));
@@ -76,8 +80,8 @@
             }
           }
         }
-        if(isset($field['type']) && $field['type'] == 'hidden') {
-          if(array_key_exists('0', $fieldset)) {
+        if (isset($field['type']) && $field['type'] == 'hidden') {
+          if (array_key_exists('0', $fieldset)) {
             array_push($fieldset['0']['left-col-sm-12'], $field);
           } else {
             $fieldset['0'] = array ('left-col-sm-12' => array($field));

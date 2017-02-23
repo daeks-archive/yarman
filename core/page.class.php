@@ -1,11 +1,13 @@
 <?php
 
-  class page {
+  class page
+  {
   
     public static $time;
     public static $devices = 'hidden-xs hidden-sm display-md display-lg';
   
-    public static function start($infobox = '', $js = null, $cache = FILE_CACHE) {
+    public static function start($infobox = '', $js = null, $cache = FILE_CACHE)
+    {
       self::$time = microtime(true);
       echo '<?xml version="1.0" encoding="ISO-8859-1" ?>';
       echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
@@ -16,7 +18,7 @@
       echo '<head>';
       
       $module = module::read();
-      if($module != null) {
+      if ($module != null) {
         echo '<title>'.NAME.' - '.$module->name.'</title>';
       } else {
         echo '<title>'.NAME.'</title>';
@@ -26,14 +28,14 @@
       echo '<meta name="robots" content="noindex">';
       
       $jsinclude = array(JS, INC);
-      if($module != null) {
+      if ($module != null) {
         array_push($jsinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
       }
       foreach($jsinclude as $path) {
         foreach (scandir($path) as $include){
-          if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'JS'){
+          if (is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'JS'){
             $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.$include;
-            if(FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include,-2))) {
+            if (FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include,-2))) {
               $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.substr($include, 0, -3).'.min.'.substr($include,-2);
             }          
             echo '<script type="text/javascript" src="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'"></script>';
@@ -42,14 +44,14 @@
       }
     
       $cssinclude = array(CSS, INC);
-      if($module != null) {
+      if ($module != null) {
         array_push($cssinclude, MODULES.DIRECTORY_SEPARATOR.$module->id);
       }
       foreach($cssinclude as $path) {
         foreach (scandir($path) as $include){
-          if(is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'CSS'){
+          if (is_file($path.DIRECTORY_SEPARATOR.$include) && strpos($include, '..') == 0 && strpos($include, 'min') == 0  && strtoupper(pathinfo($include, PATHINFO_EXTENSION)) == 'CSS'){
             $ref = str_replace(BASE.DIRECTORY_SEPARATOR,'',$path).URL_SEPARATOR.$include;
-            if(FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include,-3))) {
+            if (FILE_COMPRESS && is_file($path.DIRECTORY_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include,-3))) {
               $ref = str_replace(DIRECTORY_SEPARATOR, URL_SEPARATOR, str_replace(BASE.DIRECTORY_SEPARATOR,'',$path)).URL_SEPARATOR.substr($include, 0, -4).'.min.'.substr($include,-3);
             }  
             echo '<link type="text/css" href="'.URL_SEPARATOR.$ref.($cache ? '' : '?v='.time()).'" rel="stylesheet" media="screen" />';
@@ -68,15 +70,15 @@
       foreach ($modules as $moduleconfig) {
         $tmp = json_decode(file_get_contents($moduleconfig));
         $item = "";
-        if(isset($tmp->menu)) {
-          if($tmp->menu->position == 'left') {
-            if($module != null && $tmp->id == $module->id) {
+        if (isset($tmp->menu)) {
+          if ($tmp->menu->position == 'left') {
+            if ($module != null && $tmp->id == $module->id) {
               $item .= '<li class="active">';
             } else {
               $item .= '<li>';
             }
             $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
-            if($tmp->menu->icon != '') {
+            if ($tmp->menu->icon != '') {
               $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
             }
             $item .= $tmp->name;
@@ -86,9 +88,9 @@
             }
           }
           
-          if($tmp->menu->position == 'right') {
+          if ($tmp->menu->position == 'right') {
             $item .= '<li><a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
-            if($tmp->menu->icon != '') {
+            if ($tmp->menu->icon != '') {
               $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
             }
             $item .= $tmp->name;
@@ -142,7 +144,8 @@
       echo '<div id="infobox" class="infobox">'.$infobox.'</div>';
     }
             
-    public static function end() {
+    public static function end()
+    {
       echo '</div>';
       echo '<div class="container-fluid display-xs display-sm hidden-md hidden-lg">';
       echo '<div class="display-xs hidden-sm hidden-md hidden-lg not-supported">';

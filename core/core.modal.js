@@ -1,18 +1,18 @@
-(function($){
+(function ($) {
     
-    var modal = (function() {
-      var init = function() {
+    var modal = (function () {
+      var init = function () {
         $('.modal').on('loaded.bs.modal', core.modal.center);
-        $('.modal').on('hidden.bs.modal', function(e) {
+        $('.modal').on('hidden.bs.modal', function (e) {
           $('.modal').removeData('bs.modal');
           $('#modal-content').html('');
         });
 
-        $(window).on('resize', function() {
+        $(window).on('resize', function () {
           $('.modal:visible').each(core.modal.center);
         });
 
-        $('.modal').on('success.form.fv', function(event) {
+        $('.modal').on('success.form.fv', function (event) {
           if ($('form[data-toggle="modal"]').length > 0) {
             var $form = $('[data-toggle="modal"]');
             var $target = $($form.attr('data-target'));
@@ -22,7 +22,7 @@
               url: $form.attr('action'),
               data: $form.serialize(),
 
-              success: function(data, status) {
+              success: function (data, status) {
                 try {
                   var obj = $.parseJSON(data);
                   if (obj.status == 200) {
@@ -55,7 +55,7 @@
         });
       };
       
-      var center = function() {
+      var center = function () {
         $(this).css('display', 'block');
         var $dialog = $(this).find('.modal-dialog');
         var offset = ($(window).height() - $dialog.height()) / 2;
@@ -66,7 +66,7 @@
         core.validator.reinit();
         core.form.init();
         core.proxy.init();
-        $('button[data-query="modal-data"]').on('click', function(event) {
+        $('[data-query="modal-data"]').on('click', function (event) {
           $('#modal-data').submit();
         });
       };
@@ -83,7 +83,7 @@
       }
     });
 
-    $(function() {
+    $(function () {
         core.modal.init();
     });
 

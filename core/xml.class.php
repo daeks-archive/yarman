@@ -1,17 +1,20 @@
 <?php
     
-  class xml {
+  class xml
+  {
   
-    public static function read($name) {
+    public static function read($name)
+    {
       $xml = new DOMDocument();
-      if($xml->load($name))  {
+      if ($xml->load($name))  {
         return self::parse($xml);
       } else {
         return array();
       }
     }
     
-    private static function parse($xml) {
+    private static function parse($xml)
+    {
       $xpath = new DOMXpath($xml);
       $output = array();
       
@@ -24,9 +27,10 @@
       return $output;
     }
 
-    private static function parse_attributes($node){
+    private static function parse_attributes($node)
+    {
       $output = array();
-      if($node->hasAttributes()) {
+      if ($node->hasAttributes()) {
         foreach($node->attributes as $attr) {
           $output[$attr->nodeName] = $attr->nodeValue;
         }
@@ -34,17 +38,19 @@
       return $output;
     }
     
-    private static function parse_fields($node){
+    private static function parse_fields($node)
+    {
       $output = array();
       foreach($node->childNodes as $child) {
-        if($child->nodeType == XML_ELEMENT_NODE) {
+        if ($child->nodeType == XML_ELEMENT_NODE) {
           $output[$child->nodeName] = $child->nodeValue;
         }
       }
       return $output;
     }
 
-    public static function write($root, $data, $name) {
+    public static function write($root, $data, $name)
+    {
       $output = new DOMDocument('1.0','UTF-8');
       $output->formatOutput = true;
 
