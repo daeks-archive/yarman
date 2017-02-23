@@ -22,8 +22,7 @@
   config::includes(INC);
   session::construct();
 
-  class config
-  {
+  class config {
     public static function includes($path)
     {
       foreach (scandir($path) as $include) {
