@@ -71,29 +71,68 @@ class page
       $item = "";
       if (isset($tmp->menu)) {
         if ($tmp->menu->position == 'left') {
-          if ($module != null && $tmp->id == $module->id) {
-            $item .= '<li class="active">';
+          if (isset($tmp->menu->dropdown)) {
+            $item .= '<li class="dropdown">';
+            $item .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i></a>';
+            $item .= '<ul class="dropdown-menu">';
+            foreach ($tmp->menu->dropdown as $dropdown) {
+              if ($dropdown->type == 'spacer') {
+                $item .= '<li role="separator" class="divider"></li>';
+              } elseif ($dropdown->type == 'modal') {
+                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name.'</a></li>';
+              }
+            }
+            $item .= '</ul>';
+            $item .= '</li>';
           } else {
-            $item .= '<li>';
+            if ($module != null && $tmp->id == $module->id) {
+              $item .= '<li class="active">';
+            } else {
+              $item .= '<li>';
+            }
+            if(isset($tmp->menu->external)) {
+              $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
+            } else {
+              $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
+            }
+            if ($tmp->menu->icon != '') {
+              $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
+            }
+            $item .= $tmp->name;
+            $item .= '</a></li>';
           }
-          $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
-          if ($tmp->menu->icon != '') {
-            $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
-          }
-          $item .= $tmp->name;
-          $item .= '</a></li>';
           if (!array_key_exists($tmp->menu->order, $menuleft)) {
             $menuleft[$tmp->menu->order] = $item;
           }
         }
         
         if ($tmp->menu->position == 'right') {
-          $item .= '<li><a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
-          if ($tmp->menu->icon != '') {
-            $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
+          if (isset($tmp->menu->dropdown)) {
+            $item .= '<li class="dropdown">';
+            $item .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i></a>';
+            $item .= '<ul class="dropdown-menu">';
+            foreach ($tmp->menu->dropdown as $dropdown) {
+              if ($dropdown->type == 'spacer') {
+                $item .= '<li role="separator" class="divider"></li>';
+              } elseif ($dropdown->type == 'modal') {
+                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name.'</a></li>';
+              }
+            }
+            $item .= '</ul>';
+            $item .= '</li>';
+          } else {
+            $item .= '<li>';
+            if(isset($tmp->menu->external)) {
+              $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
+            } else {
+              $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
+            }
+            if ($tmp->menu->icon != '') {
+              $item .= '<i class="fa fa-'.$tmp->menu->icon.' fa-fw"></i> ';
+            }
+            $item .= $tmp->name;
+            $item .= '</a></li>';
           }
-          $item .= $tmp->name;
-          $item .= '</a></li>';
           if (!array_key_exists($tmp->menu->order, $menuright)) {
             $menuright[$tmp->menu->order] = $item;
           }
@@ -114,14 +153,6 @@ class page
     foreach ($menuright as $item) {
       echo $item;
     }
-    echo '<li class="dropdown">';
-    echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i></a>';
-    echo '<ul class="dropdown-menu">';
-    echo '<li class="disabled"><a href="#">Restart Emulationstation</a></li>';
-    echo '<li role="separator" class="divider"></li>';
-    echo '<li class="disabled"><a href="#">Reboot</a></li>';
-    echo '</ul>';
-    echo '</li>';
     echo '</ul>';
     echo '</div>';
     // END RIGHT

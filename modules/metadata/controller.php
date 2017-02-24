@@ -87,7 +87,7 @@ if (network::get('action') != '') {
       network::success('Successfully Deleted Rom', 'core.metadata.reset();');
       break;
     default:
-      network::error('invalid Action - '.network::get('action'));
+      network::error('invalid action - '.network::get('action'));
       break;
   }
 }
