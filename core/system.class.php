@@ -2,6 +2,11 @@
 
 class system
 {
+  public static function reboot()
+  {
+    return shell_exec('reboot');
+  }
+
   public static function getCPUTemp()
   {
     return round(shell_exec('cat /sys/class/thermal/thermal_zone0/temp')/1000, 2);

@@ -2,11 +2,28 @@
   
 class rom
 {
+  public static function parse($id)
+  {
+    return pathinfo($id, PATHINFO_BASENAME);
+  }
+  
+  public static function readAll($emulator)
+  {
+    $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    $output = array();
+    foreach ($xml as $item) {
+      $item['id'] = pathinfo($item['fields']['path'], PATHINFO_BASENAME);
+      array_push($output, $item);
+    }
+    return $output;
+  }
+
   public static function read($emulator, $id)
   {
     $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
     foreach ($xml as $item) {
-      if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
+      if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
+        $item['id'] = pathinfo($item['fields']['path'], PATHINFO_BASENAME);
         return $item;
       }
     }
@@ -19,7 +36,7 @@ class rom
     
     $output = array();
     foreach ($xml as $item) {
-      if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
+      if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         foreach ($data as $key => $value) {
           $field = db::read('fields', $key, 'type');
           if ($field == 'date') {
@@ -54,7 +71,7 @@ class rom
     
     $output = array();
     foreach ($xml as $item) {
-      if (substr_compare($item['fields']['path'], $id, strlen($item['fields']['path'])-strlen($id), strlen($id)) === 0) {
+      if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         foreach ($item['fields'] as $key => $value) {
           $field = db::read('fields', $key, 'type');
           if ($field == 'upload') {

@@ -8,15 +8,72 @@ if (network::get('action') != '') {
       if (network::get('emulator') != '') {
         cache::setClientVariable($module->id.'_emulator', network::get('emulator'));
         cache::unsetClientVariable($module->id.'_id');
-        $data = '';
-        foreach (emulator::readRomlist(network::get('emulator')) as $rom) {
-          $data .= '<option value="'.$rom.'">'.$rom.'</option>';
+        $output = '';
+        if (cache::getClientVariable($module->id.'_filter') != '') {
+          $romdata = rom::readAll(network::get('emulator'));
+          foreach (emulator::readRomlist(network::get('emulator')) as $rom) {
+            $offset = array_search($rom, array_column($romdata, 'id'));
+            $data = null;
+            if($offset >= 0) {
+              if (isset($romdata[$offset])) {
+                $data = $romdata[$offset];
+              }
+            }
+            if (cache::getClientVariable($module->id.'_filter') == 'nodata') {
+              if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
+                $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+              }
+            } elseif (cache::getClientVariable($module->id.'_filter') == 'noimage') {
+              if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
+                $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+              }
+            } elseif (cache::getClientVariable($module->id.'_filter') == 'novideo') {
+              if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
+                $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+              }
+            }
+          }
+        } else {
+          foreach (emulator::readRomlist(network::get('emulator')) as $rom) {
+            $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+          }
         }
-        network::success($data);
+        network::success($output);
       } else {
         network::success('');
       }
       break;
+    case 'filter':
+      cache::setClientVariable($module->id.'_filter', network::get('type'));
+      cache::unsetClientVariable($module->id.'_id');
+      $romdata = rom::readAll(cache::getClientVariable($module->id.'_emulator'));
+      $output = '';
+      foreach (emulator::readRomlist(cache::getClientVariable($module->id.'_emulator')) as $rom) {
+        if (network::get('type') == '') {
+          $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+        } else {
+          $offset = array_search(rom::parse($rom), array_column($romdata, 'id'));
+          $data = null;
+          if (isset($romdata[$offset])) {
+            $data = $romdata[$offset];
+          }
+          if (network::get('type') == 'nodata') {
+            if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
+              $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+            }
+          } elseif (network::get('type') == 'noimage') {
+            if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
+              $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+            }
+          } elseif (network::get('type') == 'novideo') {
+            if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
+              $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+            }
+          }
+        }
+      }
+      network::success($output);
+      break;  
     case 'presave':
       network::success('', "$('[data-toggle=\"post\"]').submit();");
       break;

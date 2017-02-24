@@ -21,6 +21,11 @@
           $('#panel-right').html('');
           return false;
         });
+        $('#nav-filter').on('change', function (e) {
+          e.preventDefault();
+          $('#panel-right').html('');
+          return false;
+        });
       };
       
       var reset = function () {

@@ -24,9 +24,9 @@ panel::start('CPU');
 $load = system::getLoadAverage();
 echo '<p><b>Overview:</b> '.system::getUptime().'</p>';
 echo '<div class="row">';
-echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="1min" data-query-min="0" data-query-max="5" data-query="'.$load['1min'].'" width="150"></div>';
-echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" width="150"></div>';
-echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" width="150"></div>';
+echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="1min" data-query-min="0" data-query-max="5" data-query="'.$load['1min'].'" width="100"></div>';
+echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" width="100"></div>';
+echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" width="100"></div>';
 echo '</div>';
 panel::end();
 
@@ -36,8 +36,8 @@ echo '<div class="col-sm-5">';
 panel::start('Temperature');
 echo '<p>CPU Frequency: <b>'.system::getCPUFreq().'MHz</b></p>';
 echo '<div class="row">';
-echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getCPUTemp().'" width="150"></div>';
-echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getGPUTemp().'" width="150"></div>';
+echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getCPUTemp().'" width="100"></div>';
+echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getGPUTemp().'" width="100"></div>';
 echo '</div>';
 panel::end();
 
