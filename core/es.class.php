@@ -20,6 +20,11 @@ class es
     }
     return $output;
   }
+  
+  public static function start($system, $id)
+  {
+    return shell_exec('/opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ '.$system.' \''.db::read('config', 'rom_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$id.'\'');
+  }
 }
 
 ?>
