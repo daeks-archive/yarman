@@ -34,23 +34,23 @@ echo '<span class="input-group-addon"><i class="fa fa-filter fa-fw"></i></span>'
 echo '<select name="nav-filter" id="nav-filter" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=filter&type=" data-target="#nav-romlist">';
 echo '<option';
 if (cache::getClientVariable($module->id.'_filter') == '') {
-    echo ' selected';
-  }
+  echo ' selected';
+}
 echo ' value="">All</option>';
 echo '<option';
 if (cache::getClientVariable($module->id.'_filter') == 'nodata') {
-    echo ' selected';
-  }
+  echo ' selected';
+}
 echo ' value="nodata">No Data</option>';
 echo '<option';
 if (cache::getClientVariable($module->id.'_filter') == 'noimage') {
-    echo ' selected';
-  }
+  echo ' selected';
+}
 echo ' value="noimage">No Image</option>';
 echo '<option';
 if (cache::getClientVariable($module->id.'_filter') == 'novideo') {
-    echo ' selected';
-  }
+  echo ' selected';
+}
 echo ' value="novideo">No Video</option>';
 echo '</select></div>';
 echo '</div>';
@@ -64,34 +64,34 @@ if (cache::getClientVariable($module->id.'_emulator') != '') {
   if (cache::getClientVariable($module->id.'_filter') != '') {
     $romdata = rom::readAll(cache::getClientVariable($module->id.'_emulator'));
     foreach ($romlist as $rom) {
-        $offset = array_search(rom::parse($rom), array_column($romdata, 'id'));
-        $data = null;
-        if (isset($romdata[$offset])) {
-          $data = $romdata[$offset];
+      $offset = array_search(rom::parse($rom), array_column($romdata, 'id'));
+      $data = null;
+      if (isset($romdata[$offset])) {
+        $data = $romdata[$offset];
+      }
+      if (cache::getClientVariable($module->id.'_filter') == 'nodata') {
+        if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
+          if ($first == null) {
+            $first = $rom;
+          }
+          echo '<option value="'.$rom.'">'.$rom.'</option>';
         }
-        if (cache::getClientVariable($module->id.'_filter') == 'nodata') {
-          if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
-            if ($first == null) {
-              $first = $rom;
-            }
-            echo '<option value="'.$rom.'">'.$rom.'</option>';
+      } elseif (cache::getClientVariable($module->id.'_filter') == 'noimage') {
+        if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
+          if ($first == null) {
+            $first = $rom;
           }
-        } elseif (cache::getClientVariable($module->id.'_filter') == 'noimage') {
-          if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
-            if ($first == null) {
-              $first = $rom;
-            }
-            echo '<option value="'.$rom.'">'.$rom.'</option>';
+          echo '<option value="'.$rom.'">'.$rom.'</option>';
+        }
+      } elseif (cache::getClientVariable($module->id.'_filter') == 'novideo') {
+        if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
+          if ($first == null) {
+            $first = $rom;
           }
-        } elseif (cache::getClientVariable($module->id.'_filter') == 'novideo') {
-          if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
-            if ($first == null) {
-              $first = $rom;
-            }
-            echo '<option value="'.$rom.'">'.$rom.'</option>';
-          }
+          echo '<option value="'.$rom.'">'.$rom.'</option>';
         }
       }
+    }
   } else {
     $first = $romlist[0];
     foreach ($romlist as $rom) {

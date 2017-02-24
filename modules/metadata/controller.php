@@ -14,7 +14,7 @@ if (network::get('action') != '') {
           foreach (emulator::readRomlist(network::get('emulator')) as $rom) {
             $offset = array_search($rom, array_column($romdata, 'id'));
             $data = null;
-            if($offset >= 0) {
+            if ($offset >= 0) {
               if (isset($romdata[$offset])) {
                 $data = $romdata[$offset];
               }
@@ -73,7 +73,7 @@ if (network::get('action') != '') {
         }
       }
       network::success($output);
-      break;  
+      break;
     case 'presave':
       network::success('', "$('[data-toggle=\"post\"]').submit();");
       break;
