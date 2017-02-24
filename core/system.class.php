@@ -4,7 +4,7 @@ class system
 {
   public static function reboot()
   {
-    return shell_exec('reboot');
+    return shell_exec('sudo reboot &');
   }
 
   public static function getCPUTemp()
