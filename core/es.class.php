@@ -2,9 +2,14 @@
 
 class es
 {
-  public static function restart()
+  public static function start()
   {
-    return shell_exec('killall emulationstation && emulationstation &');
+    return shell_exec('export HOME='.db::read('config', 'user_path').' && emulationstation > /dev/null 2>/dev/null &');
+  }
+  
+  public static function stop()
+  {
+    return shell_exec('killall emulationstation');
   }
   
   public static function config()
@@ -21,7 +26,7 @@ class es
     return $output;
   }
   
-  public static function start($system, $id)
+  public static function startRom($system, $id)
   {
     return shell_exec('/opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ '.$system.' \''.db::read('config', 'rom_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$id.'\'');
   }
