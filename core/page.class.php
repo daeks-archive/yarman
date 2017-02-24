@@ -90,7 +90,7 @@ class page
             } else {
               $item .= '<li>';
             }
-            if(isset($tmp->menu->external)) {
+            if (isset($tmp->menu->external)) {
               $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
             } else {
               $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
@@ -122,7 +122,7 @@ class page
             $item .= '</li>';
           } else {
             $item .= '<li>';
-            if(isset($tmp->menu->external)) {
+            if (isset($tmp->menu->external)) {
               $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
             } else {
               $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
