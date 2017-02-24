@@ -14,7 +14,7 @@
 
         $('.modal').on('success.form.fv', function (event) {
           if ($('form[data-toggle="modal"]').length > 0) {
-            var $form = $('[data-toggle="modal"]');
+            var $form = $('form[data-toggle="modal"]');
             var $target = $($form.attr('data-target'));
 
             $.ajax({
@@ -68,8 +68,10 @@
         core.validator.reinit();
         core.form.init();
         core.proxy.init();
-        $('[data-query="modal-data"]').on('click', function (event) {
+        $('button[data-query="modal-data"]').on('click', function (event) {
           $('#modal-data').submit();
+          event.preventDefault();
+          return false;
         });
       };
       

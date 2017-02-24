@@ -1,5 +1,9 @@
 [
   {
+    "id" : "user_path",
+    "value" : "/home/pi"
+  },
+  {
     "id" : "es_path",
     "value" : "/home/pi/.emulationstation"
   },

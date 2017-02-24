@@ -46,6 +46,9 @@ class form
   
   public static function getHidden($obj, $value = '')
   {
+    if ($obj['id'] == 'id') {
+      $value = rom::parse($value);
+    }
     $data = '<input type="hidden" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"/>';
     return $data;
   }
@@ -62,6 +65,9 @@ class form
     }
     if (isset($obj['readonly']) && $obj['readonly'] == true) {
       $data .= ' disabled';
+    }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
     }
     if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
       $data .= ' maxlength="'.$obj['maxlength'].'"';
@@ -84,6 +90,9 @@ class form
     if (isset($obj['readonly']) && $obj['readonly'] == true) {
       $data .= ' disabled';
     }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
+    }
     if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
       $data .= ' maxlength="'.$obj['maxlength'].'"';
     }
@@ -105,6 +114,9 @@ class form
     if (isset($obj['readonly']) && $obj['readonly'] == true) {
       $data .= ' disabled';
     }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
+    }
     if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
       $data .= ' maxlength="'.$obj['maxlength'].'"';
     }
@@ -122,6 +134,9 @@ class form
     $data .= '<textarea class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" rows="'.$obj['rowcount'].'"';
     if (isset($obj['readonly']) && $obj['readonly'] == true) {
       $data .= ' disabled';
+    }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
     }
     $data .= '>';
     $data .= $value;
@@ -172,6 +187,9 @@ class form
     if (isset($obj['readonly']) && $obj['readonly'] == true) {
       $data .= ' disabled';
     }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
+    }
     if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
       $data .= ' maxlength="'.$obj['maxlength'].'"';
     }
@@ -190,6 +208,9 @@ class form
     $data .= '<select type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'"';
     if (isset($obj['readonly']) && $obj['readonly'] == true) {
       $data .= ' disabled';
+    }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
     }
     $data .= '>"';
     $data .= '<option';
@@ -234,6 +255,9 @@ class form
     }
     if (isset($obj['readonly']) && $obj['readonly'] == true) {
       $data .= ' disabled';
+    }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
     }
     if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
       $data .= ' maxlength="'.$obj['maxlength'].'"';

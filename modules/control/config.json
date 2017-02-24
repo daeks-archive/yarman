@@ -1,0 +1,26 @@
+{
+  "id" : "control",
+  "name" : "",
+  "menu" : {
+    "position" : "right",
+    "order" : 99999,
+    "icon" : "gear",
+    "dropdown" : [
+      {
+        "id" : "restart",
+        "name" : "Restart Emulationstation",
+        "type" : "modal",
+        "external" : "/modules/control/dialog.php?action=restart"
+      },
+      {
+        "type" : "spacer"
+      },
+      {
+        "id" : "reboot",
+        "name" : "Reboot",
+        "type" : "modal",
+        "external" : "/modules/control/dialog.php?action=reboot"
+      }
+    ]
+  }
+}

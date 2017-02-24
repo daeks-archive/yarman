@@ -4,6 +4,7 @@
   "menu" : {
     "position" : "right",
     "order" : 999,
-    "icon" : "book"
+    "icon" : "book",
+    "external" : "https://retropie.org.uk/docs/"
     }
 }

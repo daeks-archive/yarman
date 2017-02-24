@@ -94,16 +94,19 @@ class metadata
     $data .= '<div class="col-sm-12">';
     
     $data .= '<form id="rom-data" name="rom-data" role="form" class="scrollbar" data-validate="form" data-toggle="post" data-query="'.CONTROLLER.'?action=save" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
+    $tabindex = 1;
     foreach ($fieldset as $key => $row) {
       $data .= '<div class="row">';
       foreach ($row as $key => $column) {
         $data .= '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
         foreach ($column as $key => $field) {
+          $field['index'] = $tabindex;
           $data .= form::getField($fields, $field['id'], (isset($rom['fields'][$field['guid']])?$rom['fields'][$field['guid']]:''), $emulator);
         }
         $data .= '</div>';
       }
       $data .= '</div>';
+      $tabindex += 1;
     }
     $data .= '</fieldset></form>';
     
