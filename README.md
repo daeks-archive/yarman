@@ -17,6 +17,8 @@ Contributions to this project are welcome. Please follow the coding standard PSR
 
 # (Optional) Installation with Apache
 
+Note: Please use that installation method only if you have not installed Apache previously. It will clear ```/var/www/```
+
 - Download scriptmodule to your local installation with
 
 ```curl https://raw.githubusercontent.com/daeks/yarman/master/scriptmodules/supplementary/yarman_apache.sh -o ~/RetroPie-Setup/scriptmodules/supplementary/yarman.sh```
