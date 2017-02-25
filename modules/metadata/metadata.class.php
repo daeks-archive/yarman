@@ -148,10 +148,16 @@ class metadata
       }
     }
     
-    foreach (scandir(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
-      if (is_file(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
-        if (!in_array($item, $media)) {
-          array_push($output['media'], $item);
+    $fields = db::read('fields');
+    
+    foreach ($fields as $field) {
+      if ($field['type'] == 'upload') {
+        foreach (scandir($field['path'].DIRECTORY_SEPARATOR.$emulator) as $item) {
+          if (is_file($field['path'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
+            if (!in_array($item, $media) && !in_array($field['path'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item, $output['media'])) {
+              array_push($output['media'], $field['path'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item);
+            }
+          }
         }
       }
     }
