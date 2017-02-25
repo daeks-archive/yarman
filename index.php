@@ -13,7 +13,7 @@ panel::start('Beta Warning', 'danger');
 echo '<p>This is currenly in BETA phase. Please be aware that it could damage your roms, media or gamelists.</p>';
 panel::end();
 
-panel::start('Welcome to RetroPie', 'primary');
+panel::start('Welcome to YARMan Web (Yet Another RetroPie Manager)', 'primary');
 echo '<p>RetroPie allows you to turn your Raspberry Pi or PC into a retro-gaming machine. It builds upon Raspbian, EmulationStation, RetroArch and many other projects to enable you to play your favourite Arcade, home-console, and classic PC games with the minimum set-up. For power users it also provides a large variety of configuration tools to customise the system as you want.</p>';
 panel::end();
  
