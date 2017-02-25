@@ -48,7 +48,7 @@ class rom
               $value = '00000000T000000';
             }
           }
-          if ($field != 'hidden') {
+          if ($field != 'hidden' && $field != 'key') {
             if (isset($item['fields'][$key])) {
               $item['fields'][$key] = trim($value);
             } else {
@@ -69,7 +69,7 @@ class rom
     
       foreach ($fields as $field) {
         $value = '';
-        if ($field['type'] == 'hidden') {
+        if ($field['type'] == 'key') {
           $tmp['fields'][$field['guid']] = trim(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
           if (is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id)) {
             $tmp['type'] = 'game';
@@ -77,18 +77,20 @@ class rom
             $tmp['type'] = 'folder';
           }
         } else {
-          if (isset($data[$field['id']])) {
-            $value = $data[$field['id']];
-          }
-          if ($field['type'] == 'date') {
-            if (trim($value) != '') {
-              $value = date_format(date_create($value), 'Ymd\THis');
-            } else {
-              $value = '00000000T000000';
+          if ($field['type'] != 'hidden') {
+            if (isset($data[$field['id']])) {
+              $value = $data[$field['id']];
             }
-          }
-          if (!isset($tmp['fields'][$field['id']])) {
-            $tmp['fields'][$field['id']] = trim($value);
+            if ($field['type'] == 'date') {
+              if (trim($value) != '') {
+                $value = date_format(date_create($value), 'Ymd\THis');
+              } else {
+                $value = '00000000T000000';
+              }
+            }
+            if (!isset($tmp['fields'][$field['id']])) {
+              $tmp['fields'][$field['id']] = trim($value);
+            }
           }
         }
       }

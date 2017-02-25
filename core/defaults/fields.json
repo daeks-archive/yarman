@@ -2,7 +2,7 @@
   {
     "id" : "id",
     "guid" : "path",
-    "type" : "hidden",
+    "type" : "key",
     "readonly" : true
   },
   {

@@ -8,6 +8,9 @@ class form
       if ($obj['id'] == $id) {
         $data = '';
         switch ($obj['type']) {
+          case 'key':
+            $data = self::getHidden($obj, $value);
+            break;
           case 'hidden':
             $data = self::getHidden($obj, $value);
             break;
