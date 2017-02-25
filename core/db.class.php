@@ -10,7 +10,7 @@ class db
       $needle = array('%USER%');
       $default_user = get_current_user();
       if (file_exists(DATA.DIRECTORY_SEPARATOR.'user')) {
-        $default_user = file_get_contents(DATA.DIRECTORY_SEPARATOR.'user');
+        $default_user = trim(file_get_contents(DATA.DIRECTORY_SEPARATOR.'user'));
       }
       $haystack = array($default_user);
       foreach ($replace as $key => $value) {
