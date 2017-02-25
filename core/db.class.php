@@ -21,7 +21,14 @@ class db
           }
         }
       } else {
-        return $array;
+        $output = array();
+        foreach ($array as $item) {
+          foreach ($item as $key => $value) {
+            $item[$key] = str_replace($needle, $haystack, $value);
+          }
+          array_push($output, $item);
+        }
+        return $output;
       }
     }
   }

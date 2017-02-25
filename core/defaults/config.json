@@ -12,10 +12,6 @@
     "value" : "/home/%USER%/RetroPie/roms"
   },
   {
-    "id" : "media_path",
-    "value" : "/home/%USER%/.emulationstation/downloaded_images"
-  },
-  {
     "id" : "metadata_path",
     "value" : "/home/%USER%/.emulationstation/gamelists"
   }

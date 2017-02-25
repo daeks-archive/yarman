@@ -228,15 +228,15 @@ class form
     return $data;
   }
   
-  public static function getImage($obj, $emulator, $image)
+  public static function getImage($obj, $emulator, $id)
   {
     $data = '';
-    if ($image != '') {
+    if ($id != '') {
       if (isset($obj['name']) && $obj['name'] != '') {
         $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
       }
       $data .= '<div class="thumbnail">';
-      $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&emulator='.$emulator.'&id='.rawurlencode(pathinfo($image, PATHINFO_BASENAME)).'">';
+      $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&emulator='.$emulator.'&type='.$obj['type'].'&id='.rawurlencode(pathinfo($id, PATHINFO_BASENAME)).'">';
       $data .= '</div>';
     }
     return $data;

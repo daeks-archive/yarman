@@ -77,7 +77,7 @@ if (network::get('action') != '') {
     case 'clean':
       $orphaned = metadata::findOrphaned(cache::getClientVariable($module->id.'_emulator'));
       foreach ($orphaned['media'] as $item) {
-        unlink(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.$item);
+        unlink($item);
       }
       rom::clean(cache::getClientVariable($module->id.'_emulator'), $orphaned['metadata']);
       network::success('', "$('#metadata-clean').addClass('disabled');");
