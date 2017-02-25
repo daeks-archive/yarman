@@ -27,6 +27,7 @@ function install_yarman() {
     if [ -d "/var/www/html/data" ]; then
       cp -r "/var/www/html/data/." "$md_build/data"
     fi
+    echo $user > "$md_build/data/user"
     rm -rf "/var/www/html/*"
     cp -r "$md_build/." "/var/www/html"
 }
