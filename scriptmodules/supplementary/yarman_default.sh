@@ -29,6 +29,7 @@ function configure_yarman() {
     php -S "$(ip route get 8.8.8.8 | head -1 | cut -d' ' -f8):8080" -t "$md_inst" > /dev/null 2>&1 &
 
     local config="php -S \"\$\(ip route get 8.8.8.8 \| head -1 \| cut -d' ' -f8\):8080\" -t \"$md_inst\" > /dev/null 2>\&1 \&"
+    sed -i "/php/d" /etc/rc.local
     sed -i "s|^exit 0$|${config}\\nexit 0|" /etc/rc.local
 }
 
