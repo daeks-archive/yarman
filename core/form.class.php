@@ -27,7 +27,7 @@ class form
             $data = self::getDate($obj, $value);
             break;
           case 'image':
-            $data = self::getMedia($obj, $emulator, $value);
+            $data = self::getImage($obj, $emulator, $value);
             break;
           case 'upload':
             $data = self::getUpload($obj, $emulator, $value);
@@ -228,7 +228,7 @@ class form
     return $data;
   }
   
-  public static function getMedia($obj, $emulator, $id)
+  public static function getImage($obj, $emulator, $id)
   {
     $data = '';
     if ($id != '') {
