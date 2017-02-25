@@ -8,7 +8,11 @@ class db
   {
     if (file_exists(DEFAULTS.DIRECTORY_SEPARATOR.$module.self::$format)) {
       $needle = array('%USER%');
-      $haystack = array(get_current_user());
+      $default_user = get_current_user();
+      if (file_exists(DATA.DIRECTORY_SEPARATOR.'user')) {
+        $default_user = file_get_contents(DATA.DIRECTORY_SEPARATOR.'user');
+      }
+      $haystack = array($default_user);
       foreach ($replace as $key => $value) {
         array_push($needle, $key);
         array_push($haystack, $value);

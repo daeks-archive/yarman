@@ -25,6 +25,7 @@ function install_bin_yarman() {
 
 function configure_yarman() {
     killall php
+    echo $user > "$md_inst/data/user"
     php -S "$(ip route get 8.8.8.8 | head -1 | cut -d' ' -f8):8080" -t "$md_inst" > /dev/null 2>&1 &
 
     local config="php -S \"\$\(ip route get 8.8.8.8 \| head -1 \| cut -d' ' -f8\):8080\" -t \"$md_inst\" > /dev/null 2>\&1 \&"
