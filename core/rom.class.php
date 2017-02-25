@@ -35,7 +35,9 @@ class rom
     $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
     
     $output = array();
+    $update = false;
     foreach ($xml as $item) {
+      $update = false;
       if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         foreach ($data as $key => $value) {
           $field = db::read('fields', $key, 'type');
@@ -56,8 +58,37 @@ class rom
             }
           }
         }
+        $update = true;
       }
       array_push($output, $item);
+    }
+    
+    if (!$update) {
+      $type = 'game';
+      $tmp = array('type' => $type, 'attributes' => array(), 'fields' => array());
+      $fields = db::read('fields');
+    
+      foreach ($fields as $field) {
+        $value = '';
+        if ($field['type'] == 'hidden') {
+          $tmp['fields'][$field['guid']] = trim(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
+        } else {
+          if (isset($data[$field['id']])) {
+            $value = $data[$field['id']];
+          }
+          if ($type == 'date') {
+            if (trim($value) != '') {
+              $value = date_format(date_create($value), 'Ymd\THis');
+            } else {
+              $value = '00000000T000000';
+            }
+          }
+          if (!isset($tmp['fields'][$field['id']])) {
+            $tmp['fields'][$field['id']] = trim($value);
+          }
+        }
+      }
+      array_push($output, $tmp);
     }
     return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
   }

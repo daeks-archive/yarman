@@ -107,7 +107,22 @@ class metadata
         $data .= '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
         foreach ($column as $key => $field) {
           $field['index'] = $tabindex;
-          $data .= form::getField($fields, $field['id'], (isset($rom['fields'][$field['guid']])?$rom['fields'][$field['guid']]:''), $emulator);
+          $value = '';
+          if ($field['type'] == 'hidden' && isset($field['guid'])) {
+            if (isset($rom['fields'][$field['guid']])) {
+              $value = $rom['fields'][$field['guid']];
+              if ($value == '') {
+                $value = $id;
+              }
+            } else {
+              $value = $id;
+            }
+          } else {
+            if (isset($rom['fields'][$field['id']])) {
+              $value = $rom['fields'][$field['id']];
+            }
+          }
+          $data .= form::getField($fields, $field['id'], $value, $emulator);
         }
         $data .= '</div>';
       }
