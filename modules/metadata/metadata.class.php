@@ -85,7 +85,7 @@ class metadata
           }
         }
       }
-      if (isset($field['type']) && $field['type'] == 'hidden') {
+      if (isset($field['type']) && ($field['type'] == 'key' || $field['type'] == 'hidden')) {
         if (array_key_exists('0', $fieldset)) {
           array_push($fieldset['0']['left-col-sm-12'], $field);
         } else {
@@ -108,7 +108,7 @@ class metadata
         foreach ($column as $key => $field) {
           $field['index'] = $tabindex;
           $value = '';
-          if ($field['type'] == 'hidden' && isset($field['guid'])) {
+          if ($field['type'] == 'key' && isset($field['guid'])) {
             if (isset($rom['fields'][$field['guid']])) {
               $value = $rom['fields'][$field['guid']];
               if ($value == '') {
