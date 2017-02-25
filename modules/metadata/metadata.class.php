@@ -2,8 +2,39 @@
 
 class metadata
 {
-  public static function start($tab)
+  public static function start($tab, $emulator)
   {
+    
+    $romdata = rom::readAll($emulator);
+    $orphaned = 0;
+    $media = array();
+    
+    foreach ($romdata as $rom) {
+      if (!file_exists(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
+        $orphaned += 1;
+      }
+      if (isset($rom['fields']['image']) && $rom['fields']['image'] != '') {
+        array_push($media, pathinfo($rom['fields']['image'], PATHINFO_BASENAME));
+      }
+      if (isset($rom['fields']['video']) && $rom['fields']['video'] != '') {
+        array_push($media, pathinfo($rom['fields']['video'], PATHINFO_BASENAME));
+      }
+      if (isset($rom['fields']['marquee']) && $rom['fields']['marquee'] != '') {
+        array_push($media, pathinfo($rom['fields']['marquee'], PATHINFO_BASENAME));
+      }
+      if (isset($rom['fields']['thumbnail']) && $rom['fields']['thumbnail'] != '') {
+        array_push($media, pathinfo($rom['fields']['thumbnail'], PATHINFO_BASENAME));
+      }
+    }
+    
+    foreach (scandir(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
+      if (is_file(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
+        if (!in_array($item, $media)) {
+          $orphaned += 1;
+        }
+      }
+    }
+  
     // RENDER RIGHT MENU
     $data = '<div class="row">';
     $data .= '<div class="col-sm-12">';
@@ -28,7 +59,11 @@ class metadata
     $data .= '<div class="btn-toolbar btn-group-sm" role="toolbar">';
     $data .= '<button class="btn btn-success" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmsave" data-target="#modal" disabled><em class="fa fa-save"></em> Save</button>';
     $data .= '<div class="btn-group btn-group-sm pull-right">';
-    //$data .= '<button class="btn btn-default disabled" type="button">Add Image</button>';
+    $data .= '<button class="btn btn-default';
+    if ($orphaned == 0) {
+      $data .= ' disabled';
+    }
+    $data .= '" type="submit" data-toggle="modal" href="'.DIALOG.'?action=clean" data-target="#modal">Clean Orphaned</button>';
     $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em> Delete</button>';
     $data .= '</div>';
     $data .= '</div>';
@@ -88,7 +123,7 @@ class metadata
       }
     }
     
-    $data = self::start($container);
+    $data = self::start($container, $emulator);
     
     $data .= '<div class="row">';
     $data .= '<div class="col-sm-12">';
