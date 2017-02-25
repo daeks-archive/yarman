@@ -10,20 +10,20 @@
 # at https://raw.githubusercontent.com/RetroPie/RetroPie-Setup/master/LICENSE.md
 #
 
-rp_module_id="webgui"
-rp_module_desc="RetroPie WebGUI on port 80"
+rp_module_id="yarman"
+rp_module_desc=" YARMan Web (Yet Another RetroPie Manager) on port 80"
 rp_module_help="PHP and JQuery based web frontend for managing your retropie installation"
 rp_module_section="exp"
 
-function depends_webgui() {
+function depends_yarman() {
     getDepends apache2 sqlite3 php5 php5-sqlite
 }
 
-function sources_webgui() {
-    gitPullOrClone "$md_build" "https://github.com/daeks/RetroPie-WebGui"
+function sources_yarman() {
+    gitPullOrClone "$md_build" "https://github.com/daeks/yarman"
 }
 
-function install_webgui() {
+function install_yarman() {
     if [ -d "/var/www/html/data" ]; then
       cp -r "/var/www/html/data/." "$md_build/data"
     fi
@@ -31,7 +31,7 @@ function install_webgui() {
     cp -r "$md_build/." "/var/www/html"
 }
 
-function configure_webgui() {
+function configure_yarman() {
     chown -R $user:$user "/var/www"
     chmod -R 775 "/var/www/html"
     sed -i "s/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=${user}/g" /etc/apache2/envvars
@@ -40,6 +40,6 @@ function configure_webgui() {
     service apache2 restart
 }
 
-function remove_webgui() {
+function remove_yarman() {
     rm -rf "/var/www/html/*"
 }

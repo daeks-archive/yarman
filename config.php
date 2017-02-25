@@ -1,7 +1,7 @@
 <?php
 
 define('BASE', (($_SERVER['DOCUMENT_ROOT'] != '') ? $_SERVER['DOCUMENT_ROOT'] : dirname(realpath(__FILE__))));
-define('NAME', 'RetroPie');
+define('NAME', 'YARMan Web');
 define('BRAND', 'core/img/site-logo.png');
 define('COOKIE_LIFETIME', 60*60*24*7*4*3);
 
