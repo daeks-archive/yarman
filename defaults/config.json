@@ -1,23 +1,23 @@
 [
   {
     "id" : "user_path",
-    "value" : "/home/pi"
+    "value" : "/home/%USER%"
   },
   {
     "id" : "es_path",
-    "value" : "/home/pi/.emulationstation"
+    "value" : "/home/%USER%/.emulationstation"
   },
   {
     "id" : "roms_path",
-    "value" : "/home/pi/RetroPie/roms"
+    "value" : "/home/%USER%/RetroPie/roms"
   },
   {
     "id" : "media_path",
-    "value" : "/home/pi/.emulationstation/downloaded_images"
+    "value" : "/home/%USER%/.emulationstation/downloaded_images"
   },
   {
     "id" : "metadata_path",
-    "value" : "/home/pi/.emulationstation/gamelists"
+    "value" : "/home/%USER%/.emulationstation/gamelists"
   }
   ,
   {
