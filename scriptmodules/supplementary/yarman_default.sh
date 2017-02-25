@@ -35,6 +35,6 @@ function configure_yarman() {
 
 function remove_yarman() {
     killall php
-    sed -i "/php/d" /etc/rc.local
+    sed -i "/^php/d" /etc/rc.local
     rm -R "$md_inst"
 }
