@@ -22,6 +22,14 @@ if (network::get('action') != '') {
         }
       }
       break;
+    case 'clean':
+      modal::start('Clean Orphaned', CONTROLLER.'?action=clean');
+      $orphaned = metadata::findOrphaned(cache::getClientVariable($module->id.'_emulator'));
+      echo '<p>Orphaned Metadata: <b>'.sizeof($orphaned['metadata']).'</b></p>';
+      echo '<p>Orphaned Media:    <b>'.sizeof($orphaned['media']).'</b></p>';
+      echo 'Do you really want to clean '.cache::getClientVariable($module->id.'_emulator').'?';
+      modal::end('Clean', 'success');
+      break;
     case 'confirmsave':
       modal::start('Save Changes', CONTROLLER.'?action=presave');
       echo 'Do you really want to save '.cache::getClientVariable($module->id.'_id').'?';

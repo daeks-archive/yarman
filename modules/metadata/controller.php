@@ -74,6 +74,14 @@ if (network::get('action') != '') {
       }
       network::success($output);
       break;
+    case 'clean':
+      $orphaned = metadata::findOrphaned(cache::getClientVariable($module->id.'_emulator'));
+      foreach ($orphaned['media'] as $item) {
+        unlink(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.$item);
+      }
+      rom::clean(cache::getClientVariable($module->id.'_emulator'), $orphaned['metadata']);
+      network::success('', "$('#metadata-clean').addClass('disabled');");
+      break;
     case 'presave':
       network::success('', "$('[data-toggle=\"post\"]').submit();");
       break;
