@@ -34,7 +34,7 @@ class metadata
     if ((sizeof($orphaned['metadata']) + sizeof($orphaned['media'])) == 0) {
       $data .= ' disabled';
     }
-    $data .= '" type="submit" data-toggle="modal" href="'.DIALOG.'?action=clean" data-target="#modal">Clean Orphaned</button>';
+    $data .= '" type="submit" id="metadata-clean" name="metadata-clean" data-toggle="modal" href="'.DIALOG.'?action=clean" data-target="#modal">Clean Orphaned</button>';
     $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em> Delete</button>';
     $data .= '</div>';
     $data .= '</div>';

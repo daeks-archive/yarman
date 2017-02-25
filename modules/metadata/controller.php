@@ -80,7 +80,7 @@ if (network::get('action') != '') {
         unlink(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.$item);
       }
       rom::clean(cache::getClientVariable($module->id.'_emulator'), $orphaned['metadata']);
-      network::success('Successfully Cleaned Orphaned', 'true');
+      network::success('', "$('#metadata-clean').addClass('disabled');");
       break;
     case 'presave':
       network::success('', "$('[data-toggle=\"post\"]').submit();");
