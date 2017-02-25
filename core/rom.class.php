@@ -64,19 +64,23 @@ class rom
     }
     
     if (!$update) {
-      $type = 'game';
-      $tmp = array('type' => $type, 'attributes' => array(), 'fields' => array());
+      $tmp = array('type' => '', 'attributes' => array(), 'fields' => array());
       $fields = db::read('fields');
     
       foreach ($fields as $field) {
         $value = '';
         if ($field['type'] == 'hidden') {
           $tmp['fields'][$field['guid']] = trim(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
+          if (is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id)) {
+            $tmp['type'] = 'game';
+          } else {
+            $tmp['type'] = 'folder';
+          }
         } else {
           if (isset($data[$field['id']])) {
             $value = $data[$field['id']];
           }
-          if ($type == 'date') {
+          if ($field['type'] == 'date') {
             if (trim($value) != '') {
               $value = date_format(date_create($value), 'Ymd\THis');
             } else {
