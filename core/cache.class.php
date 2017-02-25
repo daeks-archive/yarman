@@ -16,7 +16,9 @@ class cache
   
   public static function getClientVariable($key)
   {
-    if (isset($_COOKIE[$key])) {
+    if (isset($_SESSION[$key])) {
+      return $_SESSION[$key];
+    } elseif (isset($_COOKIE[$key])) {
       $_SESSION[$key] = rawurldecode($_COOKIE[$key]);
       return rawurldecode($_COOKIE[$key]);
     } else {

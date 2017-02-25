@@ -86,6 +86,31 @@ class rom
     }
     return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
   }
+  
+  public static function clean($emulator, $ids)
+  {
+    copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
+    $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    
+    $output = array();
+    foreach ($xml as $item) {
+      if (in_array(pathinfo($item['fields']['path'], PATHINFO_BASENAME), $ids)) {
+        foreach ($item['fields'] as $key => $value) {
+          $field = db::read('fields', $key, 'type');
+          if ($field == 'upload') {
+            if ($value != '') {
+              if (file_exists($value)) {
+                unlink($value);
+              }
+            }
+          }
+        }
+      } else {
+        array_push($output, $item);
+      }
+    }
+    return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+  }
 }
   
 ?>

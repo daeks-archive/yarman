@@ -1,16 +1,16 @@
 <?php
 
 define('BASE', (($_SERVER['DOCUMENT_ROOT'] != '') ? $_SERVER['DOCUMENT_ROOT'] : dirname(realpath(__FILE__))));
-define('NAME', 'RetroPie');
+define('NAME', 'YARMan Web');
 define('BRAND', 'core/img/site-logo.png');
 define('COOKIE_LIFETIME', 60*60*24*7*4*3);
 
 define('INC', BASE.DIRECTORY_SEPARATOR.'core');
 define('JS', BASE.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'js');
 define('CSS', BASE.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'css');
+define('DEFAULTS', BASE.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'defaults');
 define('DATA', BASE.DIRECTORY_SEPARATOR.'data');
 define('CACHE', BASE.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'cache');
-define('DEFAULTS', BASE.DIRECTORY_SEPARATOR.'defaults');
 define('MODULES', BASE.DIRECTORY_SEPARATOR.'modules');
 
 define('MODULE', 'config.json');

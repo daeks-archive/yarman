@@ -6,7 +6,7 @@ if (network::get('action') != '') {
     case 'render':
       if (network::get('emulator') != '' && network::get('id') != '') {
         $id = rawurldecode(network::get('id'));
-        $obj = db::read('config', 'media_path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$id;
+        $obj = db::read('fields', network::get('type'), 'path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$id;
         if (file_exists($obj) && is_readable($obj) && basename(network::get('emulator')) == network::get('emulator') && basename($id) == $id) {
           switch (pathinfo($obj, PATHINFO_EXTENSION)) {
             case 'jpg':
@@ -55,8 +55,8 @@ if (network::get('action') != '') {
           $output = pathinfo($_FILES['object']['name'][0], PATHINFO_FILENAME).'-'.network::get('type').'.'.pathinfo($_FILES['object']['name'][0], PATHINFO_EXTENSION);
         }
       
-        if (move_uploaded_file($_FILES['object']['tmp_name'][0], db::read('config', 'media_path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$output)) {
-            network::success(db::read('config', 'media_path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$output);
+        if (move_uploaded_file($_FILES['object']['tmp_name'][0], db::read('fields', network::get('type'), 'path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$output)) {
+            network::success(db::read('fields', network::get('type'), 'path').DIRECTORY_SEPARATOR.network::get('emulator').DIRECTORY_SEPARATOR.$output);
         } else {
           network::error('Object could not be uploaded', 'true');
         }

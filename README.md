@@ -1,4 +1,4 @@
-# RetroPie-WebGUI
+# YARMan Web (Yet Another RetroPie Manager)
 
 This is a webbased frontend for RetroPie containing several functions to maintain your setup. 
 
@@ -6,10 +6,10 @@ This is a webbased frontend for RetroPie containing several functions to maintai
 
 - Download scriptmodule to your local installation with
 
-```curl https://raw.githubusercontent.com/daeks/RetroPie-WebGui/master/scriptmodules/supplementary/webgui_default.sh -o ~/RetroPie-Setup/scriptmodules/supplementary/webgui.sh```
+```curl https://raw.githubusercontent.com/daeks/yarman/master/scriptmodules/supplementary/yarman_default.sh -o ~/RetroPie-Setup/scriptmodules/supplementary/yarman.sh```
   
 - Start RetroPie Setup and go to the experimental section for installing.
-- Access WebGUI from browser by http://retropie:8080/
+- Access YARMan from browser by http://retropie:8080/
 
 # Contributions
 
@@ -19,10 +19,10 @@ Contributions to this project are welcome. Please follow the coding standard PSR
 
 - Download scriptmodule to your local installation with
 
-```curl https://raw.githubusercontent.com/daeks/RetroPie-WebGui/master/scriptmodules/supplementary/webgui_apache.sh -o ~/RetroPie-Setup/scriptmodules/supplementary/webgui.sh```
+```curl https://raw.githubusercontent.com/daeks/yarman/master/scriptmodules/supplementary/yarman_apache.sh -o ~/RetroPie-Setup/scriptmodules/supplementary/yarman.sh```
   
 - Start RetroPie Setup and go to the experimental section for installing.
-- Access WebGUI from browser by http://retropie:80/
+- Access YARMan from browser by http://retropie:80/
 
 # (Optional) Add Apache WWW share to SAMBA
 

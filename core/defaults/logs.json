@@ -1,0 +1,10 @@
+[
+  {
+    "id" : "es_log",
+    "value" : "/opt/retropie/configs/all/emulationstation/es_log.txt"
+  },
+  {
+    "id" : "runcommand_log",
+    "value" : "/dev/shm/runcommand.log"
+  }
+]
