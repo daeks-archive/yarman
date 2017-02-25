@@ -75,37 +75,11 @@ if (network::get('action') != '') {
       network::success($output);
       break;
     case 'clean':
-      $romdata = rom::readAll(cache::getClientVariable($module->id.'_emulator'));
-      $media = array();
-      $invalid = array();
-      
-      foreach ($romdata as $rom) {
-        if (!file_exists(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
-          array_push($invalid, $rom['id']);
-        }
-        if (isset($rom['fields']['image']) && $rom['fields']['image'] != '') {
-          array_push($media, pathinfo($rom['fields']['image'], PATHINFO_BASENAME));
-        }
-        if (isset($rom['fields']['video']) && $rom['fields']['video'] != '') {
-          array_push($media, pathinfo($rom['fields']['video'], PATHINFO_BASENAME));
-        }
-        if (isset($rom['fields']['marquee']) && $rom['fields']['marquee'] != '') {
-          array_push($media, pathinfo($rom['fields']['marquee'], PATHINFO_BASENAME));
-        }
-        if (isset($rom['fields']['thumbnail']) && $rom['fields']['thumbnail'] != '') {
-          array_push($media, pathinfo($rom['fields']['thumbnail'], PATHINFO_BASENAME));
-        }
+      $orphaned = metadata::findOrphaned(cache::getClientVariable($module->id.'_emulator'));
+      foreach ($orphaned['media'] as $item) {
+        unlink(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.$item);
       }
-      
-      foreach (scandir(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator')) as $item) {
-        if (is_file(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.$item)) {
-          if (!in_array($item, $media)) {
-            unlink(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.$item);
-          }
-        }
-      }
-      
-      rom::clean(cache::getClientVariable($module->id.'_emulator'), $invalid);
+      rom::clean(cache::getClientVariable($module->id.'_emulator'), $orphaned['metadata']);
       network::success('Successfully Cleaned Orphaned', 'true');
       break;
     case 'presave':

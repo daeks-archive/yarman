@@ -4,36 +4,7 @@ class metadata
 {
   public static function start($tab, $emulator)
   {
-    
-    $romdata = rom::readAll($emulator);
-    $orphaned = 0;
-    $media = array();
-    
-    foreach ($romdata as $rom) {
-      if (!file_exists(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
-        $orphaned += 1;
-      }
-      if (isset($rom['fields']['image']) && $rom['fields']['image'] != '') {
-        array_push($media, pathinfo($rom['fields']['image'], PATHINFO_BASENAME));
-      }
-      if (isset($rom['fields']['video']) && $rom['fields']['video'] != '') {
-        array_push($media, pathinfo($rom['fields']['video'], PATHINFO_BASENAME));
-      }
-      if (isset($rom['fields']['marquee']) && $rom['fields']['marquee'] != '') {
-        array_push($media, pathinfo($rom['fields']['marquee'], PATHINFO_BASENAME));
-      }
-      if (isset($rom['fields']['thumbnail']) && $rom['fields']['thumbnail'] != '') {
-        array_push($media, pathinfo($rom['fields']['thumbnail'], PATHINFO_BASENAME));
-      }
-    }
-    
-    foreach (scandir(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
-      if (is_file(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
-        if (!in_array($item, $media)) {
-          $orphaned += 1;
-        }
-      }
-    }
+    $orphaned = metadata::findOrphaned($emulator);
   
     // RENDER RIGHT MENU
     $data = '<div class="row">';
@@ -60,7 +31,7 @@ class metadata
     $data .= '<button class="btn btn-success" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmsave" data-target="#modal" disabled><em class="fa fa-save"></em> Save</button>';
     $data .= '<div class="btn-group btn-group-sm pull-right">';
     $data .= '<button class="btn btn-default';
-    if ($orphaned == 0) {
+    if ((sizeof($orphaned['metadata']) + sizeof($orphaned['media'])) == 0) {
       $data .= ' disabled';
     }
     $data .= '" type="submit" data-toggle="modal" href="'.DIALOG.'?action=clean" data-target="#modal">Clean Orphaned</button>';
@@ -151,6 +122,40 @@ class metadata
     $data .= self::end();
     
     return $data;
+  }
+  
+  public static function findOrphaned($emulator)
+  {
+    $romdata = rom::readAll($emulator);
+    $output = array('metadata' => array(), 'media' => array());
+    $media = array();
+    
+    foreach ($romdata as $rom) {
+      if (!file_exists(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
+        array_push($output['metadata'], $rom['id']);
+      }
+      if (isset($rom['fields']['image']) && $rom['fields']['image'] != '') {
+        array_push($media, pathinfo($rom['fields']['image'], PATHINFO_BASENAME));
+      }
+      if (isset($rom['fields']['video']) && $rom['fields']['video'] != '') {
+        array_push($media, pathinfo($rom['fields']['video'], PATHINFO_BASENAME));
+      }
+      if (isset($rom['fields']['marquee']) && $rom['fields']['marquee'] != '') {
+        array_push($media, pathinfo($rom['fields']['marquee'], PATHINFO_BASENAME));
+      }
+      if (isset($rom['fields']['thumbnail']) && $rom['fields']['thumbnail'] != '') {
+        array_push($media, pathinfo($rom['fields']['thumbnail'], PATHINFO_BASENAME));
+      }
+    }
+    
+    foreach (scandir(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
+      if (is_file(db::read('config', 'media_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
+        if (!in_array($item, $media)) {
+          array_push($output['media'], $item);
+        }
+      }
+    }
+    return $output;
   }
 }
 

@@ -24,39 +24,9 @@ if (network::get('action') != '') {
       break;
     case 'clean':
       modal::start('Clean Orphaned', CONTROLLER.'?action=clean');
-      $romdata = rom::readAll(cache::getClientVariable($module->id.'_emulator'));
-      $orphaned_metadata = 0;
-      $orphaned_media = 0;
-      $media = array();
-      
-      foreach ($romdata as $rom) {
-        if (!file_exists(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
-          $orphaned_metadata += 1;
-        }
-        if (isset($rom['fields']['image']) && $rom['fields']['image'] != '') {
-          array_push($media, pathinfo($rom['fields']['image'], PATHINFO_BASENAME));
-        }
-        if (isset($rom['fields']['video']) && $rom['fields']['video'] != '') {
-          array_push($media, pathinfo($rom['fields']['video'], PATHINFO_BASENAME));
-        }
-        if (isset($rom['fields']['marquee']) && $rom['fields']['marquee'] != '') {
-          array_push($media, pathinfo($rom['fields']['marquee'], PATHINFO_BASENAME));
-        }
-        if (isset($rom['fields']['thumbnail']) && $rom['fields']['thumbnail'] != '') {
-          array_push($media, pathinfo($rom['fields']['thumbnail'], PATHINFO_BASENAME));
-        }
-      }
-      
-      foreach (scandir(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator')) as $item) {
-        if (is_file(db::read('config', 'media_path').DIRECTORY_SEPARATOR.cache::getClientVariable($module->id.'_emulator').DIRECTORY_SEPARATOR.$item)) {
-          if (!in_array($item, $media)) {
-            $orphaned_media += 1;
-          }
-        }
-      }
-      
-      echo '<p>Orphaned Metadata: <b>'.$orphaned_metadata.'</b></p>';
-      echo '<p>Orphaned Media:    <b>'.$orphaned_media.'</b></p>';
+      $orphaned = metadata::findOrphaned(cache::getClientVariable($module->id.'_emulator'));
+      echo '<p>Orphaned Metadata: <b>'.sizeof($orphaned['metadata']).'</b></p>';
+      echo '<p>Orphaned Media:    <b>'.sizeof($orphaned['media']).'</b></p>';
       echo 'Do you really want to clean '.cache::getClientVariable($module->id.'_emulator').'?';
       modal::end('Clean', 'success');
       break;
