@@ -1,7 +1,21 @@
 (function ($) {
     
     var async = (function () {
+      
+      var time;
+      
       var init = function () {
+        $(document).ajaxSend(function(event, request, settings) {
+          $('#loading').removeClass('hidden');
+          core.async.time = new Date().getTime();
+        });
+
+        $(document).ajaxComplete(function(event, request, settings) {
+          $('#loading').addClass('hidden');
+          core.async.time = (new Date().getTime() - core.async.time) / 1000;
+          $('#async').html('- queried in ' + core.async.time + 's');
+        });
+      
         $(document.body).on('click', '[data-toggle="async"]', function (e) {
           e.preventDefault();
           var loadurl = $(this).attr('data-query');
@@ -97,7 +111,8 @@
       };
       
       return {
-        init: init
+        init: init,
+        time: time
       };
     })();
 

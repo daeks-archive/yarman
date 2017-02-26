@@ -108,14 +108,16 @@ class metadata
         foreach ($column as $key => $field) {
           $field['index'] = $tabindex;
           $value = '';
-          if ($field['type'] == 'key' && isset($field['guid'])) {
+          if (isset($field['guid'])) {
             if (isset($rom['fields'][$field['guid']])) {
               $value = $rom['fields'][$field['guid']];
-              if ($value == '') {
+              if ($value == '' && $field['type'] == 'key') {
                 $value = $id;
               }
             } else {
-              $value = $id;
+              if ($field['type'] == 'key') {
+                $value = $id;
+              }
             }
           } else {
             if (isset($rom['fields'][$field['id']])) {

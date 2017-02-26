@@ -2,6 +2,8 @@
   
 class rom
 {
+  public static $gamelist = 'gamelist.xml';
+
   public static function parse($id)
   {
     return pathinfo($id, PATHINFO_BASENAME);
@@ -9,9 +11,14 @@ class rom
   
   public static function readAll($emulator)
   {
-    $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    if (!file_exists($xml)) {
+      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    }
+    
     $output = array();
-    foreach ($xml as $item) {
+    $xmldata = xml::read($xml);
+    foreach ($xmldata as $item) {
       $item['id'] = pathinfo($item['fields']['path'], PATHINFO_BASENAME);
       array_push($output, $item);
     }
@@ -20,8 +27,13 @@ class rom
 
   public static function read($emulator, $id)
   {
-    $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
-    foreach ($xml as $item) {
+    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    if (!file_exists($xml)) {
+      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    }
+    
+    $xmldata = xml::read($xml);
+    foreach ($xmldata as $item) {
       if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         $item['id'] = pathinfo($item['fields']['path'], PATHINFO_BASENAME);
         return $item;
@@ -31,12 +43,18 @@ class rom
   
   public static function write($emulator, $id, $data)
   {
-    copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
-    $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
-    
+    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    if (!file_exists($xml)) {
+      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      copy($xml, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+    } else {
+      copy($xml, db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+    }
+        
     $output = array();
     $update = false;
-    foreach ($xml as $item) {
+    $xmldata = xml::read($xml);
+    foreach ($xmldata as $item) {
       $update = false;
       if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         foreach ($data as $key => $value) {
@@ -96,18 +114,24 @@ class rom
       }
       array_push($output, $tmp);
     }
-    return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    return xml::write('gameList', $output, $xml);
   }
   
   public static function delete($emulator, $id)
   {
     unlink(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
     
-    copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
-    $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    if (!file_exists($xml)) {
+      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      copy($xml, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+    } else {
+      copy($xml, db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+    }
     
     $output = array();
-    foreach ($xml as $item) {
+    $xmldata = xml::read($xml);
+    foreach ($xmldata as $item) {
       if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         foreach ($item['fields'] as $key => $value) {
           $field = db::read('fields', $key, 'type');
@@ -121,16 +145,22 @@ class rom
         array_push($output, $item);
       }
     }
-    return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    return xml::write('gameList', $output, $xml);
   }
   
   public static function clean($emulator, $ids)
   {
-    copy(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml', db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml.bak');
-    $xml = xml::read(db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    if (!file_exists($xml)) {
+      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      copy($xml, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+    } else {
+      copy($xml, db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+    }
     
     $output = array();
-    foreach ($xml as $item) {
+    $xmldata = xml::read($xml);
+    foreach ($xmldata as $item) {
       if (in_array(pathinfo($item['fields']['path'], PATHINFO_BASENAME), $ids)) {
         foreach ($item['fields'] as $key => $value) {
           $field = db::read('fields', $key, 'type');
@@ -146,7 +176,7 @@ class rom
         array_push($output, $item);
       }
     }
-    return xml::write('gameList', $output, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.'gamelist.xml');
+    return xml::write('gameList', $output, $xml);
   }
 }
   
