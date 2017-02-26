@@ -1,7 +1,7 @@
 (function ($) {
     
     var metadata = (function () {
-      var init = function () {        
+      var init = function () {
         $(window).resize(function () {
           var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
           var size = Math.round(height / 20);
