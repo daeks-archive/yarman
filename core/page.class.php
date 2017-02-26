@@ -187,7 +187,7 @@ class page
     echo '</div>';
     echo '<div class="footer navbar-fixed-bottom">';
     echo '<div class="container-fluid">';
-    echo '<p class="text-muted"> <i id="loading" class="fa fa-spinner fa-spin hidden"></i> (c) '.date('Y', time()).' daeks - generated in '.number_format(microtime(true) - self::$time, 5).'s</p>';
+    echo '<p class="text-muted"> <i id="loading" class="fa fa-spinner fa-spin hidden"></i> (c) '.date('Y', time()).' daeks - generated in '.number_format(microtime(true) - self::$time, 5).'s <span id="async"></span></p>';
     echo '</div>';
     echo '</div>';
     echo '</body>';

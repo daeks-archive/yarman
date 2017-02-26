@@ -2,16 +2,13 @@
     
     var metadata = (function () {
       var init = function () {
-        var height = $(document).height() - 170;
-        var size = Math.round(height / 20);
-         
-        $("#nav-romlist").attr("size", size);
-        $("#nav-romlist").css("height", height);
-        $("#rom-data").css("height", height);
-         
         $(window).resize(function () {
-          $("#nav-romlist").css("height", $(document).height() - 170);
-          $("#rom-data").css("height", $(document).height() - 170);
+          var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
+          var size = Math.round(height / 20);
+           
+          $("#nav-romlist").attr("size", size);
+          $("#nav-romlist").css("height", height);
+          $("#rom-data").css("height", height);
         });
 
         $(window).trigger('resize');
