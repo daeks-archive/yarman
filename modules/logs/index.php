@@ -16,7 +16,7 @@ foreach (db::read($module->id) as $item) {
     if (cache::getClientVariable($module->id.'_id') == $item['id']) {
       echo ' selected';
     }
-    echo ' value="'.$item['id'].'">'.$item['value'].'</option>';
+    echo ' value="'.$item['id'].'">'.$item['value'].' ('.filesize($item['value']).' Bytes)</option>';
   } elseif ($item['type'] == 'folder') {
     foreach (array_slice(scandir($item['value']), 2) as $object) {
       if (filesize($item['value'].DIRECTORY_SEPARATOR.$object) > 0) {
@@ -25,7 +25,7 @@ foreach (db::read($module->id) as $item) {
         if (sizeof($parts) == 2 && $parts[0] == $object) {
           echo ' selected';
         }
-        echo ' value="'.$object.'@'.$item['id'].'">'.$item['value'].DIRECTORY_SEPARATOR.$object.'</option>';
+        echo ' value="'.$object.'@'.$item['id'].'">'.$item['value'].DIRECTORY_SEPARATOR.$object.' ('.filesize($item['value'].DIRECTORY_SEPARATOR.$object).' Bytes)</option>';
       }
     }
   }
