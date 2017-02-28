@@ -9,7 +9,8 @@ class db
   
   private $handle;
   
-  public static function instance($name = 'core') {
+  public static function instance($name = 'core')
+  {
       if (!db::$instance instanceof self) {
            db::$instance = new self($name);
       }
@@ -22,7 +23,7 @@ class db
   }
   
   public function construct()
-  {    
+  {
     foreach (array_slice(scandir(DB), 2) as $item) {
       $this->install(pathinfo($item, PATHINFO_FILENAME));
     }
@@ -52,7 +53,7 @@ class db
           array_push($output, $item);
         }
         return $output;
-      } 
+      }
     } else {
       return $this->readFile($module, $id, $column, $key, $replace);
     }
@@ -103,11 +104,11 @@ class db
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
       if ($this->handle->query('SELECT 1 FROM '.$module.' WHERE id = '.$this->handle->quote($id))) {
         $tmp = '';
-        foreach($data as $key=>$value) {
+        foreach ($data as $key => $value) {
           $tmp .= $key.'=?,'; 
         }
-        $sql = 'UPDATE '.$module.' SET '.rtrim($tmp,',');
-        if($where != null) {
+        $sql = 'UPDATE '.$module.' SET '.rtrim($tmp, ',');
+        if ($where != null) {
           $sql .= ' WHERE '.$where;
         } else {
           $sql .= ' WHERE id = '.$this->handle->quote($id);
@@ -116,10 +117,10 @@ class db
         $stmt->execute(array_values($data));
       } else {
         $tmp = '';
-        foreach($data as $key=>$value) {
-          $tmp .= '?,'; 
+        foreach ($data as $key => $value) {
+          $tmp .= '?,';
         }
-        $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', array_keys($data)).') VALUES ('.rtrim($tmp,',').')');
+        $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', array_keys($data)).') VALUES ('.rtrim($tmp, ',').')');
         $stmt->execute(array_values($data));
       }
     }
@@ -130,7 +131,7 @@ class db
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
       if ($this->handle->query('SELECT 1 FROM '.$module.' WHERE id = '.$this->handle->quote($id))) {
         $sql = 'DELETE FROM '.$module;
-        if($where != null) {
+        if ($where != null) {
           $sql .= ' WHERE '.$where;
         } else {
           $sql .= ' WHERE id = '.$this->handle->quote($id);
@@ -167,7 +168,7 @@ class db
           foreach ($array['schema'] as $item) {
             array_push($columns, strtolower($item['name']).' '.strtoupper($item['type']));
           }
-          $stmt = $this->handle->prepare('CREATE TABLE IF NOT EXISTS '.$module.' ('.implode(',' , $columns).');');
+          $stmt = $this->handle->prepare('CREATE TABLE IF NOT EXISTS '.$module.' ('.implode(',', $columns).');');
           $stmt->execute();
         }
         if (isset($array['data'])) {
@@ -181,7 +182,7 @@ class db
               }
               array_push($values, $value);
             }
-            $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',' , $columns).') VALUES ('.implode(',' , $values).');');
+            $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
             $stmt->execute();
           }
         }
