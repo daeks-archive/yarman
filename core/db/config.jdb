@@ -1,0 +1,27 @@
+{
+  "version" : 1,
+  "type" : "install",
+  "data" : [
+    {
+      "id" : "user_path",
+      "value" : "/home/%USER%"
+    },
+    {
+      "id" : "es_path",
+      "value" : "/home/%USER%/.emulationstation"
+    },
+    {
+      "id" : "roms_path",
+      "value" : "/home/%USER%/RetroPie/roms"
+    },
+    {
+      "id" : "metadata_path",
+      "value" : "/home/%USER%/.emulationstation/gamelists"
+    }
+    ,
+    {
+      "id" : "news_feed",
+      "value" : "https://retropie.org.uk/feed/"
+    }
+  ]
+}

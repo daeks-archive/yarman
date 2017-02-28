@@ -1,0 +1,9 @@
+{
+  "id" : "editor",
+  "name" : "Config Editor",
+  "menu" : {
+    "position" : "left",
+    "order" : 3,
+    "icon" : "file-text-o"
+    }
+}

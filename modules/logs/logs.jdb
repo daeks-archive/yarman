@@ -1,0 +1,21 @@
+{
+  "version" : 1,
+  "type" : "install",
+  "data" : [
+    {
+      "id" : "es_log",
+      "type" : "file",
+      "value" : "/opt/retropie/configs/all/emulationstation/es_log.txt"
+    },
+    {
+      "id" : "runcommand_log",
+      "type" : "file",
+      "value" : "/dev/shm/runcommand.log"
+    },
+    {
+      "id" : "retropie-setup",
+      "type" : "folder",
+      "value" : "/home/%USER%/RetroPie-Setup/logs"
+    }
+  ]
+}

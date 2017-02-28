@@ -1,0 +1,51 @@
+{
+  "version" : 1,
+  "type" : "install",
+  "data" : [
+    {
+      "id" : "es_systems",
+      "type" : "file",
+      "value" : "/etc/emulationstation/es_systems.cfg"
+    },
+    {
+      "id" : "retroarch",
+      "type" : "file",
+      "value" : "/opt/retropie/configs/all/retroarch.cfg"
+    },
+    {
+      "id" : "autostart",
+      "type" : "file",
+      "value" : "/opt/retropie/configs/all/autostart.sh"
+    },
+    {
+      "id" : "es_input",
+      "type" : "file",
+      "value" : "/home/%USER%/.emulationstation/es_input.cfg"
+    },
+    {
+      "id" : "retroarch",
+      "type" : "file",
+      "value" : "/opt/retropie/configs/all/retroarch.cfg"
+    },
+    {
+      "id" : "es_settings",
+      "type" : "file",
+      "value" : "/home/%USER%/.emulationstation/es_settings.cfg"
+    },
+    {
+      "id" : "emulator_retroarch",
+      "type" : "file",
+      "value" : "/opt/retropie/configs/%EMULATOR%/retroarch.cfg"
+    },
+    {
+      "id" : "emulators",
+      "type" : "file",
+      "value" : "/opt/retropie/configs/%EMULATOR%/emulators.cfg"
+    },
+    {
+      "id" : "retroarch_joypads",
+      "type" : "folder",
+      "value" : "/opt/retropie/configs/all/retroarch-joypads"
+    }
+  ]
+}

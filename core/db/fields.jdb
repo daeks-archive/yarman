@@ -1,0 +1,167 @@
+{
+  "version" : 1,
+  "type" : "install",
+  "data" : [
+    {
+      "id" : "id",
+      "guid" : "path",
+      "type" : "key",
+      "readonly" : true
+    },
+    {
+      "id" : "name",
+      "guid" : "name",
+      "name" : "Name",
+      "type" : "string",
+      "maxlength" : 255,
+      "validator" : "data-fv-notempty",
+      "container" : "metadata",
+      "grid" : "1 8 4 left 2"
+    },
+    {
+      "id" : "genre",
+      "guid" : "genre",
+      "name" : "Genre",
+      "type" : "string",
+      "maxlength" : 255,
+      "container" : "metadata",
+      "grid" : "1 8 4 left 3"
+    },
+    {
+      "id" : "developer",
+      "guid" : "developer",
+      "name" : "Developer",
+      "type" : "string",
+      "maxlength" : 255,
+      "container" : "metadata",
+      "grid" : "1 8 4 left 4"
+    },
+    {
+      "id" : "publisher",
+      "guid" : "publisher",
+      "name" : "Publisher",
+      "type" : "string",
+      "maxlength" : 255,
+      "container" : "metadata",
+      "grid" : "1 8 4 left 5"
+    },
+    {
+      "id" : "releasedate",
+      "guid" : "releasedate",
+      "name" : "Release Date",
+      "type" : "date",
+      "validator" : "data-fv-date data-fv-date-format=\"YYYY/MM/DD\"",
+      "container" : "metadata",
+      "grid" : "2 6 6 left 1"
+    },
+    {
+      "id" : "players",
+      "guid" : "players",
+      "name" : "Players",
+      "type" : "integer",
+      "container" : "metadata",
+      "grid" : "2 6 6 right 1"
+    },
+    {
+      "id" : "rating",
+      "guid" : "rating",
+      "name" : "Rating",
+      "type" : "double",
+      "container" : "metadata",
+      "grid" : "3 6 6 left 1"
+    },
+    {
+      "id" : "desc",
+      "guid" : "desc",
+      "name" : "Description",
+      "type" : "text",
+      "rowcount" : 10,
+      "container" : "metadata",
+      "grid" : "4 12 0 left 1"
+    },
+    {
+      "id" : "path",
+      "guid" : "path",
+      "name" : "Rom Path",
+      "type" : "string",
+      "readonly": true,
+      "validator" : "data-fv-notempty",
+      "container" : "media",
+      "grid" : "1 8 4 left 1"
+    },
+    {
+      "id" : "image_metadata",
+      "guid" : "image",
+      "name" : "Image Preview",
+      "type" : "image",
+      "container" : "metadata",
+      "grid" : "1 8 4 right 1"
+    },
+    {
+      "id" : "image",
+      "guid" : "image",
+      "name" : "Image Path",
+      "type" : "upload",
+      "path" : "/home/%USER%/.emulationstation/downloaded_images",
+      "whitelist" : ".jpg .png",
+      "container" : "media",
+      "grid" : "1 8 4 left 2"
+    },
+    {
+      "id" : "video",
+      "guid" : "video",
+      "name" : "Video Path",
+      "type" : "upload",
+      "path" : "/home/%USER%/.emulationstation/downloaded_images",
+      "whitelist" : ".mp4",
+      "container" : "media",
+      "grid" : "1 8 4 left 3"
+    },
+    {
+      "id" : "marquee",
+      "guid" : "marquee",
+      "name" : "Marquee Path",
+      "type" : "upload",
+      "path" : "/home/%USER%/.emulationstation/downloaded_images",
+      "whitelist" : ".jpg .png",
+      "container" : "media",
+      "grid" : "1 8 4 left 4"
+    },
+    {
+      "id" : "thumbnail",
+      "guid" : "thumbnail",
+      "name" : "Thumbnail Path",
+      "type" : "upload",
+      "path" : "/home/%USER%/.emulationstation/downloaded_images",
+      "whitelist" : ".jpg .png",
+      "container" : "media",
+      "grid" : "1 8 4 left 5"
+    },
+    {
+      "id" : "playcount",
+      "guid" : "playcount",
+      "name" : "Play Count",
+      "type" : "integer",
+      "readonly" : true,
+      "container" : "metadata",
+      "grid" : "5 6 6 left 1"
+    },
+    {
+      "id" : "lastplayed",
+      "guid" : "lastplayed",
+      "name" : "Last Played",
+      "type" : "date",
+      "readonly": true,
+      "container" : "metadata",
+      "grid" : "5 6 6 right 1"
+    },
+    {
+      "id" : "favorite",
+      "guid" : "favorite",
+      "name" : "Favorite",
+      "type" : "boolean",
+      "container" : "metadata",
+      "grid" : "3 6 6 right 1"
+    }
+  ]
+}
