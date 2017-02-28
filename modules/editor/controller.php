@@ -58,6 +58,7 @@ if (network::get('action') != '') {
         }
         network::success($output);
       } else {
+        cache::unsetClientVariable($module->id.'_id');
         network::success('');
       }
       break;
