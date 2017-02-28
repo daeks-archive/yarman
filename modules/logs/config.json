@@ -1,0 +1,9 @@
+{
+  "id" : "logs",
+  "name" : "Log Viewer",
+  "menu" : {
+    "position" : "right",
+    "order" : 3,
+    "icon" : "search"
+    }
+}
