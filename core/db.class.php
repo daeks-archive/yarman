@@ -40,18 +40,20 @@ class db
   
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
       if ($id != null) {
-        $result = $this->handle->query('SELECT '.$column.' FROM '.$module.' WHERE '.$key.' = \''.$id.'\'');
-        $output = $result->fetch();
+        $stmt = $this->handle->query('SELECT '.$column.' FROM '.$module.' WHERE '.$key.' = \''.$id.'\'');
+        $output = $stmt->fetch();
+        $stmt->closeCursor();
         return str_replace($needle, $haystack, $output[$column]);
       } else {
-        $result = $this->handle->query('SELECT * FROM '.$module);
+        $stmt = $this->handle->query('SELECT * FROM '.$module);
         $output = array();
-        foreach ($result->fetchAll() as $item) {
+        foreach ($stmt->fetchAll() as $item) {
           foreach ($item as $key => $value) {
             $item[$key] = str_replace($needle, $haystack, $value);
           }
           array_push($output, $item);
         }
+        $stmt->closeCursor();
         return $output;
       }
     } else {
@@ -115,6 +117,7 @@ class db
         }
         $stmt = $this->handle->prepare($sql);
         $stmt->execute(array_values($data));
+        $stmt->closeCursor();
       } else {
         $tmp = '';
         foreach ($data as $key => $value) {
@@ -122,6 +125,7 @@ class db
         }
         $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', array_keys($data)).') VALUES ('.rtrim($tmp, ',').')');
         $stmt->execute(array_values($data));
+        $stmt->closeCursor();
       }
     }
   }
@@ -138,6 +142,7 @@ class db
         }
         $stmt = $this->handle->prepare($sql);
         $stmt->execute();
+        $stmt->closeCursor();
       }
     }
   }
@@ -147,29 +152,33 @@ class db
     if (!$this->handle->query('SELECT 1 FROM schema')) {
       $stmt = $this->handle->prepare('CREATE TABLE IF NOT EXISTS schema (id text primary key not null, version integer);');
       $stmt->execute();
+      $stmt->closeCursor();
     }
+    
+    $array = array();
+    if (file_exists(DATA.DIRECTORY_SEPARATOR.$module.$this->jdb)) {
+      $array = json_decode(file_get_contents(DATA.DIRECTORY_SEPARATOR.$module.$this->jdb), true);
+    } elseif (file_exists(MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.$module.$this->jdb)) {
+      $array = json_decode(file_get_contents(MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.$module.$this->jdb), true);
+    } elseif (file_exists(DB.DIRECTORY_SEPARATOR.$module.$this->jdb)) {
+      $array = json_decode(file_get_contents(DB.DIRECTORY_SEPARATOR.$module.$this->jdb), true);
+    }
+    
     if (!$this->handle->query('SELECT 1 FROM '.$module)) {
-      $array = array();
-      if (file_exists(DATA.DIRECTORY_SEPARATOR.$module.$this->jdb)) {
-        $array = json_decode(file_get_contents(DATA.DIRECTORY_SEPARATOR.$module.$this->jdb), true);
-      } elseif (file_exists(MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.$module.$this->jdb)) {
-        $array = json_decode(file_get_contents(MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.$module.$this->jdb), true);
-      } elseif (file_exists(DB.DIRECTORY_SEPARATOR.$module.$this->jdb)) {
-        $array = json_decode(file_get_contents(DB.DIRECTORY_SEPARATOR.$module.$this->jdb), true);
-      }
-
       $this->handle->beginTransaction();
-      if (isset($array['version'])) {
+      if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
         $stmt = $this->handle->prepare('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
         $stmt->execute();
+        $stmt->closeCursor();
                   
         if (isset($array['schema'])) {
           $columns = array();
           foreach ($array['schema'] as $item) {
             array_push($columns, strtolower($item['name']).' '.strtoupper($item['type']));
           }
-          $stmt = $this->handle->prepare('CREATE TABLE IF NOT EXISTS '.$module.' ('.implode(',', $columns).');');
+          $stmt = $this->handle->prepare('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
           $stmt->execute();
+          $stmt->closeCursor();
         }
         if (isset($array['data'])) {
           foreach ($array['data'] as $item) {
@@ -184,10 +193,71 @@ class db
             }
             $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
             $stmt->execute();
+            $stmt->closeCursor();
           }
         }
       }
       $this->handle->commit();
+    } else {
+      if (isset($array['type']) && isset($array['version'])) {
+        $stmt = $this->handle->query('SELECT version from schema where id = '.$this->handle->quote($module));
+        $output = $stmt->fetch();
+        $stmt->closeCursor();
+        if ($output['version'] < $array['version']) {
+          switch ($array['type']) {
+            case 'create':
+              $stmt = $this->handle->exec('DROP TABLE '.$module);
+              $stmt = $this->handle->exec('VACUUM');
+              $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
+              if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
+                $stmt = $this->handle->prepare('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
+                $stmt->execute();
+                $stmt->closeCursor();
+                          
+                if (isset($array['schema'])) {
+                  $columns = array();
+                  foreach ($array['schema'] as $item) {
+                    array_push($columns, strtolower($item['name']).' '.strtoupper($item['type']));
+                  }
+                  $stmt = $this->handle->prepare('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
+                  $stmt->execute();
+                  $stmt->closeCursor();
+                }
+                if (isset($array['data'])) {
+                  foreach ($array['data'] as $item) {
+                    $columns = array();
+                    $values = array();
+                    foreach ($item as $key => $value) {
+                      array_push($columns, $key);
+                      if (!is_numeric($value) && !is_bool($value)) {
+                        $value = $this->handle->quote($value);
+                      }
+                      array_push($values, $value);
+                    }
+                    $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                  }
+                }
+              }
+              break;
+            case 'alter':
+              $stmt = $this->handle->exec('UPDATE schema SET version = '.$array['version'].' WHERE ID = '.$this->handle->quote($module));
+              break;
+            case 'clear':
+              $stmt = $this->handle->exec('DELETE FROM '.$module);
+              $stmt = $this->handle->exec('VACUUM');
+              break;
+            case 'drop':
+              $stmt = $this->handle->exec('DROP TABLE '.$module);
+              $stmt = $this->handle->exec('VACUUM');
+              $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
+              break;
+            default:
+              break;
+          }
+        }
+      }
     }
   }
 }
