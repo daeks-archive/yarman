@@ -2,7 +2,7 @@
   
 class emulator
 {
-  public static function readAll()
+  public static function readAll($count = true)
   {
     $emulators = array_slice(scandir(db::read('config', 'roms_path')), 2);
     $array = array();
@@ -22,13 +22,22 @@ class emulator
               if (isset($blacklist) && $blacklist != '') {
                 if (strpos($blacklist, pathinfo($item, PATHINFO_EXTENSION)) === false) {
                   $tmp['count'] += 1;
+                  if (!$count) {
+                    break;
+                  }
                 }
               } else {
                 $tmp['count'] += 1;
+                if (!$count) {
+                  break;
+                }
               }
             }
           } else {
             $tmp['count'] += 1;
+            if (!$count) {
+              break;
+            }
           }
         }
         if (is_dir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
@@ -36,9 +45,15 @@ class emulator
             if (isset($blacklist) && $blacklist != '') {
               if (strpos($blacklist, $item) === false) {
                 $tmp['count'] += 1;
+                if (!$count) {
+                  break;
+                }
               }
             } else {
               $tmp['count'] += 1;
+              if (!$count) {
+                break;
+              }
             }
           }
         }
