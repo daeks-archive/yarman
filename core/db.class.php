@@ -242,6 +242,38 @@ class db
               }
               break;
             case 'alter':
+              $stmt = $this->handle->query('PRAGMA table_info('.$module.')');
+              $fields = array();
+              foreach ($stmt->fetchAll() as $item) {
+                array_push($fields, $item['name']);
+              }
+              if (isset($array['schema'])) {
+                foreach ($array['schema'] as $item) {
+                  if (!in_array($item['name'], $fields)) {
+                    $stmt = $this->handle->prepare('ALTER TABLE '.$module.' ADD COLUMN '.strtolower($item['name']).' '.strtoupper($item['type']).';');
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                  }
+                }
+              }
+              if (isset($array['data'])) {
+                  foreach ($array['data'] as $item) {
+                    if ($this->handle->query('SELECT * FROM '.$module.' WHERE id = '.$this->handle->quote($item['id']))) {
+                      $columns = array();
+                      $values = array();
+                      foreach ($item as $key => $value) {
+                        array_push($columns, $key);
+                        if (!is_numeric($value) && !is_bool($value)) {
+                          $value = $this->handle->quote($value);
+                        }
+                        array_push($values, $value);
+                      }
+                      $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
+                      $stmt->execute();
+                      $stmt->closeCursor();
+                    }
+                  }
+                }
               $stmt = $this->handle->exec('UPDATE schema SET version = '.$array['version'].' WHERE ID = '.$this->handle->quote($module));
               break;
             case 'clear':
