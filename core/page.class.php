@@ -121,7 +121,11 @@ class page
             $item .= '</ul>';
             $item .= '</li>';
           } else {
-            $item .= '<li>';
+            if ($module != null && $tmp->id == $module->id) {
+              $item .= '<li class="active">';
+            } else {
+              $item .= '<li>';
+            }
             if (isset($tmp->menu->external)) {
               $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
             } else {
