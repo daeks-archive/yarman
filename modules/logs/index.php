@@ -19,12 +19,14 @@ foreach (db::read($module->id) as $item) {
     echo ' value="'.$item['id'].'">'.$item['value'].'</option>';
   } elseif ($item['type'] == 'folder') {
     foreach (array_slice(scandir($item['value']), 2) as $object) {
-      echo '<option';
-      $parts = explode('@', cache::getClientVariable($module->id.'_id'));
-      if (sizeof($parts) == 2 && $parts[0] == $object) {
-        echo ' selected';
+      if (filesize($item['value'].DIRECTORY_SEPARATOR.$object) > 0) {
+        echo '<option';
+        $parts = explode('@', cache::getClientVariable($module->id.'_id'));
+        if (sizeof($parts) == 2 && $parts[0] == $object) {
+          echo ' selected';
+        }
+        echo ' value="'.$object.'@'.$item['id'].'">'.$item['value'].DIRECTORY_SEPARATOR.$object.'</option>';
       }
-      echo ' value="'.$object.'@'.$item['id'].'">'.$item['value'].DIRECTORY_SEPARATOR.$object.'</option>';
     }
   }
 }
