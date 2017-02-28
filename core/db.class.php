@@ -1,9 +1,9 @@
 <?php
-  
+
 class db
 {
   private static $instance = array();
-
+  
   private $jdb = '.jdb';
   private $sdb = '.sdb';
   
@@ -28,7 +28,7 @@ class db
       $this->install(pathinfo($item, PATHINFO_FILENAME));
     }
   }
-
+  
   public function read($module, $id = null, $column = 'value', $key = 'id', $replace = array())
   {
     $needle = array('%USER%');
@@ -37,7 +37,7 @@ class db
       $default_user = trim(file_get_contents(DATA.DIRECTORY_SEPARATOR.'user'));
     }
     $haystack = array($default_user);
-  
+    
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
       if ($id != null) {
         $stmt = $this->handle->query('SELECT '.$column.' FROM '.$module.' WHERE '.$key.' = \''.$id.'\'');
@@ -69,7 +69,7 @@ class db
       $default_user = trim(file_get_contents(DATA.DIRECTORY_SEPARATOR.'user'));
     }
     $haystack = array($default_user);
-  
+    
     $array = array();
     if (file_exists(DATA.DIRECTORY_SEPARATOR.$module.$this->jdb)) {
       $array = json_decode(file_get_contents(DATA.DIRECTORY_SEPARATOR.$module.$this->jdb), true);
@@ -82,7 +82,7 @@ class db
       array_push($needle, $key);
       array_push($haystack, $value);
     }
-
+    
     if ($id != null) {
       foreach ($array['data'] as $item) {
         if (isset($item[$key]) && isset($item[$column]) && $item[$key] == $id) {
@@ -107,7 +107,7 @@ class db
       if ($this->handle->query('SELECT 1 FROM '.$module.' WHERE id = '.$this->handle->quote($id))) {
         $tmp = '';
         foreach ($data as $key => $value) {
-          $tmp .= $key.'=?,'; 
+          $tmp .= $key.'=?,';
         }
         $sql = 'UPDATE '.$module.' SET '.rtrim($tmp, ',');
         if ($where != null) {
@@ -213,7 +213,7 @@ class db
                 $stmt = $this->handle->prepare('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
                 $stmt->execute();
                 $stmt->closeCursor();
-                          
+                
                 if (isset($array['schema'])) {
                   $columns = array();
                   foreach ($array['schema'] as $item) {
@@ -293,5 +293,5 @@ class db
     }
   }
 }
-  
+
 ?>
