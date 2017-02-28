@@ -2,7 +2,7 @@
   
 class db
 {
-  private static $instance;
+  private static $instance = array();
 
   private $jdb = '.jdb';
   private $sdb = '.sdb';
@@ -11,10 +11,10 @@ class db
   
   public static function instance($name = 'core')
   {
-      if (!db::$instance instanceof self) {
-           db::$instance = new self($name);
+      if (!isset(db::$instance[$name]) || !db::$instance[$name] instanceof self) {
+        db::$instance[$name] = new self($name);
       }
-      return db::$instance;
+      return db::$instance[$name];
   }
   
   public function __construct($name = 'core')
