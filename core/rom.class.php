@@ -11,9 +11,9 @@ class rom
   
   public static function readAll($emulator)
   {
-    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     if (!file_exists($xml)) {
-      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     }
     
     $output = array();
@@ -27,9 +27,9 @@ class rom
 
   public static function read($emulator, $id)
   {
-    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     if (!file_exists($xml)) {
-      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     }
     
     $xmldata = xml::read($xml);
@@ -43,12 +43,12 @@ class rom
   
   public static function write($emulator, $id, $data)
   {
-    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     if (!file_exists($xml)) {
-      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-      copy($xml, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      copy($xml, db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
     } else {
-      copy($xml, db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      copy($xml, db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
     }
         
     $output = array();
@@ -58,7 +58,7 @@ class rom
       $update = false;
       if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         foreach ($data as $key => $value) {
-          $field = db::read('fields', $key, 'type');
+          $field = db::instance()->read('fields', $key, 'type');
           if ($field == 'date') {
             if (trim($value) != '') {
               $value = date_format(date_create($value), 'Ymd\THis');
@@ -83,13 +83,13 @@ class rom
     
     if (!$update) {
       $tmp = array('type' => '', 'attributes' => array(), 'fields' => array());
-      $fields = db::read('fields');
+      $fields = db::instance()->read('fields');
     
       foreach ($fields as $field) {
         $value = '';
         if ($field['type'] == 'key') {
-          $tmp['fields'][$field['guid']] = trim(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
-          if (is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id)) {
+          $tmp['fields'][$field['guid']] = trim(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
+          if (is_file(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id)) {
             $tmp['type'] = 'game';
           } else {
             $tmp['type'] = 'folder';
@@ -119,14 +119,14 @@ class rom
   
   public static function delete($emulator, $id)
   {
-    unlink(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
+    unlink(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
     
-    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     if (!file_exists($xml)) {
-      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-      copy($xml, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      copy($xml, db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
     } else {
-      copy($xml, db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      copy($xml, db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
     }
     
     $output = array();
@@ -134,7 +134,7 @@ class rom
     foreach ($xmldata as $item) {
       if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
         foreach ($item['fields'] as $key => $value) {
-          $field = db::read('fields', $key, 'type');
+          $field = db::instance()->read('fields', $key, 'type');
           if ($field == 'upload') {
             if ($value != '') {
               unlink($value);
@@ -150,12 +150,12 @@ class rom
   
   public static function clean($emulator, $ids)
   {
-    $xml = db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     if (!file_exists($xml)) {
-      $xml = db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-      copy($xml, db::read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      copy($xml, db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
     } else {
-      copy($xml, db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      copy($xml, db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
     }
     
     $output = array();
@@ -163,7 +163,7 @@ class rom
     foreach ($xmldata as $item) {
       if (in_array(pathinfo($item['fields']['path'], PATHINFO_BASENAME), $ids)) {
         foreach ($item['fields'] as $key => $value) {
-          $field = db::read('fields', $key, 'type');
+          $field = db::instance()->read('fields', $key, 'type');
           if ($field == 'upload') {
             if ($value != '') {
               if (file_exists($value)) {

@@ -4,19 +4,19 @@ class emulator
 {
   public static function readAll($count = true)
   {
-    $emulators = array_slice(scandir(db::read('config', 'roms_path')), 2);
+    $emulators = array_slice(scandir(db::instance()->read('config', 'roms_path')), 2);
     $array = array();
     foreach ($emulators as $emulator) {
-      $whitelist = db::read('emulators', $emulator, 'whitelist');
-      $blacklist = db::read('emulators', $emulator, 'blacklist');
+      $whitelist = db::instance()->read('emulators', $emulator, 'whitelist');
+      $blacklist = db::instance()->read('emulators', $emulator, 'blacklist');
       
       $tmp = array();
       $tmp['id'] = $emulator;
       $tmp['name'] = $emulator;
       $tmp['whitelist'] = '';
       $tmp['count'] = 0;
-      foreach (scandir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
-        if (is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
+      foreach (scandir(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
+        if (is_file(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
           if (isset($whitelist) && $whitelist != '') {
             if (strpos($whitelist, pathinfo($item, PATHINFO_EXTENSION)) !== false) {
               if (isset($blacklist) && $blacklist != '') {
@@ -40,7 +40,7 @@ class emulator
             }
           }
         }
-        if (is_dir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
+        if (is_dir(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
           if ($item != '.' && $item != '..') {
             if (isset($blacklist) && $blacklist != '') {
               if (strpos($blacklist, $item) === false) {
@@ -62,7 +62,7 @@ class emulator
         $array[$emulator] = $tmp;
       }
     }
-    foreach (db::read('emulators') as $emulator) {
+    foreach (db::instance()->read('emulators') as $emulator) {
       if (array_key_exists($emulator['id'], $array)) {
         $array[$emulator['id']]['name'] = $emulator['name'];
         $array[$emulator['id']]['whitelist'] = $emulator['whitelist'];
@@ -74,10 +74,10 @@ class emulator
   public static function readRomlist($emulator)
   {
     $array = array();
-    $whitelist = db::read('emulators', $emulator, 'whitelist');
-    $blacklist = db::read('emulators', $emulator, 'blacklist');
-    foreach (scandir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
-      if (is_file(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
+    $whitelist = db::instance()->read('emulators', $emulator, 'whitelist');
+    $blacklist = db::instance()->read('emulators', $emulator, 'blacklist');
+    foreach (scandir(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator) as $item) {
+      if (is_file(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
         if (isset($whitelist) && $whitelist != '') {
           if (strpos($whitelist, pathinfo($item, PATHINFO_EXTENSION)) !== false) {
             if (isset($blacklist) && $blacklist != '') {
@@ -92,7 +92,7 @@ class emulator
           array_push($array, $item);
         }
       }
-      if (is_dir(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
+      if (is_dir(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
         if ($item != '.' && $item != '..') {
           if (isset($blacklist) && $blacklist != '') {
             if (strpos($blacklist, $item) === false) {

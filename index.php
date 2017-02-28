@@ -48,15 +48,15 @@ echo '</div>';
 echo '<div class="col-sm-4">';
 
 panel::start('<b>Latest RetroPie News</b>', 'info');
-if (network::pingRemoteUrl(db::read('config', 'news_feed'))) {
-  $xml = xml::dump(cache::setRemoteCache('newsfeed', db::read('config', 'news_feed')));
+if (network::pingRemoteUrl(db::instance()->read('config', 'news_feed'))) {
+  $xml = xml::dump(cache::setRemoteCache('newsfeed', db::instance()->read('config', 'news_feed')));
   if (isset($xml['channel']) && isset($xml['channel']['item'])) {
     foreach (array_slice($xml['channel']['item'], 0, 3) as $news) {
       echo '<a href="'.$news['link'].'" target="_blank" style="text-decoration: none !important;"><div>';
       echo '<span style="color: black"><b>'.$news['title'].'</b></span> <div class="pull-right">read more</div>';
       echo '</div></a>';
     }
-    echo '<div><a href="'.db::read('config', 'news_feed').'" target="_blank" style="text-decoration: none !important;">...read more...</a></div>';
+    echo '<div><a href="'.db::instance()->read('config', 'news_feed').'" target="_blank" style="text-decoration: none !important;">...read more...</a></div>';
   }
 } else {
   echo "Failed to retrive newsfeed. Your device is currently offline.";

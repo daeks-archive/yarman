@@ -1,6 +1,6 @@
 {
   "id" : "logs",
-  "name" : "Log Viewer",
+  "name" : "Logs",
   "menu" : {
     "position" : "right",
     "order" : 3,

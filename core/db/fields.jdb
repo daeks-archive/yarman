@@ -1,6 +1,56 @@
 {
   "version" : 1,
-  "type" : "install",
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "guid",
+      "type" : "text"
+    },
+    {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
+      "name" : "type",
+      "type" : "text"
+    },
+    {
+      "name" : "readonly",
+      "type" : "boolean"
+    },
+    {
+      "name" : "maxlength",
+      "type" : "integer"
+    },
+    {
+      "name" : "rowcount",
+      "type" : "integer"
+    },
+    {
+      "name" : "validator",
+      "type" : "text"
+    },
+    {
+      "name" : "container",
+      "type" : "text"
+    },
+    {
+      "name" : "grid",
+      "type" : "text"
+    },
+    {
+      "name" : "path",
+      "type" : "text"
+    },
+    {
+      "name" : "whitelist",
+      "type" : "text"
+    }
+  ],
   "data" : [
     {
       "id" : "id",

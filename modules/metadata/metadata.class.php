@@ -56,7 +56,7 @@ class metadata
   public static function render($container, $emulator, $id)
   {
     $rom = rom::read($emulator, $id);
-    $fields = db::read('fields');
+    $fields = db::instance()->read('fields');
     
     $fieldset = array();
 
@@ -148,7 +148,7 @@ class metadata
     $media = array();
     
     foreach ($romdata as $rom) {
-      if (!file_exists(db::read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
+      if (!file_exists(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
         array_push($output['metadata'], $rom['id']);
       }
       if (isset($rom['fields']['image']) && $rom['fields']['image'] != '') {
@@ -165,7 +165,7 @@ class metadata
       }
     }
     
-    $fields = db::read('fields');
+    $fields = db::instance()->read('fields');
     
     foreach ($fields as $field) {
       if ($field['type'] == 'upload') {

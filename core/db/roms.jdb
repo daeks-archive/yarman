@@ -1,0 +1,22 @@
+{
+  "version" : 1,
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "system",
+      "type" : "text"
+    },
+    {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
+      "name" : "size",
+      "type" : "integer"
+    }
+  ]
+}

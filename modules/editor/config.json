@@ -1,6 +1,6 @@
 {
   "id" : "editor",
-  "name" : "Config Editor",
+  "name" : "Config",
   "menu" : {
     "position" : "left",
     "order" : 3,

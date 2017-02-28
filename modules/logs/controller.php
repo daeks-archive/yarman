@@ -8,7 +8,7 @@ if (network::get('action') != '') {
       if (network::get('id') != '') {
         $parts = explode('@', network::get('id'));
         $output = '';
-        foreach (db::read($module->id) as $item) {
+        foreach (db::instance()->read($module->id) as $item) {
           if (sizeof($parts) == 2) {
             if ($item['id'] == $parts[1]) {
               if (file_exists($item['value'].DIRECTORY_SEPARATOR.$parts[0])) {

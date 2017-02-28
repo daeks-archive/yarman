@@ -16,6 +16,8 @@ echo '<div class="col-sm-4" id="panel-left" name="panel-left">';
 echo '<div class="row">';
 echo '<div class="col-sm-8">';
 // RENDER EMULATORS
+echo '<div class="input-group">';
+echo '<span class="input-group-btn"><button class="btn btn-default" disabled><em class="fa fa-refresh"></em></button></span>';
 echo '<select name="nav-emulator" id="nav-emulator" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&emulator=" data-target="#nav-romlist">';
 echo '<option value="" selected>-- Select Emulator --</option>';
 foreach (emulator::readAll() as $emulator) {
@@ -26,6 +28,7 @@ foreach (emulator::readAll() as $emulator) {
   echo ' value="'.$emulator['id'].'">'.$emulator['name'].' ('.$emulator['count'].')</option>';
 }
 echo '</select>';
+echo '</div>';
 echo '</div>';
 // RENDER FILTER
 echo '<div class="col-sm-4">';

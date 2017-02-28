@@ -23,7 +23,7 @@ echo '<div class="col-sm-8">';
 echo '<div class="input-group">';
 echo '<select name="nav-editor" id="nav-editor" class="form-control" data-mode="ini" data-query="'.CONTROLLER.'?action=view&id=" data-target="module-content">';
 echo '<option value="" selected>-- Select Config File --</option>';
-foreach (db::read($module->id) as $item) {
+foreach (db::instance()->read($module->id) as $item) {
   if (cache::getClientVariable($module->id.'_emulator') == '') {
     if ($item['type'] == 'file') {
       if (strpos($item['value'], '%') === false) {

@@ -1,6 +1,16 @@
 {
   "version" : 1,
-  "type" : "install",
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "value",
+      "type" : "text"
+    }
+  ],
   "data" : [
     {
       "id" : "user_path",

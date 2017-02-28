@@ -1,0 +1,78 @@
+{
+  "version" : 1,
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "system",
+      "type" : "text"
+    },
+    {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
+      "name" : "genre",
+      "type" : "text"
+    },
+    {
+      "name" : "developer",
+      "type" : "text"
+    },
+    {
+      "name" : "publisher",
+      "type" : "text"
+    },
+    {
+      "name" : "releasedate",
+      "type" : "text"
+    },
+    {
+      "name" : "players",
+      "type" : "text"
+    },
+    {
+      "name" : "rating",
+      "type" : "text"
+    },
+    {
+      "name" : "desc",
+      "type" : "text"
+    },
+    {
+      "name" : "path",
+      "type" : "text"
+    },
+    {
+      "name" : "image",
+      "type" : "text"
+    },
+    {
+      "name" : "video",
+      "type" : "text"
+    },
+    {
+      "name" : "marquee",
+      "type" : "text"
+    },
+    {
+      "name" : "thumbnail",
+      "type" : "text"
+    },
+    {
+      "name" : "playcount",
+      "type" : "text"
+    },
+    {
+      "name" : "lastplayed",
+      "type" : "text"
+    },
+    {
+      "name" : "favorite",
+      "type" : "text"
+    }
+  ]
+}

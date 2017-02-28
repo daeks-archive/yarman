@@ -3,6 +3,7 @@
     var proxy = (function () {
       var init = function () {
         $('[data-toggle="proxy"]').bind('initproxy',function () {
+          if (Modernizr && Modernizr.draganddrop && Modernizr.filereader && Modernizr.blob) {
             $(this).fileupload({
               url: $(this).attr('data-query'),
               formData: {id : $($(this).attr('data-key')).val()},
@@ -29,6 +30,9 @@
                 }
               }
             });
+          } else {
+            core.message.infobox('danger', 5000, 'JQuery FileUpload is not supported by your browser!');
+          }
         });
         $('[data-toggle="proxy"]').trigger('initproxy');
       };

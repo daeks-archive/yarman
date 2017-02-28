@@ -21,6 +21,7 @@ define('FILE_COMPRESS', false);
 
 config::includes(INC);
 session::construct();
+db::instance()->construct();
 
 class config
 {
