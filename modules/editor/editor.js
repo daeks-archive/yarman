@@ -33,7 +33,7 @@
                 }
                 eval(obj.event);
               } else {
-                var data = $('<textarea/>').html(obj.data).val();                  
+                var data = $('<textarea/>').html(obj.data).val();
                 var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
                 var size = Math.round(height / 15);
              

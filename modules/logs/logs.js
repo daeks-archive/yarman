@@ -1,7 +1,7 @@
 (function ($) {
     
-    var logs = (function () {    
-      var init = function () {       
+    var logs = (function () {
+      var init = function () {
         $('#nav-logs').on('change', function (e) {
           e.preventDefault();
           var loadurl = $(this).attr('data-query') + encodeURIComponent($(this).val());
@@ -19,7 +19,7 @@
                   }
                   eval(obj.event);
                 } else {
-                  var data = $('<textarea/>').html(obj.data).val();                  
+                  var data = $('<textarea/>').html(obj.data).val();
                   var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
                   var size = Math.round(height / 15);
                

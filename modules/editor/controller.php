@@ -86,7 +86,7 @@ if (network::get('action') != '') {
         }
       }
       network::success('Successfully Saved File', 'true');
-      break;  
+      break;
     default:
       network::error('invalid action - '.network::get('action'));
       break;
