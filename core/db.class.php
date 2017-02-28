@@ -2,17 +2,19 @@
   
 class db
 {
-  public static $format = '.json';
+  public static $format = '.jdb';
 
   public static function read($module, $id = null, $column = 'value', $key = 'id', $replace = array())
   {
     $array = array();
     if (file_exists(DATA.DIRECTORY_SEPARATOR.$module.self::$format)) {
       $array = json_decode(file_get_contents(DATA.DIRECTORY_SEPARATOR.$module.self::$format), true);
-    } elseif (file_exists(DEFAULTS.DIRECTORY_SEPARATOR.$module.self::$format)) {
-      $array = json_decode(file_get_contents(DEFAULTS.DIRECTORY_SEPARATOR.$module.self::$format), true);
+    } elseif (file_exists(MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.$module.self::$format)) {
+      $array = json_decode(file_get_contents(MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.$module.self::$format), true);
+    } elseif (file_exists(DB.DIRECTORY_SEPARATOR.$module.self::$format)) {
+      $array = json_decode(file_get_contents(DB.DIRECTORY_SEPARATOR.$module.self::$format), true);
     }
-
+    
     $needle = array('%USER%');
     $default_user = get_current_user();
     if (file_exists(DATA.DIRECTORY_SEPARATOR.'user')) {
@@ -25,14 +27,14 @@ class db
     }
 
     if ($id != null) {
-      foreach ($array as $item) {
+      foreach ($array['data'] as $item) {
         if (isset($item[$key]) && isset($item[$column]) && $item[$key] == $id) {
           return str_replace($needle, $haystack, $item[$column]);
         }
       }
     } else {
       $output = array();
-      foreach ($array as $item) {
+      foreach ($array['data'] as $item) {
         foreach ($item as $key => $value) {
           $item[$key] = str_replace($needle, $haystack, $value);
         }
