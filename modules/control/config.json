@@ -7,13 +7,19 @@
     "icon" : "gear",
     "dropdown" : [
       {
+        "id" : "reset",
+        "name" : "Reset YARMan to Default",
+        "type" : "modal",
+        "external" : "/modules/control/dialog.php?action=reset"
+      },
+      {
+        "type" : "spacer"
+      },
+      {
         "id" : "restart",
         "name" : "Restart Emulationstation",
         "type" : "modal",
         "external" : "/modules/control/dialog.php?action=restart"
-      },
-      {
-        "type" : "spacer"
       },
       {
         "id" : "reboot",
