@@ -179,21 +179,22 @@ class db
           $stmt = $this->handle->prepare('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
           $stmt->execute();
           $stmt->closeCursor();
-        }
-        if (isset($array['data'])) {
-          foreach ($array['data'] as $item) {
-            $columns = array();
-            $values = array();
-            foreach ($item as $key => $value) {
-              array_push($columns, $key);
-              if (!is_numeric($value) && !is_bool($value)) {
-                $value = $this->handle->quote($value);
+          
+          if (isset($array['data'])) {
+            foreach ($array['data'] as $item) {
+              $columns = array();
+              $values = array();
+              foreach ($item as $key => $value) {
+                array_push($columns, $key);
+                if (!is_numeric($value) && !is_bool($value)) {
+                  $value = $this->handle->quote($value);
+                }
+                array_push($values, $value);
               }
-              array_push($values, $value);
+              $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
+              $stmt->execute();
+              $stmt->closeCursor();
             }
-            $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
-            $stmt->execute();
-            $stmt->closeCursor();
           }
         }
       }
@@ -204,61 +205,28 @@ class db
         $output = $stmt->fetch();
         $stmt->closeCursor();
         if ($output['version'] < $array['version']) {
-          switch ($array['type']) {
-            case 'create':
-              $stmt = $this->handle->exec('DROP TABLE '.$module);
-              $stmt = $this->handle->exec('VACUUM');
-              $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
-              if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
-                $stmt = $this->handle->prepare('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
-                $stmt->execute();
-                $stmt->closeCursor();
-                
-                if (isset($array['schema'])) {
-                  $columns = array();
-                  foreach ($array['schema'] as $item) {
-                    array_push($columns, strtolower($item['name']).' '.strtoupper($item['type']));
-                  }
-                  $stmt = $this->handle->prepare('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
+          foreach (explode(' ', $array['type']) as $type) {
+            switch ($type) {
+              case 'create':
+                $stmt = $this->handle->exec('DROP TABLE '.$module);
+                $stmt = $this->handle->exec('VACUUM');
+                $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
+                if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
+                  $stmt = $this->handle->prepare('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
                   $stmt->execute();
                   $stmt->closeCursor();
-                }
-                if (isset($array['data'])) {
-                  foreach ($array['data'] as $item) {
+                  
+                  if (isset($array['schema'])) {
                     $columns = array();
-                    $values = array();
-                    foreach ($item as $key => $value) {
-                      array_push($columns, $key);
-                      if (!is_numeric($value) && !is_bool($value)) {
-                        $value = $this->handle->quote($value);
-                      }
-                      array_push($values, $value);
+                    foreach ($array['schema'] as $item) {
+                      array_push($columns, strtolower($item['name']).' '.strtoupper($item['type']));
                     }
-                    $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
+                    $stmt = $this->handle->prepare('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
                     $stmt->execute();
                     $stmt->closeCursor();
                   }
-                }
-              }
-              break;
-            case 'alter':
-              $stmt = $this->handle->query('PRAGMA table_info('.$module.')');
-              $fields = array();
-              foreach ($stmt->fetchAll() as $item) {
-                array_push($fields, $item['name']);
-              }
-              if (isset($array['schema'])) {
-                foreach ($array['schema'] as $item) {
-                  if (!in_array($item['name'], $fields)) {
-                    $stmt = $this->handle->prepare('ALTER TABLE '.$module.' ADD COLUMN '.strtolower($item['name']).' '.strtoupper($item['type']).';');
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                  }
-                }
-              }
-              if (isset($array['data'])) {
-                  foreach ($array['data'] as $item) {
-                    if ($this->handle->query('SELECT * FROM '.$module.' WHERE id = '.$this->handle->quote($item['id']))) {
+                  if (isset($array['data'])) {
+                    foreach ($array['data'] as $item) {
                       $columns = array();
                       $values = array();
                       foreach ($item as $key => $value) {
@@ -274,19 +242,54 @@ class db
                     }
                   }
                 }
-              $stmt = $this->handle->exec('UPDATE schema SET version = '.$array['version'].' WHERE ID = '.$this->handle->quote($module));
-              break;
-            case 'clear':
-              $stmt = $this->handle->exec('DELETE FROM '.$module);
-              $stmt = $this->handle->exec('VACUUM');
-              break;
-            case 'drop':
-              $stmt = $this->handle->exec('DROP TABLE '.$module);
-              $stmt = $this->handle->exec('VACUUM');
-              $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
-              break;
-            default:
-              break;
+                break;
+              case 'alter':
+                $stmt = $this->handle->query('PRAGMA table_info('.$module.')');
+                $fields = array();
+                foreach ($stmt->fetchAll() as $item) {
+                  array_push($fields, $item['name']);
+                }
+                if (isset($array['schema'])) {
+                  foreach ($array['schema'] as $item) {
+                    if (!in_array($item['name'], $fields)) {
+                      $stmt = $this->handle->prepare('ALTER TABLE '.$module.' ADD COLUMN '.strtolower($item['name']).' '.strtoupper($item['type']).';');
+                      $stmt->execute();
+                      $stmt->closeCursor();
+                    }
+                  }
+                  if (isset($array['data'])) {
+                    foreach ($array['data'] as $item) {
+                      if ($this->handle->query('SELECT * FROM '.$module.' WHERE id = '.$this->handle->quote($item['id']))) {
+                        $columns = array();
+                        $values = array();
+                        foreach ($item as $key => $value) {
+                          array_push($columns, $key);
+                          if (!is_numeric($value) && !is_bool($value)) {
+                            $value = $this->handle->quote($value);
+                          }
+                          array_push($values, $value);
+                        }
+                        $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
+                        $stmt->execute();
+                        $stmt->closeCursor();
+                      }
+                    }
+                  }
+                }
+                $stmt = $this->handle->exec('UPDATE schema SET version = '.$array['version'].' WHERE ID = '.$this->handle->quote($module));
+                break;
+              case 'clear':
+                $stmt = $this->handle->exec('DELETE FROM '.$module);
+                $stmt = $this->handle->exec('VACUUM');
+                break;
+              case 'drop':
+                $stmt = $this->handle->exec('DROP TABLE '.$module);
+                $stmt = $this->handle->exec('VACUUM');
+                $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
+                break;
+              default:
+                break;
+            }
           }
         }
       }
