@@ -16,7 +16,7 @@ class db
       }
       return db::$instance[$name];
   }
-  
+   
   public function __construct($name = 'core')
   {
     $this->handle = new PDO('sqlite:'.DATA.DIRECTORY_SEPARATOR.$name.$this->sdb);
@@ -26,6 +26,13 @@ class db
   {
     foreach (array_slice(scandir(DB), 2) as $item) {
       $this->install(pathinfo($item, PATHINFO_FILENAME));
+    }
+  }
+  
+  public function reset($name = 'core')
+  {
+    if (file_exists(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb)) {
+      unlink(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb);
     }
   }
   
@@ -150,9 +157,7 @@ class db
   public function install($module)
   {
     if (!$this->handle->query('SELECT 1 FROM schema')) {
-      $stmt = $this->handle->prepare('CREATE TABLE IF NOT EXISTS schema (id text primary key not null, version integer);');
-      $stmt->execute();
-      $stmt->closeCursor();
+      $stmt = $this->handle->exec('CREATE TABLE IF NOT EXISTS schema (id text primary key not null, version integer);');
     }
     
     $array = array();
@@ -167,19 +172,14 @@ class db
     if (!$this->handle->query('SELECT 1 FROM '.$module)) {
       $this->handle->beginTransaction();
       if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
-        $stmt = $this->handle->prepare('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
-        $stmt->execute();
-        $stmt->closeCursor();
-                  
+        $stmt = $this->handle->exec('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');                  
         if (isset($array['schema'])) {
           $columns = array();
           foreach ($array['schema'] as $item) {
             array_push($columns, strtolower($item['name']).' '.strtoupper($item['type']));
           }
-          $stmt = $this->handle->prepare('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
-          $stmt->execute();
-          $stmt->closeCursor();
           
+          $stmt = $this->handle->exec('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
           if (isset($array['data'])) {
             foreach ($array['data'] as $item) {
               $columns = array();
@@ -191,9 +191,7 @@ class db
                 }
                 array_push($values, $value);
               }
-              $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
-              $stmt->execute();
-              $stmt->closeCursor();
+              $stmt = $this->handle->exec('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
             }
           }
         }
@@ -212,18 +210,13 @@ class db
                 $stmt = $this->handle->exec('VACUUM');
                 $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
                 if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
-                  $stmt = $this->handle->prepare('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
-                  $stmt->execute();
-                  $stmt->closeCursor();
-                  
+                  $stmt = $this->handle->exec('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');                  
                   if (isset($array['schema'])) {
                     $columns = array();
                     foreach ($array['schema'] as $item) {
                       array_push($columns, strtolower($item['name']).' '.strtoupper($item['type']));
                     }
-                    $stmt = $this->handle->prepare('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
-                    $stmt->execute();
-                    $stmt->closeCursor();
+                    $stmt = $this->handle->exec('CREATE TABLE '.$module.' ('.implode(',', $columns).');');
                   }
                   if (isset($array['data'])) {
                     foreach ($array['data'] as $item) {
@@ -236,9 +229,7 @@ class db
                         }
                         array_push($values, $value);
                       }
-                      $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
-                      $stmt->execute();
-                      $stmt->closeCursor();
+                      $stmt = $this->handle->exec('INSERT INTO '.$module.' ('.implode(',', $columns).') VALUES ('.implode(',', $values).');');
                     }
                   }
                 }
@@ -249,14 +240,16 @@ class db
                 foreach ($stmt->fetchAll() as $item) {
                   array_push($fields, $item['name']);
                 }
+                $stmt->closeCursor();
                 if (isset($array['schema'])) {
                   foreach ($array['schema'] as $item) {
                     if (!in_array($item['name'], $fields)) {
-                      $stmt = $this->handle->prepare('ALTER TABLE '.$module.' ADD COLUMN '.strtolower($item['name']).' '.strtoupper($item['type']).';');
-                      $stmt->execute();
-                      $stmt->closeCursor();
+                      $stmt = $this->handle->exec('ALTER TABLE '.$module.' ADD COLUMN '.strtolower($item['name']).' '.strtoupper($item['type']).';');
+                    } else {
+                      unset($fields[array_search($item['name'], $fields)]);
                     }
                   }
+                                                                                          
                   if (isset($array['data'])) {
                     foreach ($array['data'] as $item) {
                       if ($this->handle->query('SELECT * FROM '.$module.' WHERE id = '.$this->handle->quote($item['id']))) {
