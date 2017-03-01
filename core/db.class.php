@@ -172,7 +172,7 @@ class db
     if (!$this->handle->query('SELECT 1 FROM '.$module)) {
       $this->handle->beginTransaction();
       if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
-        $stmt = $this->handle->exec('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');                  
+        $stmt = $this->handle->exec('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
         if (isset($array['schema'])) {
           $columns = array();
           foreach ($array['schema'] as $item) {
@@ -210,7 +210,7 @@ class db
                 $stmt = $this->handle->exec('VACUUM');
                 $stmt = $this->handle->exec('DELETE FROM schema WHERE ID = '.$this->handle->quote($module));
                 if (isset($array['version']) && isset($array['type']) && $array['type'] != 'drop') {
-                  $stmt = $this->handle->exec('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');                  
+                  $stmt = $this->handle->exec('INSERT INTO schema (id, version) VALUES (\''.$module.'\','.$array['version'].');');
                   if (isset($array['schema'])) {
                     $columns = array();
                     foreach ($array['schema'] as $item) {
