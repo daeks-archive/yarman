@@ -78,7 +78,7 @@ if (network::get('action') != '') {
         $data[$key] = $value;
       }
       rom::write(network::post('id'), $data);
-      network::success('Successfully Saved Gamelist', 'true');
+      network::success('Successfully Saved Rom', 'true');
       break;
     case 'export':
       emulator::write(cache::getClientVariable($module->id.'_emulator'));
