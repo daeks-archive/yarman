@@ -43,7 +43,8 @@ if (network::get('action') != '') {
       break;
     case 'syncemulator':
       modal::start('Sync Emulator', CONTROLLER.'?action=syncemulator');
-      echo 'Do you really want to sync '.cache::getClientVariable($module->id.'_emulator').'?';
+      $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
+      echo 'Do you really want to sync '.$emulator['name'].'?';
       modal::end('Sync', 'success');
       break;
     case 'syncrom':

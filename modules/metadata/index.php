@@ -26,7 +26,7 @@ foreach (emulator::read() as $emulator) {
     echo ' selected';
   }
   echo ' value="'.$emulator['id'].'">'.$emulator['name'];
-  if ($emulator['count'] != '') {
+  if ($emulator['count'] != '' && $emulator['count'] > 0) {
     echo ' ('.$emulator['count'].')';
   }
   echo '</option>';
@@ -67,6 +67,7 @@ echo '</div>';
 // RENDER ROMLIST
 echo '<br><select name="nav-romlist" id="nav-romlist" class="form-control" data-toggle="select" data-query="'.DIALOG.'?action=render&tab=metadata&id=" data-target="#panel-right">';
 $first = null;
+$romlist = null;
 if (cache::getClientVariable($module->id.'_emulator') != '') {
   $romlist = emulator::read(cache::getClientVariable($module->id.'_emulator'));
   if (cache::getClientVariable($module->id.'_filter') != '') {

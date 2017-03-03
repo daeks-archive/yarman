@@ -153,18 +153,10 @@ class db
   {
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
       if ($where != null) {
-        $stmt = $this->handle->query('SELECT * FROM '.$module.' WHERE '.$where);
-        if (sizeof($stmt->fetch()) > 1) {
-          $sql = 'DELETE FROM '.$module.' WHERE '.$where;
-          $stmt = $this->handle->prepare($sql);
-          $stmt->execute();
-          $stmt->closeCursor();
-        } else {
-          $sql = 'DELETE FROM '.$module;
-          $stmt = $this->handle->prepare($sql);
-          $stmt->execute();
-          $stmt->closeCursor();
-        }
+        $sql = 'DELETE FROM '.$module.' WHERE '.$where;
+        $stmt = $this->handle->prepare($sql);
+        $stmt->execute();
+        $stmt->closeCursor();
       } else {
         $sql = 'DELETE FROM '.$module;
         $stmt = $this->handle->prepare($sql);

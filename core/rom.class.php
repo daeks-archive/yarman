@@ -55,7 +55,10 @@ class rom
   public static function delete($id)
   {
     $rom = self::config($id);
-    unlink(db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name']);
+    $item = db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
+    if (is_file($item)) {
+      unlink($item);
+    }
     
     $data = db::instance()->read('metadata', 'id='.db::instance()->quote($id));
     if (sizeof($data) > 0) {

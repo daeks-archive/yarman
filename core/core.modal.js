@@ -13,6 +13,7 @@
         });
 
         $('.modal').on('success.form.fv', function (event) {
+          $('button[data-query="modal-data"]').html('<i id="loading" class="fa fa-spinner fa-spin"></i> ' + $('button[data-query="modal-data"]').html());
           $('button[data-query="modal-data"]').prop('disabled', true);
           if ($('form[data-toggle="modal"]').length > 0) {
             var $form = $('form[data-toggle="modal"]');
