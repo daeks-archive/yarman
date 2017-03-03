@@ -4,7 +4,7 @@ class metadata
 {
   public static function start($tab, $emulator)
   {
-    $orphaned = metadata::clean($emulator);
+    $orphaned = metadata::clean($emulator, true);
   
     // RENDER RIGHT MENU
     $data = '<div class="row">';
@@ -152,14 +152,34 @@ class metadata
     return $data;
   }
   
-  public static function clean($emulator)
+  public static function clean($emulator, $quick = false)
   {
     $output = array('metadata' => array(), 'media' => array());
     $media = array();
     $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
     foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $data) {
-      if ($data['path'] == '' || !file_exists($data['path'])) {
+      if ($data['path'] == '') {
         array_push($output['metadata'], $data['id']);
+        if ($quick) {
+          break;
+        }
+      } else {
+        if (strpos($data['path'], '.') === 0) {
+          $data['path'] = $romspath.DIRECTORY_SEPARATOR.$emulator.substr($data['path'], 1);
+          if (!file_exists($data['path'])) {
+            array_push($output['metadata'], $data['id']);
+            if ($quick) {
+              break;
+            }
+          }
+        } else {
+          if (!file_exists($data['path'])) {
+            array_push($output['metadata'], $data['id']);
+            if ($quick) {
+              break;
+            }
+          }
+        }
       }
       if (isset($data['image']) && $data['image'] != '') {
         array_push($media, pathinfo($data['image'], PATHINFO_BASENAME));
@@ -183,6 +203,9 @@ class metadata
           if (is_file($field['path'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
             if (!in_array($item, $media) && !in_array($field['path'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item, $output['media'])) {
               array_push($output['media'], $field['path'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item);
+              if ($quick) {
+                break;
+              }
             }
           }
         }

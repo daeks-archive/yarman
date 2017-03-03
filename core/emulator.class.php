@@ -165,8 +165,19 @@ class emulator
     $media = array();
     $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
     foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $data) {
-      if ($data['path'] == '' || !file_exists($data['path'])) {
-        db::instance()->delete('metadata', 'id='.db::instance()->quote($data['id']));
+      if ($data['path'] == '') {
+        array_push($output['metadata'], $data['id']);
+      } else {
+        if (strpos($data['path'], '.') === 0) {
+          $data['path'] = $romspath.DIRECTORY_SEPARATOR.$emulator.substr($data['path'], 1);
+          if (!file_exists($data['path'])) {
+            array_push($output['metadata'], $data['id']);
+          }
+        } else {
+          if (!file_exists($data['path'])) {
+            array_push($output['metadata'], $data['id']);
+          }
+        }
       }
       if (isset($data['image']) && $data['image'] != '') {
         array_push($media, pathinfo($data['image'], PATHINFO_BASENAME));

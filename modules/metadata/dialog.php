@@ -59,7 +59,22 @@ if (network::get('action') != '') {
       modal::start('Clean Orphaned', CONTROLLER.'?action=clean');
       $orphaned = metadata::clean(cache::getClientVariable($module->id.'_emulator'));
       echo '<p>Orphaned Metadata: <b>'.sizeof($orphaned['metadata']).'</b></p>';
+      if (sizeof($orphaned['metadata']) <= 5) {
+        echo '<ul>';
+        foreach ($orphaned['metadata'] as $item) {
+          $rom = rom::read($item);
+          echo '<li>'.$rom['name'].' ('.$rom['path'].')</li>';
+        }
+        echo '</ul>';
+      }
       echo '<p>Orphaned Media:    <b>'.sizeof($orphaned['media']).'</b></p>';
+      if (sizeof($orphaned['media']) <= 5) {
+        echo '<ul>';
+        foreach ($orphaned['media'] as $item) {
+          echo '<li>'.$item.'</li>';
+        }
+        echo '</ul>';
+      }
       echo 'Do you really want to clean '.cache::getClientVariable($module->id.'_emulator').'?';
       modal::end('Clean', 'success');
       break;
