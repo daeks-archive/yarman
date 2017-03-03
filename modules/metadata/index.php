@@ -121,7 +121,7 @@ if (cache::getClientVariable($module->id.'_emulator') != '' && cache::getClientV
 } else {
   if (cache::getClientVariable($module->id.'_emulator') != '') {
     if ($first != null) {
-      echo metadata::render('metadata', cache::getClientVariable($module->id.'_emulator'), $first);
+      echo metadata::render('metadata', cache::getClientVariable($module->id.'_emulator'), $first['id']);
     }
   }
 }

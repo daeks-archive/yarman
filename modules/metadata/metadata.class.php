@@ -30,15 +30,15 @@ class metadata
     $data .= '<div class="btn-toolbar" role="toolbar">';
     $data .= '<div class="btn-group btn-group-sm">';
     $data .= '<button class="btn btn-success" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmsave" data-target="#modal" disabled><em class="fa fa-save"></em> Save</button>';
-    $data .= '<button class="btn btn-default" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=syncrom" data-target="#modal"><em class="fa fa-refresh"></em> Sync Rom</button>';
+    $data .= '<button class="btn btn-default" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=syncrom" data-target="#modal"><em class="fa fa-refresh"></em></button>';
     $data .= '</div>';
     $data .= '<div class="btn-group btn-group-sm pull-right">';
     $data .= '<button class="btn btn-default';
     if ((sizeof($orphaned['metadata']) + sizeof($orphaned['media'])) == 0) {
       $data .= ' disabled';
     }
-    $data .= '" type="submit" id="metadata-clean" name="metadata-clean" data-toggle="modal" href="'.DIALOG.'?action=clean" data-target="#modal">Clean Orphaned</button>';
-    $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em> Delete</button>';
+    $data .= '" type="submit" id="metadata-clean" name="metadata-clean" data-toggle="modal" href="'.DIALOG.'?action=clean" data-target="#modal">Clean</button>';
+    $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em></button>';
     $data .= '</div>';
     $data .= '</div>';
     $data .= '</div>';

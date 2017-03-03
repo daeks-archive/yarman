@@ -13,6 +13,7 @@
         });
 
         $('.modal').on('success.form.fv', function (event) {
+          $('button[data-query="modal-data"]').prop('disabled', true);
           if ($('form[data-toggle="modal"]').length > 0) {
             var $form = $('form[data-toggle="modal"]');
             var $target = $($form.attr('data-target'));
