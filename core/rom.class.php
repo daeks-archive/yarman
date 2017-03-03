@@ -9,7 +9,12 @@ class rom
   
   public static function config($id)
   {
-    return db::instance()->read('roms', 'id='.db::instance()->quote($id))[0];
+    $config = db::instance()->read('roms', 'id='.db::instance()->quote($id));
+    if (sizeof($config) == 1) {
+      return $config[0];
+    } else {
+      return array('id' => $id, 'name' => $id);
+    }
   }
   
   public static function create($id, $data)

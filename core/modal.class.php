@@ -8,7 +8,7 @@ class modal
     echo '<h4 class="modal-title" id="modallabel">'.$title.'</h4>';
     echo '</div>';
     echo '<div class="modal-body" id="modal-body">';
-    echo '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-content" action="'.$target.'" method="'.strtoupper($method).'"><fieldset>';
+    echo '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-body" action="'.$target.'" method="'.strtoupper($method).'"><fieldset>';
   }
           
   public static function end($title = null, $color = 'primary')

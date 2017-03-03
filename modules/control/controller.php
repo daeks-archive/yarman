@@ -6,7 +6,7 @@ if (network::get('action') != '') {
   switch (network::get('action')) {
     case 'reset':
       db::instance()->reset();
-      network::success('Successfully Reset '.NAME, 'location.reload();');
+      network::success('Successfully Reset '.NAME, 'window.location.href = \'/\';');
       break;
     case 'restart':
       es::stop();
