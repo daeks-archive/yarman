@@ -12,7 +12,9 @@ if (network::get('action') != '') {
             $emulators = emulator::read();
             $total = 0;
             foreach ($emulators as $emulator) {
-              $total += $emulator['count'];
+              if (isset($emulator['count'])) {
+                $total += $emulator['count'];
+              }
             }
             echo '<p><div>Total Emulators: <div class="pull-right"><b>'.sizeof($emulators).'</b></div></div>';
             echo '<div>Total Roms: <div class="pull-right"><b>'.$total.'</b></div></div></p>';
