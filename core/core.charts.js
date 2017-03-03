@@ -3,6 +3,18 @@
     var charts = (function () {
       var init = function () {
         $('[data-provider="gauge"]').each(function () {
+          if (typeof $(this).attr('height') == 'undefined') {
+            $(this).css('height', '150px');
+          } else {
+            $(this).css('height', $(this).attr('height') + 'px');
+          }
+          
+          if (typeof $(this).attr('width') == 'undefined') {
+            $(this).css('width', '200px');
+          } else {
+            $(this).css('width', $(this).attr('width') + 'px');
+          }
+          
           var g = new JustGage({
             id: $(this).attr('id'),
             value: $(this).attr('data-query'),

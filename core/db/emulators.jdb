@@ -17,6 +17,10 @@
     {
       "name" : "blacklist",
       "type" : "text"
+    },
+    {
+      "name" : "count",
+      "type" : "integer"
     }
   ],
   "data" : [

@@ -2,182 +2,107 @@
   
 class rom
 {
-  public static $gamelist = 'gamelist.xml';
-
-  public static function parse($id)
+  public static function uniqid($emulator, $id)
   {
-    return pathinfo($id, PATHINFO_BASENAME);
+    return md5($emulator.pathinfo($id, PATHINFO_BASENAME));
   }
   
-  public static function readAll($emulator)
+  public static function config($id)
   {
-    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-    if (!file_exists($xml)) {
-      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-    }
-    
-    $output = array();
-    $xmldata = xml::read($xml);
-    foreach ($xmldata as $item) {
-      $item['id'] = pathinfo($item['fields']['path'], PATHINFO_BASENAME);
-      array_push($output, $item);
-    }
-    return $output;
-  }
-
-  public static function read($emulator, $id)
-  {
-    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-    if (!file_exists($xml)) {
-      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-    }
-    
-    $xmldata = xml::read($xml);
-    foreach ($xmldata as $item) {
-      if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
-        $item['id'] = pathinfo($item['fields']['path'], PATHINFO_BASENAME);
-        return $item;
-      }
-    }
+    return db::instance()->read('roms', 'id='.db::instance()->quote($id))[0];
   }
   
-  public static function write($emulator, $id, $data)
+  public static function create($id, $data)
   {
-    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-    if (!file_exists($xml)) {
-      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-      copy($xml, db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+    if (sizeof(db::instance()->read('roms', 'id='.db::instance()->quote($id))) == 0) {
+      $data['id'] = $id;
+      return db::instance()->write('roms', $data);
+    }
+  }
+   
+  public static function read($id)
+  {
+    $output = db::instance()->read('metadata', 'id='.db::instance()->quote($id));
+    if (sizeof($output) > 0) {
+      return $output[0];
     } else {
-      copy($xml, db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      return array();
     }
-        
-    $output = array();
-    $update = false;
-    $xmldata = xml::read($xml);
-    foreach ($xmldata as $item) {
-      $update = false;
-      if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
-        foreach ($data as $key => $value) {
-          $field = db::instance()->read('fields', $key, 'type');
-          if ($field == 'date') {
-            if (trim($value) != '') {
-              $value = date_format(date_create($value), 'Ymd\THis');
-            } else {
-              $value = '00000000T000000';
-            }
-          }
-          if ($field != 'hidden' && $field != 'key') {
-            if (isset($item['fields'][$key])) {
-              $item['fields'][$key] = trim($value);
-            } else {
-              if (trim($value) != '') {
-                $item['fields'][$key] = trim($value);
-              }
-            }
-          }
-        }
-        $update = true;
-      }
-      array_push($output, $item);
+  }
+  
+  public static function write($id, $data)
+  {
+    if (!isset($data['path']) || $data['path'] == '') {
+      $rom = self::config($id);
+      $data['path'] = db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
     }
-    
-    if (!$update) {
-      $tmp = array('type' => '', 'attributes' => array(), 'fields' => array());
-      $fields = db::instance()->read('fields');
-    
-      foreach ($fields as $field) {
-        $value = '';
-        if ($field['type'] == 'key') {
-          $tmp['fields'][$field['guid']] = trim(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
-          if (is_file(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id)) {
-            $tmp['type'] = 'game';
+    foreach ($data as $key => $value) {
+      $field = db::instance()->read('fields', 'id='.db::instance()->quote($key));
+      if (sizeof($field) > 0) {
+        if ($field[0]['type'] == 'date') {
+          if (trim($value) != '') {
+            $value = date_format(date_create($value), 'Ymd\THis');
           } else {
-            $tmp['type'] = 'folder';
-          }
-        } else {
-          if ($field['type'] != 'hidden') {
-            if (isset($data[$field['id']])) {
-              $value = $data[$field['id']];
-            }
-            if ($field['type'] == 'date') {
-              if (trim($value) != '') {
-                $value = date_format(date_create($value), 'Ymd\THis');
-              } else {
-                $value = '00000000T000000';
-              }
-            }
-            if (!isset($tmp['fields'][$field['id']])) {
-              $tmp['fields'][$field['id']] = trim($value);
-            }
+            $value = '00000000T000000';
           }
         }
       }
-      array_push($output, $tmp);
+      $data[$key] = $value;
     }
-    return xml::write('gameList', $output, $xml);
+    return db::instance()->write('metadata', $data, 'id='.db::instance()->quote($id));
   }
   
-  public static function delete($emulator, $id)
+  public static function delete($id)
   {
-    unlink(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$id);
+    $rom = self::config($id);
+    unlink(db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name']);
     
-    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-    if (!file_exists($xml)) {
-      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-      copy($xml, db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
-    } else {
-      copy($xml, db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
-    }
-    
-    $output = array();
-    $xmldata = xml::read($xml);
-    foreach ($xmldata as $item) {
-      if (pathinfo($item['fields']['path'], PATHINFO_BASENAME) == $id) {
-        foreach ($item['fields'] as $key => $value) {
-          $field = db::instance()->read('fields', $key, 'type');
-          if ($field == 'upload') {
-            if ($value != '') {
-              unlink($value);
-            }
+    $data = db::instance()->read('metadata', 'id='.db::instance()->quote($id));
+    if (sizeof($data) > 0) {
+      foreach ($data[0] as $key => $value) {
+        $field = db::instance()->read('fields', 'id='.db::instance()->quote($key))[0];
+        if ($field['type'] == 'upload') {
+          if ($value != '') {
+            unlink($value);
           }
         }
-      } else {
-        array_push($output, $item);
       }
+      db::instance()->delete('roms', 'id='.db::instance()->quote($id));
+      db::instance()->delete('metadata', 'id='.db::instance()->quote($id));
     }
-    return xml::write('gameList', $output, $xml);
   }
   
-  public static function clean($emulator, $ids)
+  public static function sync($emulator, $id)
   {
-    $xml = db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+    $xml = db::instance()->read('config', "id='roms_path'")[0]['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.emulator::$gamelist;
     if (!file_exists($xml)) {
-      $xml = db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
-      copy($xml, db::instance()->read('config', 'metadata_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
-    } else {
-      copy($xml, db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
+      $xml = db::instance()->read('config', "id='metadata_path'")[0]['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.emulator::$gamelist;
     }
     
-    $output = array();
     $xmldata = xml::read($xml);
-    foreach ($xmldata as $item) {
-      if (in_array(pathinfo($item['fields']['path'], PATHINFO_BASENAME), $ids)) {
-        foreach ($item['fields'] as $key => $value) {
-          $field = db::instance()->read('fields', $key, 'type');
-          if ($field == 'upload') {
-            if ($value != '') {
-              if (file_exists($value)) {
-                unlink($value);
-              }
-            }
-          }
-        }
-      } else {
-        array_push($output, $item);
+    $fields = array();
+    foreach (db::instance()->read('fields') as $field) {
+      if ($field['type'] != 'image') {
+        array_push($fields, $field['id']);
       }
     }
-    return xml::write('gameList', $output, $xml);
+    
+    foreach ($xmldata as $item) {
+      if (rom::uniqid($emulator, $item['fields']['path']) == $id) {
+        $tmp = array();
+        $tmp['id'] = rom::uniqid($emulator, $item['fields']['path']);
+        $tmp['emulator'] = $emulator;
+        foreach ($item['fields'] as $key => $value) {
+          if (in_array($key, $fields)) {
+            $tmp[$key] = $value;
+          }
+        }
+        db::instance()->write('metadata', $tmp, 'id='.db::instance()->quote(rom::uniqid($emulator, $item['fields']['path'])));
+        break;
+      }
+    }
   }
+  
 }
   
 ?>

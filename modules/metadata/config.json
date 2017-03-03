@@ -5,5 +5,11 @@
     "position" : "left",
     "order" : 2,
     "icon" : "files-o"
+    },
+  "dashboard" : [
+    {
+      "panel" : "dialog.php?action=panel&id=monitor",
+      "grid" : "1 4 8 left 2"
     }
+  ]
 }

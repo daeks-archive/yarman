@@ -17,17 +17,22 @@ echo '<div class="row">';
 echo '<div class="col-sm-8">';
 // RENDER EMULATORS
 echo '<div class="input-group">';
-echo '<span class="input-group-btn"><button class="btn btn-default" disabled><em class="fa fa-refresh"></em></button></span>';
+echo '<span class="input-group-btn"><button class="btn btn-default" data-toggle="modal" href="'.DIALOG.'?action=syncemulator" data-target="#modal"><em class="fa fa-refresh"></em></button></span>';
 echo '<select name="nav-emulator" id="nav-emulator" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&emulator=" data-target="#nav-romlist">';
 echo '<option value="" selected>-- Select Emulator --</option>';
-foreach (emulator::readAll() as $emulator) {
+foreach (emulator::read() as $emulator) {
   echo '<option';
   if (cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
     echo ' selected';
   }
-  echo ' value="'.$emulator['id'].'">'.$emulator['name'].' ('.$emulator['count'].')</option>';
+  echo ' value="'.$emulator['id'].'">'.$emulator['name'];
+  if ($emulator['count'] != '') {
+    echo ' ('.$emulator['count'].')';
+  }
+  echo '</option>';
 }
 echo '</select>';
+echo '<span class="input-group-btn"><button class="btn btn-default" data-toggle="modal" href="'.DIALOG.'?action=export" data-target="#modal"><em class="fa fa-download"></em></button></span>';
 echo '</div>';
 echo '</div>';
 // RENDER FILTER
@@ -63,35 +68,30 @@ echo '</div>';
 echo '<br><select name="nav-romlist" id="nav-romlist" class="form-control" data-toggle="select" data-query="'.DIALOG.'?action=render&tab=metadata&id=" data-target="#panel-right">';
 $first = null;
 if (cache::getClientVariable($module->id.'_emulator') != '') {
-  $romlist = emulator::readRomlist(cache::getClientVariable($module->id.'_emulator'));
+  $romlist = emulator::read(cache::getClientVariable($module->id.'_emulator'));
   if (cache::getClientVariable($module->id.'_filter') != '') {
-    $romdata = rom::readAll(cache::getClientVariable($module->id.'_emulator'));
     foreach ($romlist as $rom) {
-      $offset = array_search(rom::parse($rom), array_column($romdata, 'id'));
-      $data = null;
-      if (isset($romdata[$offset])) {
-        $data = $romdata[$offset];
-      }
+      $data = rom::read($rom['id']);
       if (cache::getClientVariable($module->id.'_filter') == 'nodata') {
         if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
           if ($first == null) {
-            $first = $rom;
+            $first = $rom['id'];
           }
-          echo '<option value="'.$rom.'">'.$rom.'</option>';
+          echo '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
         }
       } elseif (cache::getClientVariable($module->id.'_filter') == 'noimage') {
         if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
           if ($first == null) {
-            $first = $rom;
+            $first = $rom['id'];
           }
-          echo '<option value="'.$rom.'">'.$rom.'</option>';
+          echo '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
         }
       } elseif (cache::getClientVariable($module->id.'_filter') == 'novideo') {
         if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
           if ($first == null) {
-            $first = $rom;
+            $first = $rom['id'];
           }
-          echo '<option value="'.$rom.'">'.$rom.'</option>';
+          echo '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
         }
       }
     }
@@ -99,10 +99,10 @@ if (cache::getClientVariable($module->id.'_emulator') != '') {
     $first = $romlist[0];
     foreach ($romlist as $rom) {
       echo '<option';
-      if (cache::getClientVariable($module->id.'_id') == $rom) {
+      if (cache::getClientVariable($module->id.'_id') == $rom['id']) {
         echo ' selected';
       }
-      echo ' value="'.rom::parse($rom).'">'.$rom.'</option>';
+      echo ' value="'.$rom['id'].'">'.$rom['name'].'</option>';
     }
   }
 }

@@ -49,14 +49,18 @@
     {
       "name" : "whitelist",
       "type" : "text"
+    },
+    {
+      "name" : "export",
+      "type" : "boolean"
     }
   ],
   "data" : [
     {
       "id" : "id",
-      "guid" : "path",
       "type" : "key",
-      "readonly" : true
+      "readonly" : true,
+      "export" : false
     },
     {
       "id" : "name",
@@ -66,7 +70,8 @@
       "maxlength" : 255,
       "validator" : "data-fv-notempty",
       "container" : "metadata",
-      "grid" : "1 8 4 left 2"
+      "grid" : "1 8 4 left 2",
+      "export" : true
     },
     {
       "id" : "genre",
@@ -75,7 +80,8 @@
       "type" : "string",
       "maxlength" : 255,
       "container" : "metadata",
-      "grid" : "1 8 4 left 3"
+      "grid" : "1 8 4 left 3",
+      "export" : true
     },
     {
       "id" : "developer",
@@ -84,7 +90,8 @@
       "type" : "string",
       "maxlength" : 255,
       "container" : "metadata",
-      "grid" : "1 8 4 left 4"
+      "grid" : "1 8 4 left 4",
+      "export" : true
     },
     {
       "id" : "publisher",
@@ -93,7 +100,8 @@
       "type" : "string",
       "maxlength" : 255,
       "container" : "metadata",
-      "grid" : "1 8 4 left 5"
+      "grid" : "1 8 4 left 5",
+      "export" : true
     },
     {
       "id" : "releasedate",
@@ -102,7 +110,8 @@
       "type" : "date",
       "validator" : "data-fv-date data-fv-date-format=\"YYYY/MM/DD\"",
       "container" : "metadata",
-      "grid" : "2 6 6 left 1"
+      "grid" : "2 6 6 left 1",
+      "export" : true
     },
     {
       "id" : "players",
@@ -110,7 +119,8 @@
       "name" : "Players",
       "type" : "integer",
       "container" : "metadata",
-      "grid" : "2 6 6 right 1"
+      "grid" : "2 6 6 right 1",
+      "export" : true
     },
     {
       "id" : "rating",
@@ -118,7 +128,8 @@
       "name" : "Rating",
       "type" : "double",
       "container" : "metadata",
-      "grid" : "3 6 6 left 1"
+      "grid" : "3 6 6 left 1",
+      "export" : true
     },
     {
       "id" : "desc",
@@ -127,7 +138,8 @@
       "type" : "text",
       "rowcount" : 10,
       "container" : "metadata",
-      "grid" : "4 12 0 left 1"
+      "grid" : "4 12 0 left 1",
+      "export" : true
     },
     {
       "id" : "path",
@@ -137,15 +149,17 @@
       "readonly": true,
       "validator" : "data-fv-notempty",
       "container" : "media",
-      "grid" : "1 8 4 left 1"
+      "grid" : "1 8 4 left 1",
+      "export" : true
     },
     {
       "id" : "image_metadata",
-      "guid" : "image",
+      "guid" : "id",
       "name" : "Image Preview",
       "type" : "image",
       "container" : "metadata",
-      "grid" : "1 8 4 right 1"
+      "grid" : "1 8 4 right 1",
+      "export" : false
     },
     {
       "id" : "image",
@@ -155,7 +169,8 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".jpg .png",
       "container" : "media",
-      "grid" : "1 8 4 left 2"
+      "grid" : "1 8 4 left 2",
+      "export" : true
     },
     {
       "id" : "video",
@@ -165,7 +180,8 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".mp4",
       "container" : "media",
-      "grid" : "1 8 4 left 3"
+      "grid" : "1 8 4 left 3",
+      "export" : true
     },
     {
       "id" : "marquee",
@@ -175,7 +191,8 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".jpg .png",
       "container" : "media",
-      "grid" : "1 8 4 left 4"
+      "grid" : "1 8 4 left 4",
+      "export" : true
     },
     {
       "id" : "thumbnail",
@@ -185,7 +202,8 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".jpg .png",
       "container" : "media",
-      "grid" : "1 8 4 left 5"
+      "grid" : "1 8 4 left 5",
+      "export" : true
     },
     {
       "id" : "playcount",
@@ -194,7 +212,8 @@
       "type" : "integer",
       "readonly" : true,
       "container" : "metadata",
-      "grid" : "5 6 6 left 1"
+      "grid" : "5 6 6 left 1",
+      "export" : true
     },
     {
       "id" : "lastplayed",
@@ -203,7 +222,8 @@
       "type" : "date",
       "readonly": true,
       "container" : "metadata",
-      "grid" : "5 6 6 right 1"
+      "grid" : "5 6 6 right 1",
+      "export" : true
     },
     {
       "id" : "favorite",
@@ -211,7 +231,8 @@
       "name" : "Favorite",
       "type" : "boolean",
       "container" : "metadata",
-      "grid" : "3 6 6 right 1"
+      "grid" : "3 6 6 right 1",
+      "export" : true
     }
   ]
 }

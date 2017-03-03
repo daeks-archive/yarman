@@ -10,7 +10,7 @@ echo '<div class="row">';
 echo '<div class="col-sm-4">';
 echo '<select name="nav-emulator" id="nav-emulator" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&emulator=" data-target="#nav-editor">';
 echo '<option value="">Show General Config</option>';
-foreach (emulator::readAll(false) as $emulator) {
+foreach (emulator::read() as $emulator) {
   echo '<option';
   if (cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
     echo ' selected';

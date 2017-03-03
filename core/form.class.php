@@ -2,7 +2,7 @@
   
 class form
 {
-  public static function getField($config, $id, $value = '', $emulator = '')
+  public static function getField($config, $id, $value = '')
   {
     foreach ($config as $obj) {
       if ($obj['id'] == $id) {
@@ -30,10 +30,10 @@ class form
             $data = self::getDate($obj, $value);
             break;
           case 'image':
-            $data = self::getImage($obj, $emulator, $value);
+            $data = self::getImage($obj, $value);
             break;
           case 'upload':
-            $data = self::getUpload($obj, $emulator, $value);
+            $data = self::getUpload($obj, $value);
             break;
           case 'boolean':
             $data = self::getBoolean($obj, $value);
@@ -49,9 +49,6 @@ class form
   
   public static function getHidden($obj, $value = '')
   {
-    if ($obj['id'] == 'id') {
-      $value = rom::parse($value);
-    }
     $data = '<input type="hidden" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"/>';
     return $data;
   }
@@ -231,21 +228,24 @@ class form
     return $data;
   }
   
-  public static function getImage($obj, $emulator, $id)
+  public static function getImage($obj, $id)
   {
     $data = '';
     if ($id != '') {
-      if (isset($obj['name']) && $obj['name'] != '') {
-        $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+      $rom = rom::read($id);
+      if (isset($rom[$obj['type']]) && $rom[$obj['type']] != '') {
+        if (isset($obj['name']) && $obj['name'] != '') {
+          $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+        }
+        $data .= '<div class="thumbnail">';
+        $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&type='.$obj['type'].'&id='.$id.'">';
+        $data .= '</div>';
       }
-      $data .= '<div class="thumbnail">';
-      $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&emulator='.$emulator.'&type='.$obj['type'].'&id='.rawurlencode(pathinfo($id, PATHINFO_BASENAME)).'">';
-      $data .= '</div>';
     }
     return $data;
   }
   
-  public static function getUpload($obj, $emulator, $value = '')
+  public static function getUpload($obj, $value = '')
   {
     $data = '<div class="form-group">';
     if (isset($obj['name']) && $obj['name'] != '') {
@@ -267,7 +267,7 @@ class form
     }
     $data .= '/>';
     $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file"><i class="fa fa-file-image-o fa-fw"></i>';
-    $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&emulator='.$emulator.'&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
+    $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
     $data .= '</span></label>';
     $data .= '</div>';
     $data .= '</div>';

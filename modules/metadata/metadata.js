@@ -29,9 +29,14 @@
         $('#nav-emulator').trigger('change');
       }
       
+      var reload = function () {
+        $('#nav-romlist').trigger('change');
+      }
+      
       return {
         init: init,
-        reset: reset
+        reset: reset,
+        reload: reload
       };
     })();
 

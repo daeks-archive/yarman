@@ -3,126 +3,63 @@
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 page::start();
 
-echo '<br><div class="row">';
-echo '<div class="col-sm-1">';
-
-echo '</div>';
-echo '<div class="col-sm-6">';
-
-panel::start('Beta Warning', 'danger');
-echo '<p>This is currenly in BETA phase. Please be aware that it could damage your roms, media or gamelists.</p>';
-panel::end();
-
-panel::start('Welcome to YARMan Web (Yet Another RetroPie Manager)', 'primary');
-echo '<p>RetroPie allows you to turn your Raspberry Pi or PC into a retro-gaming machine. It builds upon Raspbian, EmulationStation, RetroArch and many other projects to enable you to play your favourite Arcade, home-console, and classic PC games with the minimum set-up. For power users it also provides a large variety of configuration tools to customise the system as you want.</p>';
-panel::end();
- 
-echo '<div class="row">';
-echo '<div class="col-sm-7">';
-
-panel::start('CPU');
-$load = system::getLoadAverage();
-echo '<p><b>Overview:</b> '.system::getUptime().'</p>';
-echo '<div class="row">';
-echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="1min" data-query-min="0" data-query-max="5" data-query="'.$load['1min'].'" width="100"></div>';
-echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" width="100"></div>';
-echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" width="100"></div>';
-echo '</div>';
-panel::end();
-
-echo '</div>';
-echo '<div class="col-sm-5">';
-
-panel::start('Temperature');
-echo '<p>CPU Frequency: <b>'.system::getCPUFreq().'MHz</b></p>';
-echo '<div class="row">';
-echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getCPUTemp().'" width="100"></div>';
-echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getGPUTemp().'" width="100"></div>';
-echo '</div>';
-panel::end();
-
-echo '</div>';
-echo '</div>';
-
-echo '</div>';
-echo '<div class="col-sm-4">';
-
-panel::start('<b>Latest RetroPie News</b>', 'info');
-if (network::pingRemoteUrl(db::instance()->read('config', 'news_feed'))) {
-  $xml = xml::dump(cache::setRemoteCache('newsfeed', db::instance()->read('config', 'news_feed')));
-  if (isset($xml['channel']) && isset($xml['channel']['item'])) {
-    foreach (array_slice($xml['channel']['item'], 0, 3) as $news) {
-      echo '<a href="'.$news['link'].'" target="_blank" style="text-decoration: none !important;"><div>';
-      echo '<span style="color: black"><b>'.$news['title'].'</b></span> <div class="pull-right">read more</div>';
-      echo '</div></a>';
+$fieldset = array();
+$modules = module::readAll();
+foreach ($modules as $moduleconfig) {
+  $tmp = json_decode(file_get_contents($moduleconfig));
+  if (isset($tmp->dashboard)) {
+    foreach ($tmp->dashboard as $item) {
+      $target = $item->panel;
+      if (strpos($target, URL_SEPARATOR) !== 0) {
+        $target = str_replace(BASE, '', MODULES.URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$target);
+        $target = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_ADDR'].':'.$_SERVER['SERVER_PORT'].$target;
+      }
+      
+      $parts = explode(' ', $item->grid);
+      if (sizeof($parts) == 5) {
+        if (array_key_exists($parts[0], $fieldset)) {
+          if ($parts[3] == 'left') {
+            while (isset($fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[1]][$parts[4]])) {
+              $parts[4] += 1;
+            };
+            $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[1]][$parts[4]] = $target;
+          } elseif ($parts[3] == 'right') {
+            while (isset($fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[2]][$parts[4]])) {
+              $parts[4] += 1;
+            };
+            $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[2]][$parts[4]] = $target;
+          }
+        } else {
+          if ($parts[1] == '12' && $parts[2] == '0') {
+            $fieldset[$parts[0]] = array($parts[3].'-col-sm-'.$parts[1] => array($parts[4] => $target));
+          } else {
+            if ($parts[3] == 'left') {
+              $fieldset[$parts[0]] = array('left-col-sm-'.$parts[1] => array($parts[4] => $target), 'right-col-sm-'.$parts[2] => array());
+            } elseif ($parts[3] == 'right') {
+              $fieldset[$parts[0]] = array('left-col-sm-'.$parts[1] => array(), 'right-col-sm-'.$parts[2] => array($parts[4] => $target));
+            }
+          }
+        }
+      }
     }
-    echo '<div><a href="'.db::instance()->read('config', 'news_feed').'" target="_blank" style="text-decoration: none !important;">...read more...</a></div>';
   }
-} else {
-  echo "Failed to retrive newsfeed. Your device is currently offline.";
 }
-panel::end();
 
-panel::start('RetroPie Monitor', 'info');
-$emulators = emulator::readAll();
-$total_roms = 0;
-foreach ($emulators as $emulator) {
-  $total_roms += $emulator['count'];
+ksort($fieldset);
+
+foreach ($fieldset as $key => $row) {
+  echo '<div class="row">';
+  foreach ($row as $key => $column) {
+    echo '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
+    ksort($column);
+    foreach ($column as $key => $panel) {
+      echo network::getRemoteContent($panel);
+      //echo cache::getRemoteCache(cache::setRemoteCache($panel, $panel, 300));
+    }
+    echo '</div>';
+  }
+  echo '</div>';
 }
-echo '<p><div>Total Emulators: <div class="pull-right"><b>'.sizeof($emulators).'</b></div></div>';
-echo '<div>Total Roms: <div class="pull-right"><b>'.$total_roms.'</b></div></div></p>';
-panel::end();
- 
-panel::start('Storage');
-$storage = system::getStorage();
-$sto_percent = round($storage['used']/$storage['total']*100, 2);
-$storage_color = '';
-if ($sto_percent > 70 && $sto_percent < 85) {
-  $storage_color = 'progress-bar-warning';
-} elseif ($sto_percent >= 85) {
-  $storage_color = 'progress-bar-danger';
-}
-echo '<p>Used: <b>'.round($storage['used']/1024/1024, 2).'GB</b> ('.$sto_percent.'%) Free: <b>'.round($storage['free']/1024/1024, 2).'GB</b> Total: <b>'.round($storage['total']/1024/1024, 2).'GB</b></p>';
-echo '<div class="progress">';
-echo '<div class="progress-bar '.$storage_color.'" role="progressbar" aria-valuenow="'.$storage['used'].'" aria-valuemin="0" aria-valuemax="'.$storage['total'].'" style="width: '.$sto_percent.'%;">'.$sto_percent.'%</div>';
-echo '</div>';
-panel::end();
-
-panel::start('Memory');
-$memory = system::getMemory();
-$mem_percent = round($memory['used']/$memory['total']*100, 2);
-$memory_color = '';
-if ($mem_percent > 70 && $mem_percent < 85) {
-  $memory_color = 'progress-bar-warning';
-} elseif ($mem_percent >= 85) {
-  $memory_color = 'progress-bar-danger';
-}
-echo '<p>Used: <b>'.round($memory['used']/1024, 2).'MB</b> ('.$mem_percent.'%) Free: <b>'.round($memory['free']/1024, 2).'MB</b> Total: <b>'.round($memory['total']/1024, 2).'MB</b></p>';
-echo '<div class="progress">';
-echo '<div class="progress-bar '.$memory_color.'" role="progressbar" aria-valuenow="'.$memory['used'].'" aria-valuemin="0" aria-valuemax="'.$memory['total'].'" style="width: '.$mem_percent.'%;">'.$mem_percent.'%</div>';
-echo '</div>';
-panel::end();
-
-panel::start('Swap');
-$swap = system::getSwap();
-$swap_percent = round($swap['used']/$swap['total']*100, 2);
-$swap_color = '';
-if ($swap_percent > 70 && $swap_percent < 85) {
-  $swap_color = 'progress-bar-warning';
-} elseif ($swap_percent >= 85) {
-  $swap_color = 'progress-bar-danger';
-}
-echo '<p>Used: <b>'.round($swap['used']/1024, 2).'MB</b> ('.$swap_percent.'%) Free: <b>'.round($swap['free']/1024, 2).'MB</b> Total: <b>'.round($swap['total']/1024, 2).'MB</b></p>';
-echo '<div class="progress">';
-echo '<div class="progress-bar '.$swap_color.'" role="progressbar" aria-valuenow="'.$swap['used'].'" aria-valuemin="0" aria-valuemax="'.$swap['total'].'" style="width: '.$swap_percent.'%;">'.$swap_percent.'%</div>';
-echo '</div>';
-panel::end();
-
-echo '</div>';
-echo '<div class="col-sm-1">';
-
-echo '</div>';
-echo '</div>';
 
 page::end();
 

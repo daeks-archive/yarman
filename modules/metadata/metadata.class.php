@@ -4,7 +4,7 @@ class metadata
 {
   public static function start($tab, $emulator)
   {
-    $orphaned = metadata::findOrphaned($emulator);
+    $orphaned = metadata::clean($emulator);
   
     // RENDER RIGHT MENU
     $data = '<div class="row">';
@@ -27,8 +27,11 @@ class metadata
     $data .= '</ul>';
     $data .= '</div>';
     $data .= '<div class="col-sm-4">';
-    $data .= '<div class="btn-toolbar btn-group-sm" role="toolbar">';
+    $data .= '<div class="btn-toolbar" role="toolbar">';
+    $data .= '<div class="btn-group btn-group-sm">';
     $data .= '<button class="btn btn-success" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmsave" data-target="#modal" disabled><em class="fa fa-save"></em> Save</button>';
+    $data .= '<button class="btn btn-default" data-validate="form" type="submit" data-toggle="modal" href="'.DIALOG.'?action=syncrom" data-target="#modal"><em class="fa fa-refresh"></em> Sync Rom</button>';
+    $data .= '</div>';
     $data .= '<div class="btn-group btn-group-sm pull-right">';
     $data .= '<button class="btn btn-default';
     if ((sizeof($orphaned['metadata']) + sizeof($orphaned['media'])) == 0) {
@@ -55,7 +58,7 @@ class metadata
 
   public static function render($container, $emulator, $id)
   {
-    $rom = rom::read($emulator, $id);
+    $rom = rom::read($id);
     $fields = db::instance()->read('fields');
     
     $fieldset = array();
@@ -67,8 +70,14 @@ class metadata
           if (sizeof($parts) == 5) {
             if (array_key_exists($parts[0], $fieldset)) {
               if ($parts[3] == 'left') {
+                while (isset($fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[1]][$parts[4]])) {
+                  $parts[4] += 1;
+                };
                 $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[1]][$parts[4]] = $field;
               } elseif ($parts[3] == 'right') {
+                while (isset($fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[2]][$parts[4]])) {
+                  $parts[4] += 1;
+                };
                 $fieldset[$parts[0]][$parts[3].'-col-sm-'.$parts[2]][$parts[4]] = $field;
               }
             } else {
@@ -101,16 +110,18 @@ class metadata
     
     $data .= '<form id="rom-data" name="rom-data" role="form" class="scrollbar" data-validate="form" data-toggle="post" data-query="'.CONTROLLER.'?action=save" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
     $tabindex = 1;
+    ksort($fieldset);
     foreach ($fieldset as $key => $row) {
       $data .= '<div class="row">';
       foreach ($row as $key => $column) {
         $data .= '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
+        ksort($column);
         foreach ($column as $key => $field) {
           $field['index'] = $tabindex;
           $value = '';
           if (isset($field['guid'])) {
-            if (isset($rom['fields'][$field['guid']])) {
-              $value = $rom['fields'][$field['guid']];
+            if (isset($rom[$field['guid']])) {
+              $value = $rom[$field['guid']];
               if ($value == '' && $field['type'] == 'key') {
                 $value = $id;
               }
@@ -120,11 +131,11 @@ class metadata
               }
             }
           } else {
-            if (isset($rom['fields'][$field['id']])) {
-              $value = $rom['fields'][$field['id']];
+            if (isset($rom[$field['id']])) {
+              $value = $rom[$field['id']];
             }
           }
-          $data .= form::getField($fields, $field['id'], $value, $emulator);
+          $data .= form::getField($fields, $field['id'], $value);
         }
         $data .= '</div>';
       }
@@ -141,27 +152,26 @@ class metadata
     return $data;
   }
   
-  public static function findOrphaned($emulator)
+  public static function clean($emulator)
   {
-    $romdata = rom::readAll($emulator);
     $output = array('metadata' => array(), 'media' => array());
     $media = array();
-    
-    foreach ($romdata as $rom) {
-      if (!file_exists(db::instance()->read('config', 'roms_path').DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.rom::parse($rom['id']))) {
-        array_push($output['metadata'], $rom['id']);
+    $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
+    foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $data) {
+      if ($data['path'] == '' || !file_exists($data['path'])) {
+        array_push($output['metadata'], $data['id']);
       }
-      if (isset($rom['fields']['image']) && $rom['fields']['image'] != '') {
-        array_push($media, pathinfo($rom['fields']['image'], PATHINFO_BASENAME));
+      if (isset($data['image']) && $data['image'] != '') {
+        array_push($media, pathinfo($data['image'], PATHINFO_BASENAME));
       }
-      if (isset($rom['fields']['video']) && $rom['fields']['video'] != '') {
-        array_push($media, pathinfo($rom['fields']['video'], PATHINFO_BASENAME));
+      if (isset($data['video']) && $data['video'] != '') {
+        array_push($media, pathinfo($data['video'], PATHINFO_BASENAME));
       }
-      if (isset($rom['fields']['marquee']) && $rom['fields']['marquee'] != '') {
-        array_push($media, pathinfo($rom['fields']['marquee'], PATHINFO_BASENAME));
+      if (isset($data['marquee']) && $data['marquee'] != '') {
+        array_push($media, pathinfo($data['marquee'], PATHINFO_BASENAME));
       }
-      if (isset($rom['fields']['thumbnail']) && $rom['fields']['thumbnail'] != '') {
-        array_push($media, pathinfo($rom['fields']['thumbnail'], PATHINFO_BASENAME));
+      if (isset($data['thumbnail']) && $data['thumbnail'] != '') {
+        array_push($media, pathinfo($data['thumbnail'], PATHINFO_BASENAME));
       }
     }
     
@@ -178,6 +188,7 @@ class metadata
         }
       }
     }
+    
     return $output;
   }
 }

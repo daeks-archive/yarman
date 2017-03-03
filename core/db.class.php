@@ -36,7 +36,12 @@ class db
     }
   }
   
-  public function read($module, $id = null, $column = 'value', $key = 'id', $replace = array())
+  public function quote($value)
+  {
+    return $this->handle->quote($value);
+  }
+  
+  public function read($module, $where = null, $replace = array())
   {
     $needle = array('%USER%');
     $default_user = get_current_user();
@@ -45,30 +50,31 @@ class db
     }
     $haystack = array($default_user);
     
+    foreach ($replace as $key => $value) {
+      array_push($needle, $key);
+      array_push($haystack, $value);
+    }
+    
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
-      if ($id != null) {
-        $stmt = $this->handle->query('SELECT '.$column.' FROM '.$module.' WHERE '.$key.' = \''.$id.'\'');
-        $output = $stmt->fetch();
-        $stmt->closeCursor();
-        return str_replace($needle, $haystack, $output[$column]);
+      $stmt = null;
+      if ($where != null) {
+        $stmt = $this->handle->query('SELECT * FROM '.$module.' WHERE '.$where, PDO::FETCH_ASSOC);
       } else {
-        $stmt = $this->handle->query('SELECT * FROM '.$module);
-        $output = array();
-        foreach ($stmt->fetchAll() as $item) {
-          foreach ($item as $key => $value) {
-            $item[$key] = str_replace($needle, $haystack, $value);
-          }
-          array_push($output, $item);
-        }
-        $stmt->closeCursor();
-        return $output;
+        $stmt = $this->handle->query('SELECT * FROM '.$module, PDO::FETCH_ASSOC);
       }
-    } else {
-      return $this->readFile($module, $id, $column, $key, $replace);
+      $output = array();
+      foreach ($stmt->fetchAll() as $item) {
+        foreach ($item as $key => $value) {
+          $item[$key] = str_replace($needle, $haystack, $value);
+        }
+        array_push($output, $item);
+      }
+      $stmt->closeCursor();
+      return $output;
     }
   }
   
-  private function readFile($module, $id = null, $column = 'value', $key = 'id', $replace = array())
+  public function readJDB($module, $id = null, $column = 'value', $key = 'id', $replace = array())
   {
     $needle = array('%USER%');
     $default_user = get_current_user();
@@ -108,23 +114,29 @@ class db
     }
   }
   
-  public function write($module, $id, $data, $where = null)
+  public function write($module, $data, $where = null)
   {
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
-      if ($this->handle->query('SELECT 1 FROM '.$module.' WHERE id = '.$this->handle->quote($id))) {
-        $tmp = '';
-        foreach ($data as $key => $value) {
-          $tmp .= $key.'=?,';
-        }
-        $sql = 'UPDATE '.$module.' SET '.rtrim($tmp, ',');
-        if ($where != null) {
-          $sql .= ' WHERE '.$where;
+      if ($where != null) {
+        $stmt = $this->handle->query('SELECT * FROM '.$module.' WHERE '.$where);
+        if (sizeof($stmt->fetch()) > 1) {
+          $tmp = '';
+          foreach ($data as $key => $value) {
+            $tmp .= $key.'=?,';
+          }
+          $sql = 'UPDATE '.$module.' SET '.rtrim($tmp, ',').' WHERE '.$where;
+          $stmt = $this->handle->prepare($sql);
+          $stmt->execute(array_values($data));
+          $stmt->closeCursor();
         } else {
-          $sql .= ' WHERE id = '.$this->handle->quote($id);
+          $tmp = '';
+          foreach ($data as $key => $value) {
+            $tmp .= '?,';
+          }
+          $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', array_keys($data)).') VALUES ('.rtrim($tmp, ',').')');
+          $stmt->execute(array_values($data));
+          $stmt->closeCursor();
         }
-        $stmt = $this->handle->prepare($sql);
-        $stmt->execute(array_values($data));
-        $stmt->closeCursor();
       } else {
         $tmp = '';
         foreach ($data as $key => $value) {
@@ -137,16 +149,24 @@ class db
     }
   }
   
-  public function remove($module, $id, $where = null)
+  public function delete($module, $where = null)
   {
     if ($this->handle->query('SELECT 1 FROM '.$module)) {
-      if ($this->handle->query('SELECT 1 FROM '.$module.' WHERE id = '.$this->handle->quote($id))) {
-        $sql = 'DELETE FROM '.$module;
-        if ($where != null) {
-          $sql .= ' WHERE '.$where;
+      if ($where != null) {
+        $stmt = $this->handle->query('SELECT * FROM '.$module.' WHERE '.$where);
+        if (sizeof($stmt->fetch()) > 1) {
+          $sql = 'DELETE FROM '.$module.' WHERE '.$where;
+          $stmt = $this->handle->prepare($sql);
+          $stmt->execute();
+          $stmt->closeCursor();
         } else {
-          $sql .= ' WHERE id = '.$this->handle->quote($id);
+          $sql = 'DELETE FROM '.$module;
+          $stmt = $this->handle->prepare($sql);
+          $stmt->execute();
+          $stmt->closeCursor();
         }
+      } else {
+        $sql = 'DELETE FROM '.$module;
         $stmt = $this->handle->prepare($sql);
         $stmt->execute();
         $stmt->closeCursor();

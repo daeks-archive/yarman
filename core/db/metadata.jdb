@@ -7,7 +7,7 @@
       "type" : "text primary key not null"
     },
     {
-      "name" : "system",
+      "name" : "emulator",
       "type" : "text"
     },
     {

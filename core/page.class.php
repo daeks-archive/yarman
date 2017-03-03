@@ -91,7 +91,7 @@ class page
               $item .= '<li>';
             }
             if (isset($tmp->menu->external)) {
-              $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
+              $item .= '<a href="'.$tmp->menu->external.'" target="'.$tmp->menu->target.'">';
             } else {
               $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
             }
@@ -127,7 +127,7 @@ class page
               $item .= '<li>';
             }
             if (isset($tmp->menu->external)) {
-              $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
+              $item .= '<a href="'.$tmp->menu->external.'" target="'.$tmp->menu->target.'">';
             } else {
               $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
             }
