@@ -26,7 +26,7 @@ foreach (emulator::read() as $emulator) {
     echo ' selected';
   }
   echo ' value="'.$emulator['id'].'">'.$emulator['name'];
-  if ($emulator['count'] != '' && $emulator['count'] > 0) {
+  if (isset($emulator['count']) && $emulator['count'] != '' && $emulator['count'] > 0) {
     echo ' ('.$emulator['count'].')';
   }
   echo '</option>';

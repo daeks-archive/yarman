@@ -6,13 +6,31 @@ class emulator
 
   public static function config($emulator)
   {
-    return db::instance()->read('emulators', "id='".$emulator."'")[0];
+    $config = db::instance()->read('emulators', "id='".$emulator."'");
+    if (sizeof($config) == 1) {
+      return $config[0];
+    } else {
+      return array('id' => $emulator, 'name' => $emulator);
+    }
   }
   
   public function read($emulator = null)
   {
     if ($emulator == null) {
-      return db::instance()->read('emulators');
+      $output = array();
+      $emulators = array_slice(scandir(db::instance()->read('config', "id='roms_path'")[0]['value']), 2);
+      foreach ($emulators as $emulator) {
+        $config = db::instance()->read('emulators', 'id='.db::instance()->quote($emulator));
+        $tmp = array();
+        if (sizeof($config) == 1) {
+          $tmp = $config[0];
+        } else {
+          $tmp['id'] = $emulator;
+          $tmp['name'] = $emulator;
+        }
+        array_push($output, $tmp);
+      }
+      return $output;
     } else {
       return db::instance()->read('roms', "emulator='".$emulator."'");
     }
