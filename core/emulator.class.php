@@ -64,7 +64,16 @@ class emulator
       }
       
       if (sizeof($include) > 0) {
-        echo "TEST";
+        $data = array();
+        foreach ($include as $field) {
+          $config = db::instance()->read('fields', 'id='.db::instance()->quote($field));
+          if (sizeof($config) == 1) {
+            if ($config[0]['export']) {
+              $data[$config[0]['id']] = $item[$config[0]['id']];
+            }
+          }
+        }
+        $tmp['fields'] = $data;
       } else {
         $data = array();
         foreach (db::instance()->read('fields') as $field) {
