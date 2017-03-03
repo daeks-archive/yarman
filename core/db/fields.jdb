@@ -63,6 +63,12 @@
       "export" : false
     },
     {
+      "id" : "attributes",
+      "type" : "key",
+      "readonly" : true,
+      "export" : false
+    },
+    {
       "id" : "name",
       "guid" : "name",
       "name" : "Name",

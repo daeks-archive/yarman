@@ -52,12 +52,17 @@ class emulator
     $output = array();
     $xmldata = xml::read($xml);
     foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $item) {
-      $tmp = array('type' => '', 'attributes' => array(), 'fields' => array());
-      if (is_file($item['path'])) {
+      $tmp = array('type' => '', 'attributes' => json_decode($item['attributes']), 'fields' => array());
+      $rom = $item['path'];
+      if (strpos($rom, '.') === 0) {
+        $rom = $romspath.DIRECTORY_SEPARATOR.$emulator.substr($rom, 1);
+      }
+      if (is_file($rom)) {
         $tmp['type'] = 'game';
       } else {
         $tmp['type'] = 'folder';
       }
+      
       if (sizeof($include) > 0) {
         echo "TEST";
       } else {
@@ -145,6 +150,7 @@ class emulator
       foreach ($xmldata as $item) {
         $tmp = array();
         $tmp['id'] = rom::uniqid($emulator, $item['fields']['path']);
+        $tmp['attributes'] = json_encode($item['attributes']);
         $tmp['emulator'] = $emulator;
         foreach ($item['fields'] as $key => $value) {
           if (in_array($key, $fields)) {

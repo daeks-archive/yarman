@@ -99,6 +99,7 @@ class rom
       if (rom::uniqid($emulator, $item['fields']['path']) == $id) {
         $tmp = array();
         $tmp['id'] = rom::uniqid($emulator, $item['fields']['path']);
+        $tmp['attributes'] = json_encode($item['attributes']);
         $tmp['emulator'] = $emulator;
         foreach ($item['fields'] as $key => $value) {
           if (in_array($key, $fields)) {
