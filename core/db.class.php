@@ -208,6 +208,12 @@ class db
                 array_push($columns, $key);
                 if (!is_numeric($value) && !is_bool($value)) {
                   $value = $this->handle->quote($value);
+                } else {
+                  if (is_bool($value)) {
+                    if (is_bool($value)) {
+                      $value = intval($value);
+                    }
+                  }
                 }
                 array_push($values, $value);
               }
@@ -246,6 +252,10 @@ class db
                         array_push($columns, $key);
                         if (!is_numeric($value) && !is_bool($value)) {
                           $value = $this->handle->quote($value);
+                        } else {
+                          if (is_bool($value)) {
+                            $value = intval($value);
+                          }
                         }
                         array_push($values, $value);
                       }

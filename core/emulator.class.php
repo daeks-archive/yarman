@@ -50,7 +50,7 @@ class emulator
           }
         }
         $tmp['fields'] = $data;
-      }      
+      }
       array_push($output, $tmp);
     }
     return xml::write('gameList', $output, $xml);
