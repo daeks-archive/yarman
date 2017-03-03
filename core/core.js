@@ -8,7 +8,7 @@
             var obj = $.parseJSON(data);
             if (obj.status == 200) {
               if (obj.data == 0) {
-                $('.modal-content').load('/modules/setup/dialog.php?action=setup',function(result){
+                $('.modal-content').load('/modules/setup/dialog.php?action=setup',function (result) {
                   $('.modal').modal({show:true});
                   $('.modal').css('display', 'block');
                   var $dialog = $('.modal').find('.modal-dialog');
@@ -39,7 +39,7 @@
         });
       };
       
-      var install = function() {
+      var install = function () {
         if ($('form[data-toggle="modal"]').length > 0) {
           var $form = $('form[data-toggle="modal"]');
           var $target = $($form.attr('data-target'));
