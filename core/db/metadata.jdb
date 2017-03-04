@@ -11,6 +11,10 @@
       "type" : "text"
     },
     {
+      "name" : "attributes",
+      "type" : "text"
+    },
+    {
       "name" : "name",
       "type" : "text"
     },

@@ -38,8 +38,11 @@ class rom
   public static function write($id, $data)
   {
     if (!isset($data['path']) || $data['path'] == '') {
-      $rom = self::config($id);
-      $data['path'] = db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
+      $self = self::read($id);
+      if ($self['path'] == '') {
+        $rom = self::config($id);
+        $data['path'] = db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
+      }
     }
     foreach ($data as $key => $value) {
       $field = db::instance()->read('fields', 'id='.db::instance()->quote($key));
@@ -90,7 +93,7 @@ class rom
     $xmldata = xml::read($xml);
     $fields = array();
     foreach (db::instance()->read('fields') as $field) {
-      if ($field['export']) {
+      if ($field['import']) {
         array_push($fields, $field['id']);
       }
     }

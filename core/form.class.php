@@ -222,13 +222,14 @@ class form
       $data .= ' tabindex="'.$obj['index'].'"';
     }
     $data .= '>"';
+    $data .= '<option value=""></option>';
     $data .= '<option';
     if ($value == 'true') {
       $data .= ' selected';
     }
     $data .= ' value="true">True</option>';
     $data .= '<option';
-    if ($value == '' || $value == 'false') {
+    if ($value == 'false') {
       $data .= ' selected';
     }
     $data .= ' value="false">False</option>';
