@@ -52,7 +52,11 @@ class emulator
     $output = array();
     $xmldata = xml::read($xml);
     foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $item) {
-      $tmp = array('type' => '', 'attributes' => json_decode($item['attributes']), 'fields' => array());
+      $attributes = array();
+      if ($item['attributes'] != '') {
+        $attributes = json_decode($item['attributes']);
+      }
+      $tmp = array('type' => '', 'attributes' => $attributes, 'fields' => array());
       $rom = $item['path'];
       if (strpos($rom, '.') === 0) {
         $rom = $romspath.DIRECTORY_SEPARATOR.$emulator.substr($rom, 1);
@@ -65,11 +69,14 @@ class emulator
       
       if (sizeof($include) > 0) {
         $data = array();
-        foreach ($include as $field) {
-          $config = db::instance()->read('fields', 'id='.db::instance()->quote($field));
-          if (sizeof($config) == 1) {
-            if ($config[0]['export']) {
-              $data[$config[0]['id']] = $item[$config[0]['id']];
+        foreach (db::instance()->read('fields') as $field) {
+          if (in_array($field['id'], $include)) {
+            if ($field['export']) {
+              $data[$field['id']] = $item[$field['id']];
+            }
+          } else {
+            if ($field['export']) {
+              $data[$field['id']] = '';
             }
           }
         }

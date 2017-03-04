@@ -85,9 +85,22 @@ if (network::get('action') != '') {
       modal::end('Save', 'success');
       break;
     case 'export':
-      modal::start('Export to Gamelist', CONTROLLER.'?action=export');
+      modal::start('Export to Gamelist', CONTROLLER.'?action=export', 'POST');
+      foreach (db::instance()->read('fields') as $field) {
+        if ($field['export']) {
+          echo '<div class="checkbox">';
+          echo '<label>';
+          if (strpos($field['validator'], 'data-fv-notempty') !== false) {
+            echo '<input type="checkbox" disabled checked><input class="hidden" type="checkbox" name="include[]" checked value="'.$field['id'].'">';
+          } else {
+            echo '<input type="checkbox" name="include[]" checked value="'.$field['id'].'">';
+          }
+          echo $field['name'].' ('.$field['id'].')';
+          echo '</label></div>';
+        }
+      }
       $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
-      echo 'Do you really want to export '.$emulator['name'].'?';
+      echo '<br>Do you really want to export '.$emulator['name'].'?';
       modal::end('Save', 'success');
       break;
     case 'confirmdelete':

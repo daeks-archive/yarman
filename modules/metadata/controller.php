@@ -81,7 +81,7 @@ if (network::get('action') != '') {
       network::success('Successfully Saved Rom', 'true');
       break;
     case 'export':
-      emulator::write(cache::getClientVariable($module->id.'_emulator'));
+      emulator::write(cache::getClientVariable($module->id.'_emulator'), $_POST['include']);
       network::success('Successfully Exported Gamelist', 'core.metadata.reset();');
       break;
     case 'syncemulator':

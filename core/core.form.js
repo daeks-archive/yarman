@@ -3,7 +3,7 @@
     var form = (function () {
       var init = function () {
         $('[data-provider="datepicker"]').datepicker({
-            format: "yyyy/mm/dd"
+          format: "yyyy/mm/dd"
         });
       };
       
