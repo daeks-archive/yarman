@@ -29,6 +29,12 @@ class form
           case 'date':
             $data = self::getDate($obj, $value);
             break;
+          case 'thumbnail':
+            $data = self::getImage($obj, $value);
+            break;
+          case 'marquee':
+            $data = self::getImage($obj, $value);
+            break;
           case 'image':
             $data = self::getImage($obj, $value);
             break;

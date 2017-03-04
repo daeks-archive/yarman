@@ -158,7 +158,7 @@ class emulator
       $xmldata = xml::read($xml);
       $fields = array();
       foreach (db::instance()->read('fields') as $field) {
-        if ($field['type'] != 'image' && $field['type'] != 'video') {
+        if ($field['export']) {
           array_push($fields, $field['id']);
         }
       }
