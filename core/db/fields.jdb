@@ -194,6 +194,7 @@
       "guid" : "id",
       "name" : "Video Preview",
       "type" : "video",
+      "container" : "media",
       "grid" : "1 8 4 right 1",
       "export" : false
     },
