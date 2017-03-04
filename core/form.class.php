@@ -32,6 +32,9 @@ class form
           case 'image':
             $data = self::getImage($obj, $value);
             break;
+          case 'videao':
+            $data = self::getVideo($obj, $value);
+            break;
           case 'upload':
             $data = self::getUpload($obj, $value);
             break;
@@ -239,6 +242,23 @@ class form
         }
         $data .= '<div class="thumbnail">';
         $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&type='.$obj['type'].'&id='.$id.'">';
+        $data .= '</div>';
+      }
+    }
+    return $data;
+  }
+  
+  public static function getVideo($obj, $id)
+  {
+    $data = '';
+    if ($id != '') {
+      $rom = rom::read($id);
+      if (isset($rom[$obj['type']]) && $rom[$obj['type']] != '') {
+        if (isset($obj['name']) && $obj['name'] != '') {
+          $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+        }
+        $data .= '<div class="thumbnail">';
+        $data .= '<video style="max-height: 245px" controls><source src="/core/proxy.php?action=render&type='.$obj['type'].'&id='.$id.'">No HTML5 Support</video>';
         $data .= '</div>';
       }
     }
