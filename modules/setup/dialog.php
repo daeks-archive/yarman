@@ -4,12 +4,13 @@ require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
   switch (network::get('action')) {
-    case 'setup':
-      modal::start('Setup', CONTROLLER.'?action=install');
-      echo '<p><b>'.NAME.' has detected a new installation.</b></p>';
-      echo 'Do you want to search for existing roms and metadata?<br><br>';
+    case 'sync':
+      modal::start('Getting Started - Sync with RetroPie', CONTROLLER.'?action=sync');
+      echo '<p><b>'.NAME.' has detected an empty rom database.</b></p>';
+      echo 'Do you want to import your existing RetroPie setup now?<br><br>';
+      echo '<div class="alert alert-info" role="alert"><b>Info</b> Syncing emulators can be done also manually later.</div>';
       echo '<div class="alert alert-warning" role="alert"><b>Warning</b> Depending on your romset this might take a while.</div>';
-      modal::end('Install', 'success', 'modal-install');
+      modal::end('Sync', 'success', 'modal-install');
       break;
     default:
       break;

@@ -8,7 +8,7 @@
             var obj = $.parseJSON(data);
             if (obj.status == 200) {
               if (obj.data == 0) {
-                $('.modal-content').load('/modules/setup/dialog.php?action=setup',function (result) {
+                $('.modal-content').load('/modules/setup/dialog.php?action=sync',function (result) {
                   $('.modal').modal({show:true});
                   $('.modal').css('display', 'block');
                   var $dialog = $('.modal').find('.modal-dialog');
@@ -23,7 +23,7 @@
                     event.preventDefault();
                     $(this).html('<i class="fa fa-spinner fa-spin"></i> ' + $(this).html());
                     $(this).prop('disabled', true);
-                    core.install();
+                    core.sync();
                     return false;
                   });
                 });
@@ -39,7 +39,7 @@
         });
       };
       
-      var install = function () {
+      var sync = function () {
         if ($('#modal-data').length > 0) {
           var $form = $('#modal-data');
           var $target = $($form.attr('data-target'));
@@ -95,7 +95,7 @@
         init: init,
         infobox: infobox,
         toast: toast,
-        install: install
+        sync: sync
       };
     })();
 

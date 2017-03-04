@@ -14,7 +14,7 @@ if (network::get('action') != '') {
       }
       network::success(''.$total);
       break;
-    case 'install':
+    case 'sync':
       $output = '';
       $emulator = db::instance()->read('emulators', 'count is null');
       if (sizeof($emulator) >= 1) {
@@ -24,21 +24,43 @@ if (network::get('action') != '') {
           $next = $emulator[1];
         }
         emulator::sync($current['id']);
-        $output .= '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-body" action="'.CONTROLLER.'?action=install" method="GET"><fieldset>';
-        $output .= '<div class="alert alert-warning" role="alert"><b>Warning</b> Depending on your romset this might take a while.</div>';
+        $output .= '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-body" action="'.CONTROLLER.'?action=sync" method="GET"><fieldset>';
         if (sizeof($next) > 0) {
-          $output .= '<p>Successfully Installed '.$current['name'].'...<br>';
-          $output .= 'Installing <b>'.$next['name'].'</b>...</p>';
           if (sizeof($emulator) > 1) {
-            $output .= 'Emulators left: <b>'.(sizeof($emulator)-1).'</b></p>';
+            $totalroms = 0;
+            $totalemulators = 0;
+            $finished = 0;
+            foreach (db::instance()->read('emulators') as $tmp) {
+              $totalemulators += 1;
+              if ($tmp['count'] != '') {
+                $totalroms += $tmp['count'];
+                $finished += 1;
+              }
+            }
+            $output .= '<p>Roms synced: <b>'.$totalroms.'</b> - Emulators processed: <b>'.$finished.' of '.$totalemulators.'</b><br>';
+            $percent = 0;
+            if ($finished > 0) {
+              $percent = round(($finished/$totalemulators) * 100, 0);
+            }
+            $color = 'progress-bar-danger';
+            if ($percent > 50 && $percent < 75) {
+              $color = 'progress-bar-warning';
+            } elseif ($percent >= 75) {
+              $color = 'progress-bar-success';
+            }
+            $output .=  '<div class="progress">';
+            $output .=  '<div class="progress-bar progress-bar-striped active '.$color.'" role="progressbar" style="width: '.$percent.'%;">'.$percent.'%</div>';
+            $output .=  '</div></p>';
           }
+          $output .= '<p>Now installing <b>'.$next['name'].'</b>...</p>';
+          $output .= '<div class="alert alert-warning" role="alert"><b>Warning</b> Depending on your romset this might take a while.</div>';
         } else {
           $output .= '<p>Installed <b>'.$current['name'].'</b>...</p>';
         }
         $output .= '</fieldset></form>';
-        network::send(301, $output, 'core.install();');
+        network::send(301, $output, 'core.sync();');
       } else {
-        network::success('Successfully Finished Setup', 'location.reload();');
+        network::success('Successfully Finished Sync', 'location.reload();');
       }
       break;
     default:
