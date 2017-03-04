@@ -46,8 +46,13 @@
         });
       };
       
+      var reload = function () {
+        $('#nav-logs').trigger("change");
+      };
+      
       return {
-        init: init
+        init: init,
+        reload: reload
       };
     })();
 

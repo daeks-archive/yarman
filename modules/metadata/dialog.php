@@ -11,13 +11,15 @@ if (network::get('action') != '') {
             panel::start('RetroPie Monitor', 'info');
             $emulators = emulator::read();
             $total = 0;
+            $totalroms = 0;
             foreach ($emulators as $emulator) {
-              if (isset($emulator['count'])) {
-                $total += $emulator['count'];
+              if (isset($emulator['count']) && $emulator['count'] != '') {
+                $totalroms += $emulator['count'];
+                $total += 1;
               }
             }
-            echo '<p><div>Total Emulators: <div class="pull-right"><b>'.sizeof($emulators).'</b></div></div>';
-            echo '<div>Total Roms: <div class="pull-right"><b>'.$total.'</b></div></div></p>';
+            echo '<p><div>Total Emulators: <div class="pull-right"><b>'.$total.'</b></div></div>';
+            echo '<div>Total Roms: <div class="pull-right"><b>'.$totalroms.'</b></div></div></p>';
             panel::end();
             break;
           default:
@@ -44,15 +46,41 @@ if (network::get('action') != '') {
       }
       break;
     case 'syncemulator':
-      modal::start('Sync Emulator', CONTROLLER.'?action=syncemulator');
+      modal::start('Sync Emulator', CONTROLLER.'?action=syncemulator', 'POST');
       $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
-      echo 'Do you really want to sync '.$emulator['name'].'?';
+      echo '<label>Select fields to be synced with '.$emulator['name'].'</label>';
+      foreach (db::instance()->read('fields') as $field) {
+        if ($field['import']) {
+          echo '<div class="checkbox">';
+          echo '<label>';
+          if (strpos($field['validator'], 'data-fv-notempty') !== false || $field['readonly'] == 1) {
+            echo '<input type="checkbox" disabled checked><input class="hidden" type="checkbox" name="include[]" checked value="'.$field['id'].'">';
+          } else {
+            echo '<input type="checkbox" name="include[]" checked value="'.$field['id'].'">';
+          }
+          echo $field['name'].' ('.$field['id'].')';
+          echo '</label></div>';
+        }
+      }
       modal::end('Sync', 'success');
       break;
     case 'syncrom':
-      modal::start('Sync Rom', CONTROLLER.'?action=syncrom');
+      modal::start('Sync Rom', CONTROLLER.'?action=syncrom', 'POST');
       $rom = rom::config(cache::getClientVariable($module->id.'_id'));
-      echo 'Do you really want to sync '.$rom['name'].'?';
+      echo '<label>Select fields to be synced with '.$rom['name'].'</label>';
+      foreach (db::instance()->read('fields') as $field) {
+        if ($field['import']) {
+          echo '<div class="checkbox">';
+          echo '<label>';
+          if (strpos($field['validator'], 'data-fv-notempty') !== false || $field['readonly'] == 1) {
+            echo '<input type="checkbox" disabled checked><input class="hidden" type="checkbox" name="include[]" checked value="'.$field['id'].'">';
+          } else {
+            echo '<input type="checkbox" name="include[]" checked value="'.$field['id'].'">';
+          }
+          echo $field['name'].' ('.$field['id'].')';
+          echo '</label></div>';
+        }
+      }
       modal::end('Sync', 'success');
       break;
     case 'clean':
@@ -86,11 +114,17 @@ if (network::get('action') != '') {
       break;
     case 'export':
       modal::start('Export to Gamelist', CONTROLLER.'?action=export', 'POST');
+      $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
+      $config = es::config();
+      if ($config['SaveGamelistsOnExit'] == 'true') {
+        echo '<div class="alert alert-warning" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><b>Warning</b> You have enabled "SAVE METADATA ON EXIT".<br>Please quit your EmulationStation!</span></div>';
+      }
+      echo '<label>Select fields to be exported for '.$emulator['name'].'</label>';
       foreach (db::instance()->read('fields') as $field) {
         if ($field['export']) {
           echo '<div class="checkbox">';
           echo '<label>';
-          if (strpos($field['validator'], 'data-fv-notempty') !== false) {
+          if (strpos($field['validator'], 'data-fv-notempty') !== false || $field['readonly'] == 1) {
             echo '<input type="checkbox" disabled checked><input class="hidden" type="checkbox" name="include[]" checked value="'.$field['id'].'">';
           } else {
             echo '<input type="checkbox" name="include[]" checked value="'.$field['id'].'">';
@@ -99,8 +133,6 @@ if (network::get('action') != '') {
           echo '</label></div>';
         }
       }
-      $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
-      echo '<br>Do you really want to export '.$emulator['name'].'?';
       modal::end('Save', 'success');
       break;
     case 'confirmdelete':

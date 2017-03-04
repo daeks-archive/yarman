@@ -39,7 +39,7 @@ class rom
   {
     if (!isset($data['path']) || $data['path'] == '') {
       $self = self::read($id);
-      if ($self['path'] == '') {
+      if (!isset($self['path']) || $self['path'] == '') {
         $rom = self::config($id);
         $data['path'] = db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
       }
@@ -92,9 +92,17 @@ class rom
     
     $xmldata = xml::read($xml);
     $fields = array();
-    foreach (db::instance()->read('fields') as $field) {
-      if ($field['import']) {
-        array_push($fields, $field['id']);
+    if (sizeof($include) > 0) {
+      foreach (db::instance()->read('fields') as $field) {
+        if (in_array($field['id'], $include) && $field['import']) {
+          array_push($fields, $field['id']);
+        }
+      }
+    } else {
+      foreach (db::instance()->read('fields') as $field) {
+        if ($field['import']) {
+          array_push($fields, $field['id']);
+        }
       }
     }
     

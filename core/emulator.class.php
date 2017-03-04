@@ -95,7 +95,7 @@ class emulator
     return xml::write('gameList', $output, $xml);
   }
   
-  public static function sync($emulator)
+  public static function sync($emulator, $include = array())
   {
     $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
     $config = db::instance()->read('emulators', 'id='.db::instance()->quote($emulator));
@@ -157,9 +157,17 @@ class emulator
       
       $xmldata = xml::read($xml);
       $fields = array();
-      foreach (db::instance()->read('fields') as $field) {
-        if ($field['import']) {
-          array_push($fields, $field['id']);
+      if (sizeof($include) > 0) {
+        foreach (db::instance()->read('fields') as $field) {
+          if (in_array($field['id'], $include) && $field['import']) {
+            array_push($fields, $field['id']);
+          }
+        }
+      } else {
+        foreach (db::instance()->read('fields') as $field) {
+          if ($field['import']) {
+            array_push($fields, $field['id']);
+          }
         }
       }
       

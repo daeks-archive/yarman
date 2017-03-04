@@ -87,10 +87,15 @@
         });
       };
       
+      var reload = function () {
+        $('#nav-editor').trigger("change");
+      };
+      
       return {
         init: init,
         load: load,
-        save: save
+        save: save,
+        reload: reload
       };
     })();
 

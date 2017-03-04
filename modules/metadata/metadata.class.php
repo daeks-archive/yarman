@@ -9,7 +9,7 @@ class metadata
     // RENDER RIGHT MENU
     $data = '<div class="row">';
     $data .= '<div class="col-sm-12">';
-
+    
     // RENDER RIGHT HEADER
     $data .= '<div class="row">';
     $data .= '<div class="col-sm-8">';

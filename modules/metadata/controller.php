@@ -86,12 +86,12 @@ if (network::get('action') != '') {
       break;
     case 'syncemulator':
       cache::unsetClientVariable($module->id.'_id');
-      emulator::sync(cache::getClientVariable($module->id.'_emulator'));
+      emulator::sync(cache::getClientVariable($module->id.'_emulator'), $_POST['include']);
       network::success('Successfully Synced Emulator', 'core.metadata.reset();');
       break;
     case 'syncrom':
       cache::unsetClientVariable($module->id.'_id');
-      rom::sync(cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'));
+      rom::sync(cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'), $_POST['include']);
       network::success('Successfully Synced Rom', 'core.metadata.reload();');
       break;
     case 'delete':

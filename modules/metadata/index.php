@@ -2,13 +2,7 @@
 
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
-
-$config = es::config();
-if ($config['SaveGamelistsOnExit'] == 'true') {
-  page::start('<div class="alert alert-warning" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span>Please disable "Save Gamelist on Exit" in your emulationstation!</span></div>');
-} else {
-  page::start();
-}
+page::start();
 
 echo '<div class="row">';
 echo '<div class="col-sm-4" id="panel-left" name="panel-left">';

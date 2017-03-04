@@ -37,7 +37,7 @@ if (network::get('action') != '') {
                 $finished += 1;
               }
             }
-            $output .= '<p>Roms synced: <b>'.$totalroms.'</b> - Emulators processed: <b>'.$finished.' of '.$totalemulators.'</b><br>';
+            $output .= '<p>Roms synced: <b>'.$totalroms.'</b> - Emulators processed: <b>'.$finished.' / '.$totalemulators.'</b><br>';
             $percent = 0;
             if ($finished > 0) {
               $percent = round(($finished/$totalemulators) * 100, 0);
