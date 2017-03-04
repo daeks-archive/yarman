@@ -173,7 +173,7 @@ class page
     echo '</div>';
     // END LEFT
     echo '</div>';
-    echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"><br>&nbsp;<i id="loading" class="fa fa-spinner fa-spin"></i> Loading...<br><br></div></div></div>';
+    echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"><br>&nbsp;<i class="fa fa-spinner fa-spin"></i> Loading...<br><br></div></div></div>';
     echo '<div class="container-fluid '.self::$devices.'">';
     echo '<div id="infobox" class="infobox">'.$infobox.'</div>';
   }

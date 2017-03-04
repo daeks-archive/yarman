@@ -6,7 +6,7 @@
         $('.modal').on('loaded.bs.modal', core.modal.center);
         $('.modal').on('hidden.bs.modal', function (e) {
           $('.modal').removeData('bs.modal');
-          $('#modal-content').html('<br>&nbsp;<i id="loading" class="fa fa-spinner fa-spin"></i> Loading...<br><br>');
+          $('#modal-content').html('<br>&nbsp;<i class="fa fa-spinner fa-spin"></i> Loading...<br><br>');
         });
 
         $(window).on('resize', function () {
