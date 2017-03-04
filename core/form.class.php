@@ -32,7 +32,7 @@ class form
           case 'image':
             $data = self::getImage($obj, $value);
             break;
-          case 'videao':
+          case 'video':
             $data = self::getVideo($obj, $value);
             break;
           case 'upload':

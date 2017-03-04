@@ -159,7 +159,7 @@
       "export" : true
     },
     {
-      "id" : "image_metadata",
+      "id" : "image_preview",
       "guid" : "id",
       "name" : "Image Preview",
       "type" : "image",
@@ -188,6 +188,14 @@
       "container" : "media",
       "grid" : "1 8 4 left 3",
       "export" : true
+    },
+    {
+      "id" : "video_preview",
+      "guid" : "id",
+      "name" : "Video Preview",
+      "type" : "video",
+      "grid" : "1 8 4 right 1",
+      "export" : false
     },
     {
       "id" : "marquee",
