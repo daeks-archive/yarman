@@ -74,7 +74,7 @@
       "name" : "Name",
       "type" : "string",
       "maxlength" : 255,
-      "validator" : "data-fv-notempty",
+      "validator" : "",
       "container" : "metadata",
       "grid" : "1 8 4 left 2",
       "export" : true
