@@ -131,6 +131,11 @@
       "whitelist" : "gba zip"
     },
     {
+      "id" : "fds",
+      "name" : "Family Computer Disk System",
+      "whitelist" : "fds"
+    },
+    {
       "id" : "intellivision",
       "name" : "Intellivision",
       "whitelist" : "int bin"
@@ -168,8 +173,8 @@
       "whitelist" : ""
     },
     {
-      "id" : "Neo Geo Pocket",
-      "name" : "ngp",
+      "id" : "ngp",
+      "name" : "Neo Geo Pocket",
       "whitelist" : "ngp zip"
     },
     {
@@ -206,6 +211,12 @@
       "id" : "pcengine",
       "name" : "TurbGrafx-16",
       "whitelist" : "pce cue zip"
+    },
+    {
+      "id" : "ports",
+      "name" : "Ports",
+      "whitelist" : "sh",
+      "blacklist" : "folder"
     },
     {
       "id" : "psx",

@@ -136,7 +136,7 @@ class emulator
         if (is_dir($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
           if ($item != '.' && $item != '..') {
             if ($config['blacklist'] != '') {
-              if (strpos($config['blacklist'], $item) === false) {
+              if (strpos($config['blacklist'], 'folder') === false && strpos($config['blacklist'], $item) === false) {
                 $count += 1;
                 $data = array('name' => $item, 'emulator' => $emulator, 'size' => 0);
                 rom::create(rom::uniqid($emulator, $item), $data);
