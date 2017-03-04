@@ -19,7 +19,7 @@
                     offset = bottomMargin;
                   }
                   $dialog.css("margin-top", offset);
-                  $('button[data-query="modal-data"]').on('click', function (event) {
+                  $('button[data-query="modal-install"]').on('click', function (event) {
                     event.preventDefault();
                     $(this).html('<i class="fa fa-spinner fa-spin"></i> ' + $(this).html());
                     $(this).prop('disabled', true);
@@ -40,8 +40,8 @@
       };
       
       var install = function () {
-        if ($('form[data-toggle="modal"]').length > 0) {
-          var $form = $('form[data-toggle="modal"]');
+        if ($('#modal-data').length > 0) {
+          var $form = $('#modal-data');
           var $target = $($form.attr('data-target'));
           
           $.ajax({
