@@ -349,7 +349,7 @@ class emulator
       copy($xml, $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist.'.bak');
     }
     
-    $xmldata = xml::read($xml);    
+    $xmldata = xml::read($xml);
     $gamelist = array();
     foreach ($xmldata as $item) {
       $rom = rom::config(rom::uniqid($emulator, $item['fields']['path']));
