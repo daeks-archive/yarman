@@ -48,7 +48,12 @@ if (network::get('action') != '') {
     case 'syncemulator':
       modal::start('Sync Emulator', CONTROLLER.'?action=syncemulator', 'POST');
       $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
-      echo '<div class="checkbox"><label><input type="checkbox" name="hash" value="1">(Optional) Hash large roms - This is a very time-intensive process.</label></div><br>';
+      $unhashed = db::instance()->read('roms', 'emulator='.db::instance()->quote(cache::getClientVariable($module->id.'_emulator'))." and crc32 is null and type = 'game'");
+      echo '<div class="checkbox"><label><input type="checkbox" name="hash"';
+      if (sizeof($unhashed) == 0) {
+        echo ' disabled';
+      }
+      echo ' value="1">(Optional) Hash '.sizeof($unhashed).' large roms - This is a very time-intensive process.</label></div><br>';
       if (sizeof($emulator) > 0) {
         echo '<label>Select fields to be synced with '.$emulator['name'].'</label>';
       } else {
