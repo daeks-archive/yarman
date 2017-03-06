@@ -40,7 +40,7 @@ if (network::get('action') != '') {
       if (network::get('type') != '' && isset($_FILES['object']) && $_FILES['object']['error'][0] == 0) {
         if (network::post('id') != '') {
           $rom = rom::config(network::post('id'));
-          $path = db::instance()->read('fields', "id='".network::get('type')."'")[0]['path'];
+          $path = current(db::instance()->read('fields', "id='".network::get('type')."'"))['path'];
           $output = pathinfo($rom['name'], PATHINFO_FILENAME).'-'.network::get('type').'.'.pathinfo($_FILES['object']['name'][0], PATHINFO_EXTENSION);
           
           if (move_uploaded_file($_FILES['object']['tmp_name'][0], $path.DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$output)) {

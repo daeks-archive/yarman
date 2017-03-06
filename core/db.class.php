@@ -67,7 +67,8 @@ class db
         foreach ($item as $key => $value) {
           $item[$key] = str_replace($needle, $haystack, $value);
         }
-        array_push($output, $item);
+        $output[$item['id']] = $item;
+        //array_push($output, $item);
       }
       $stmt->closeCursor();
       return $output;

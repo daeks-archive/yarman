@@ -9,7 +9,7 @@ if (network::get('action') != '') {
         switch (network::get('id')) {
           case 'beta':
             panel::start('Beta Warning', 'danger');
-            echo '<p>This is currenly in BETA phase. Please be aware that it could damage your roms, media or gamelists.</p>';
+            echo '<p>This is currenly a BETA phase. Please be aware that it could damage your romset, media or gamelists.</p>';
             panel::end();
             break;
           case 'welcome':
@@ -57,56 +57,89 @@ if (network::get('action') != '') {
             echo '<div class="row">';
             echo '<div class="col-sm-7">';
 
-            panel::start('CPU');
             $load = system::getLoadAverage();
-            echo '<div class="row">';
-            echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="1min" data-query-min="0" data-query-max="5" data-query="'.$load['1min'].'" height="100"></div>';
-            echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" height="100"></div>';
-            echo '<div class="col-sm-4" id="'.uniqid().'" style="height: 100px" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" height="100"></div>';
-            echo '</div>';
-            panel::end();
+            $valid = true;
+            foreach ($load as $key => $value) {
+              if (!is_numeric($value)) {
+                $valid = false;
+                break;
+              }
+            }
+            if ($valid) {
+              panel::start('CPU');
+              echo '<div class="row">';
+              echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="1min" data-query-min="0" data-query-max="5" data-query="'.$load['1min'].'" height="100"></div>';
+              echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" height="100"></div>';
+              echo '<div class="col-sm-4" id="'.uniqid().'" style="height: 100px" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" height="100"></div>';
+              echo '</div>';
+              panel::end();
+            }
 
             echo '</div>';
             echo '<div class="col-sm-5">';
 
-            panel::start('Temperature');
-            echo '<div class="row">';
-            echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getCPUTemp().'" height="100"></div>';
-            echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getGPUTemp().'"  height="100"></div>';
-            echo '</div>';
-            panel::end();
+            $cputemp = system::getCPUTemp();
+            $gputemp = system::getGPUTemp();
+            if (is_numeric($cputemp) || is_numeric($gputemp)) {
+              panel::start('Temperature');
+              echo '<div class="row">';
+              if (is_numeric($cputemp)) {
+                echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.$cputemp.'" height="100"></div>';
+              }
+              if (is_numeric($gputemp)) {
+                echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.$gputemp.'" height="100"></div>';
+              }
+              echo '</div>';
+              panel::end();
+            }
 
             echo '</div>';
             echo '</div>';
             break;
           case 'system':
             panel::start('System Overview');
-            $load = system::getLoadAverage();
-            echo '<p>'.system::getUptime().'</p>';
+            echo '<p>Uptime: <b>'.system::getUptime().'</b></p>';
             echo '<p>CPU Frequency: <b>'.system::getCPUFreq().'MHz</b></p>';
             panel::end();
             break;
           case 'cpu':
-            panel::start('CPU');
             $load = system::getLoadAverage();
-            echo '<div class="row">';
-            echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="1min" data-query-min="0" data-query-max="5" data-query="'.$load['1min'].'" height="100"></div>';
-            echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" height="100"></div>';
-            echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" height="100"></div>';
-            echo '</div>';
-            panel::end();
+            $valid = true;
+            foreach ($load as $key => $value) {
+              if (!is_numeric($value)) {
+                $valid = false;
+                break;
+              }
+            }
+            if ($valid) {
+              panel::start('CPU');
+              echo '<div class="row">';
+              echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="1min" data-query-min="0" data-query-max="5" data-query="'.$load['1min'].'" height="100"></div>';
+              echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="5min" data-query-min="0" data-query-max="5" data-query="'.$load['5min'].'" height="100"></div>';
+              echo '<div class="col-sm-4" id="'.uniqid().'" data-provider="gauge" title="Load"  label="15min" data-query-min="0" data-query-max="5" data-query="'.$load['15min'].'" height="100"></div>';
+              echo '</div>';
+              panel::end();
+            }
             break;
           case 'temperature':
-            panel::start('Temperature');
-            echo '<div class="row">';
-            echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getCPUTemp().'" height="100"></div>';
-            echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.system::getGPUTemp().'" height="100"></div>';
-            echo '</div>';
-            panel::end();
+            $cputemp = system::getCPUTemp();
+            $gputemp = system::getGPUTemp();
+            if (is_numeric($cputemp) || is_numeric($gputemp)) {
+              panel::start('Temperature');
+              echo '<div class="row">';
+              if (is_numeric($cputemp)) {
+                echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="CPU Temperature"  label="celsius" data-query-min="30" data-query-max="85" data-query="'.$cputemp.'" height="100"></div>';
+              }
+              if (is_numeric($gputemp)) {
+                echo '<div class="col-sm-6" id="'.uniqid().'" data-provider="gauge" title="GPU Temperature" label="celsius" data-query-min="30" data-query-max="85" data-query="'.$gputemp.'" height="100"></div>';
+              }
+              echo '</div>';
+              panel::end();
+            }
             break;
           case 'news':
             panel::start('<b>Latest RetroPie News</b>', 'info');
-            $newsfeed = db::instance()->read('config', "id='news_feed'")[0]['value'];
+            $newsfeed = current(db::instance()->read('config', "id='news_feed'"))['value'];
             if (network::pingRemoteUrl($newsfeed)) {
               $xml = xml::dump(cache::setRemoteCache('newsfeed', $newsfeed));
               if (isset($xml['channel']) && isset($xml['channel']['item'])) {
@@ -169,6 +202,38 @@ if (network::get('action') != '') {
             echo '<div class="progress-bar '.$swap_color.'" role="progressbar" aria-valuenow="'.$swap['used'].'" aria-valuemin="0" aria-valuemax="'.$swap['total'].'" style="width: '.$swap_percent.'%;">'.$swap_percent.'%</div>';
             echo '</div>';
             panel::end();
+            break;
+          case 'lan':
+            panel::start('LAN');
+            $lan = system::getLAN();
+            echo 'Sent: <b>'.round($lan['tx_bytes'] / 1024 / 1024, 2).'MB</b> - Received: <b>'.round($lan['rx_bytes'] / 1024 / 1024, 2).'MB</b>';
+            panel::end();
+            break;
+          case 'wlan':
+            panel::start('WLAN');
+            $lan = system::getWLAN();
+            echo 'Sent: <b>'.round($lan['tx_bytes'] / 1024 / 1024, 2).'MB</b> - Received: <b>'.round($lan['rx_bytes'] / 1024 / 1024, 2).'MB</b>';
+            panel::end();
+            break;
+          case 'network':
+            echo '<div class="row">';
+            echo '<div class="col-sm-6">';
+          
+            panel::start('LAN');
+            $lan = system::getLAN();
+            echo 'Sent: <b>'.round($lan['tx_bytes'] / 1024 / 1024, 2).'MB</b> - Received: <b>'.round($lan['rx_bytes'] / 1024 / 1024, 2).'MB</b>';
+            panel::end();
+            
+            echo '</div>';
+            echo '<div class="col-sm-6">';
+
+            panel::start('WLAN');
+            $lan = system::getWLAN();
+            echo 'Sent: <b>'.round($lan['tx_bytes'] / 1024 / 1024, 2).'MB</b> - Received: <b>'.round($lan['rx_bytes'] / 1024 / 1024, 2).'MB</b>';
+            panel::end();
+            
+            echo '</div>';
+            echo '</div>';
             break;
           default:
             break;

@@ -18,10 +18,10 @@ if (network::get('action') != '') {
       $output = '';
       $emulator = db::instance()->read('emulators', 'count is null');
       if (sizeof($emulator) >= 1) {
-        $current = $emulator[0];
+        $current = current($emulator);
         $next = array();
         if (sizeof($emulator) >= 2) {
-          $next = $emulator[1];
+          $next = next($emulator);
         }
         emulator::sync($current['id']);
         $output .= '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-body" action="'.CONTROLLER.'?action=sync" method="GET"><fieldset>';

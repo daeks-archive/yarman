@@ -63,7 +63,6 @@
     {
       "id" : "id",
       "type" : "key",
-      "readonly" : true,
       "import" : false,
       "export" : false
     },

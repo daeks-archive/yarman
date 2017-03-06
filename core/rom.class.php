@@ -11,7 +11,7 @@ class rom
   {
     $config = db::instance()->read('roms', 'id='.db::instance()->quote($id));
     if (sizeof($config) == 1) {
-      return $config[0];
+      return current($config);
     } else {
       return array('id' => $id, 'name' => $id);
     }
@@ -28,8 +28,8 @@ class rom
   public static function read($id)
   {
     $output = db::instance()->read('metadata', 'id='.db::instance()->quote($id));
-    if (sizeof($output) > 0) {
-      return $output[0];
+    if (sizeof($output) == 1) {
+      return current($output);
     } else {
       return array();
     }
@@ -41,13 +41,13 @@ class rom
       $self = self::read($id);
       if (!isset($self['path']) || $self['path'] == '') {
         $rom = self::config($id);
-        $data['path'] = db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
+        $data['path'] = current(db::instance()->read('config', 'id='.db::instance()->quote('roms_path')))['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
       }
     }
     foreach ($data as $key => $value) {
       $field = db::instance()->read('fields', 'id='.db::instance()->quote($key));
-      if (sizeof($field) > 0) {
-        if ($field[0]['type'] == 'date') {
+      if (sizeof($field) == 1) {
+        if (current($field)['type'] == 'date') {
           if (trim($value) != '') {
             $value = date_format(date_create($value), 'Ymd\THis');
           } else {
@@ -63,15 +63,15 @@ class rom
   public static function delete($id)
   {
     $rom = self::config($id);
-    $item = db::instance()->read('config', 'id='.db::instance()->quote('roms_path'))[0]['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
+    $item = current(db::instance()->read('config', 'id='.db::instance()->quote('roms_path')))['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
     if (is_file($item)) {
       unlink($item);
     }
     
     $data = db::instance()->read('metadata', 'id='.db::instance()->quote($id));
-    if (sizeof($data) > 0) {
-      foreach ($data[0] as $key => $value) {
-        $field = db::instance()->read('fields', 'id='.db::instance()->quote($key))[0];
+    if (sizeof($data) == 1) {
+      foreach (current($data) as $key => $value) {
+        $field = current(db::instance()->read('fields', 'id='.db::instance()->quote($key)));
         if ($field['type'] == 'upload') {
           if ($value != '') {
             unlink($value);
@@ -85,9 +85,9 @@ class rom
   
   public static function sync($emulator, $id)
   {
-    $xml = db::instance()->read('config', "id='roms_path'")[0]['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.emulator::$gamelist;
+    $xml = current(db::instance()->read('config', "id='roms_path'"))['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.emulator::$gamelist;
     if (!file_exists($xml)) {
-      $xml = db::instance()->read('config', "id='metadata_path'")[0]['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.emulator::$gamelist;
+      $xml = current(db::instance()->read('config', "id='metadata_path'"))['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.emulator::$gamelist;
     }
     
     $xmldata = xml::read($xml);

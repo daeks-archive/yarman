@@ -1,6 +1,7 @@
 {
   "id" : "metadata",
   "name" : "Metadata Editor",
+  "beta" : true,
   "menu" : {
     "position" : "left",
     "order" : 2,

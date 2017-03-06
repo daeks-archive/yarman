@@ -117,7 +117,7 @@ if (network::get('action') != '') {
       $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
       $config = es::config();
       if ($config['SaveGamelistsOnExit'] == 'true') {
-        echo '<div class="alert alert-warning" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><b>Warning</b> You have enabled "SAVE METADATA ON EXIT".<br>Please quit your EmulationStation!</span></div>';
+        echo '<div class="alert alert-warning" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><b>Warning</b> You have enabled "SAVE METADATA ON EXIT".<br>Please close your EmulationStation before exporting your gamelist!</span></div>';
       }
       echo '<label>Select fields to be exported for '.$emulator['name'].'</label>';
       foreach (db::instance()->read('fields') as $field) {

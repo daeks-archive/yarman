@@ -91,7 +91,7 @@ if (cache::getClientVariable($module->id.'_emulator') != '') {
       }
     }
   } else {
-    $first = $romlist[0];
+    $first = reset($romlist);
     foreach ($romlist as $rom) {
       echo '<option';
       if (cache::getClientVariable($module->id.'_id') == $rom['id']) {

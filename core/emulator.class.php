@@ -8,7 +8,7 @@ class emulator
   {
     $config = db::instance()->read('emulators', "id='".$emulator."'");
     if (sizeof($config) == 1) {
-      return $config[0];
+      return current($config);
     } else {
       return array('id' => $emulator, 'name' => $emulator);
     }
@@ -18,15 +18,18 @@ class emulator
   {
     if ($emulator == null) {
       $output = array();
-      $emulators = array_slice(scandir(db::instance()->read('config', "id='roms_path'")[0]['value']), 2);
+      $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
+      $emulators = array_slice(scandir($romspath), 2);
       foreach ($emulators as $emulator) {
         $config = db::instance()->read('emulators', 'id='.db::instance()->quote($emulator));
         $tmp = array();
         if (sizeof($config) == 1) {
-          $tmp = $config[0];
+          $tmp = current($config);
         } else {
           $tmp['id'] = $emulator;
-          $tmp['name'] = $emulator;
+          $tmp['name'] = '~ '.$emulator;
+          $roms = array_slice(scandir($romspath.DIRECTORY_SEPARATOR.$emulator), 2);
+          $tmp['count'] = sizeof($roms);
         }
         array_push($output, $tmp);
       }
@@ -38,8 +41,8 @@ class emulator
   
   public function write($emulator, $include = array())
   {
-    $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
-    $metadatapath = db::instance()->read('config', "id='metadata_path'")[0]['value'];
+    $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
+    $metadatapath = current(db::instance()->read('config', "id='metadata_path'"))['value'];
     
     $xml = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
     if (!file_exists($xml)) {
@@ -51,7 +54,48 @@ class emulator
     
     $output = array();
     $xmldata = xml::read($xml);
-    foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $item) {
+    $sdbdata = db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator));
+    
+    foreach ($xmldata as $item) {
+      if (array_key_exists(rom::uniqid($emulator, $item['fields']['path']), $sdbdata)) {
+        $data = $sdbdata[rom::uniqid($emulator, $item['fields']['path'])];
+        if (sizeof($include) > 0) {
+          foreach (db::instance()->read('fields') as $field) {
+            if ($field['readonly']) {
+              if ($field['import']) {
+                db::instance()->write('metadata', array($field['id'] => $item['fields'][$field['id']]), 'id='.db::instance()->quote($data['id']));
+              }
+            } else {
+              if (in_array($field['id'], $include)) {
+                if ($field['export']) {
+                  $item['fields'][$field['id']] = $data[$field['id']];
+                }
+              } else {
+                if ($field['export']) {
+                  $item['fields'][$field['id']] = '';
+                }
+              }
+            }
+          }
+        } else {
+          foreach (db::instance()->read('fields') as $field) {
+            if ($field['readonly']) {
+              if ($field['import']) {
+                db::instance()->write('metadata', array($field['id'] => $item['fields'][$field['id']]), 'id='.db::instance()->quote($data['id']));
+              }
+            } else {
+              if ($field['export']) {
+                $item['fields'][$field['id']] = $data[$field['id']];
+              }
+            }
+          }
+        }
+        unset($sdbdata[rom::uniqid($emulator, $item['fields']['path'])]);
+      }
+      array_push($output, $item);
+    }
+    
+    foreach ($sdbdata as $item) {
       $attributes = array();
       if ($item['attributes'] != '') {
         $attributes = json_decode($item['attributes']);
@@ -70,13 +114,19 @@ class emulator
       if (sizeof($include) > 0) {
         $data = array();
         foreach (db::instance()->read('fields') as $field) {
-          if (in_array($field['id'], $include)) {
+          if ($field['readonly']) {
             if ($field['export']) {
               $data[$field['id']] = $item[$field['id']];
             }
           } else {
-            if ($field['export']) {
-              $data[$field['id']] = '';
+            if (in_array($field['id'], $include)) {
+              if ($field['export']) {
+                $data[$field['id']] = $item[$field['id']];
+              }
+            } else {
+              if ($field['export']) {
+                $data[$field['id']] = '';
+              }
             }
           }
         }
@@ -84,8 +134,14 @@ class emulator
       } else {
         $data = array();
         foreach (db::instance()->read('fields') as $field) {
-          if ($field['export']) {
-            $data[$field['id']] = $item[$field['id']];
+          if ($field['readonly']) {
+            if ($field['export']) {
+              $data[$field['id']] = $item[$field['id']];
+            }
+          } else {
+            if ($field['export']) {
+              $data[$field['id']] = $item[$field['id']];
+            }
           }
         }
         $tmp['fields'] = $data;
@@ -97,10 +153,10 @@ class emulator
   
   public static function sync($emulator, $include = array())
   {
-    $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
+    $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
     $config = db::instance()->read('emulators', 'id='.db::instance()->quote($emulator));
     if (sizeof($config) == 1) {
-      $config = $config[0];
+      $config = current($config);
     } else {
       $config = array();
       $config['whitelist'] = '';
@@ -150,9 +206,9 @@ class emulator
         }
       }
       
-      $xml = db::instance()->read('config', "id='roms_path'")[0]['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      $xml = current(db::instance()->read('config', "id='roms_path'"))['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
       if (!file_exists($xml)) {
-        $xml = db::instance()->read('config', "id='metadata_path'")[0]['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+        $xml = current(db::instance()->read('config', "id='metadata_path'"))['value'].DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
       }
       
       $xmldata = xml::read($xml);
@@ -193,7 +249,7 @@ class emulator
   {
     $output = array('metadata' => array(), 'media' => array());
     $media = array();
-    $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
+    $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
     foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $data) {
       if ($data['path'] == '') {
         array_push($output['metadata'], $data['id']);

@@ -156,7 +156,7 @@ class metadata
   {
     $output = array('metadata' => array(), 'media' => array());
     $media = array();
-    $romspath = db::instance()->read('config', "id='roms_path'")[0]['value'];
+    $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
     foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $data) {
       if ($data['path'] == '') {
         array_push($output['metadata'], $data['id']);

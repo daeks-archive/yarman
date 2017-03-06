@@ -36,6 +36,10 @@
     {
       "panel" : "dialog.php?action=panel&id=storage",
       "grid" : "3 4 8 left 1"
+    },
+    {
+      "panel" : "dialog.php?action=panel&id=network",
+      "grid" : "4 4 8 right 1"
     }
   ]
 }
