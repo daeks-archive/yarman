@@ -191,12 +191,12 @@ class emulator
             if ($config['blacklist'] != '') {
               if (strpos($config['blacklist'], 'folder') === false && strpos($config['blacklist'], $item) === false) {
                 $count += 1;
-                $data = array('name' => $item, 'emulator' => $emulator, 'size' => 0, 'sync' => 1);
+                $data = array('type' => 'folder', 'name' => $item, 'emulator' => $emulator, 'size' => 0, 'sync' => 1);
                 rom::config(rom::uniqid($emulator, $item), $data);
               }
             } else {
               $count += 1;
-              $data = array('name' => $item, 'emulator' => $emulator, 'size' => 0, 'sync' => 1);
+              $data = array('type' => 'folder', 'name' => $item, 'emulator' => $emulator, 'size' => 0, 'sync' => 1);
               rom::config(rom::uniqid($emulator, $item), $data);
             }
           }
@@ -250,7 +250,7 @@ class emulator
     $file = $path.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
     
     if (sizeof($rom) == 0) {
-      $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
+      $data = array('type' => 'game', 'name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
       if ($hash || filesize($file) <= self::$size) {
         $data['crc32'] = strtoupper(hash_file('crc32b', $file));
         $data['md5'] = strtoupper(hash_file('md5', $file));
@@ -273,7 +273,7 @@ class emulator
         }
         rom::config(rom::uniqid($emulator, $item), $data);
       } else {
-        $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
+        $data = array('type' => 'game', 'name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
         if ($hash || filesize($file) <= self::$size) {
           $data['crc32'] = strtoupper(hash_file('crc32b', $file));
           $data['md5'] = strtoupper(hash_file('md5', $file));
