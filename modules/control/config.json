@@ -7,6 +7,12 @@
     "icon" : "gear",
     "dropdown" : [
       {
+        "id" : "backup",
+        "name" : "Backup YARMan",
+        "type" : "async",
+        "external" : "/modules/control/controller.php?action=backup"
+      },
+      {
         "id" : "reset",
         "name" : "Reset YARMan",
         "type" : "modal",

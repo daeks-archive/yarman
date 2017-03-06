@@ -55,7 +55,7 @@
               core.message.toast('danger', true, obj.data);
             }
           } catch (e) {
-            core.message.infobox('danger', 0, e.message + data);
+            core.message.infobox('danger', 0, e.message + '<br>' + data);
           }
         });
         return false;
@@ -82,7 +82,7 @@
               core.message.toast('danger', true, obj.data);
             }
           } catch (e) {
-            core.message.infobox('danger', 0, e.message + data);
+            core.message.infobox('danger', 0, e.message + '<br>' + data);
           }
         });
       };

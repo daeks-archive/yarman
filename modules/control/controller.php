@@ -8,6 +8,10 @@ if (network::get('action') != '') {
       db::instance()->reset();
       network::success('Successfully Reset '.NAME, 'window.location.href = \'/\';');
       break;
+    case 'backup':
+      db::instance()->backup();
+      network::success('Successfully Backup '.NAME, 'true');
+      break;
     case 'restart':
       es::stop();
       es::start();

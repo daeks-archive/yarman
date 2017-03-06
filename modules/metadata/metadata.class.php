@@ -2,10 +2,11 @@
 
 class metadata
 {
+
+  public static $gamelist = 'gamelist.xml';
+
   public static function start($tab, $emulator)
   {
-    $orphaned = metadata::clean($emulator, true);
-  
     // RENDER RIGHT MENU
     $data = '<div class="row">';
     $data .= '<div class="col-sm-12">';
@@ -34,9 +35,6 @@ class metadata
     $data .= '</div>';
     $data .= '<div class="btn-group btn-group-sm pull-right">';
     $data .= '<button class="btn btn-default';
-    if ((sizeof($orphaned['rom']) + sizeof($orphaned['metadata']) + sizeof($orphaned['media'])) == 0) {
-      $data .= ' disabled';
-    }
     $data .= '" type="submit" id="metadata-clean" name="metadata-clean" data-toggle="modal" href="'.DIALOG.'?action=clean" data-target="#modal">Clean</button>';
     $data .= '<button class="btn btn-danger" type="submit" data-toggle="modal" href="'.DIALOG.'?action=confirmdelete" data-target="#modal"><em class="fa fa-trash"></em></button>';
     $data .= '</div>';
@@ -154,9 +152,10 @@ class metadata
   
   public static function clean($emulator, $quick = false)
   {
-    $output = array('rom' => array(), 'metadata' => array(), 'media' => array());
+    $output = array('rom' => array(), 'gamelist' => array(), 'metadata' => array(), 'media' => array());
     $media = array();
     $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
+    
     foreach (db::instance()->read('roms', 'emulator='.db::instance()->quote($emulator)) as $data) {
       if (!file_exists($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$data['name'])) {
         array_push($output['rom'], $data['id']);
@@ -213,6 +212,25 @@ class metadata
                 break;
               }
             }
+          }
+        }
+      }
+    }
+    
+    if (!$quick) {
+      $xml = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      if (!file_exists($xml)) {
+        $metadatapath = current(db::instance()->read('config', "id='metadata_path'"))['value'];
+        $xml = $metadatapath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.self::$gamelist;
+      }
+      
+      $xmldata = xml::read($xml);    
+      foreach ($xmldata as $item) {
+        $rom = rom::config(rom::uniqid($emulator, $item['fields']['path']));
+        if (sizeof($rom) == 0) {
+          array_push($output['gamelist'], rom::uniqid($emulator, $item['fields']['path']));
+          if ($quick) {
+            break;
           }
         }
       }

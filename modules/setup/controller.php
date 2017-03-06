@@ -9,6 +9,10 @@ if (network::get('action') != '') {
       $total = 0;
       foreach (db::instance()->read('emulators') as $emulator) {
         if (isset($emulator['count'])) {
+          if ($emulator['count'] == '') {
+            $emulator['count'] = sizeof(db::instance()->read('roms', 'emulator='.db::instance()->quote($emulator['id'])));
+            db::instance()->write('emulators', array('count' => $emulator['count']), 'id='.db::instance()->quote($emulator['id']));
+          }
           $total += $emulator['count'];
         }
       }

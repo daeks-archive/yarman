@@ -48,7 +48,7 @@
                   }
                 } catch (e) {
                   $('.modal').modal('hide');
-                  core.message.infobox('danger', 0, e.message + data);
+                  core.message.infobox('danger', 0, e.message + '<br>' + data);
                 }
               }
             });

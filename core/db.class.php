@@ -36,6 +36,20 @@ class db
     }
   }
   
+  public function backup($name = 'core')
+  {
+    if (file_exists(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb)) {
+      copy(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb, DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.bak');
+    }
+  }
+  
+  public function restore($name = 'core')
+  {
+    if (file_exists(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.bak')) {
+      copy(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.bak', DATA.DIRECTORY_SEPARATOR.$name.$this->sdb);
+    }
+  }
+  
   public function quote($value)
   {
     return $this->handle->quote($value);

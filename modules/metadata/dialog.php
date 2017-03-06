@@ -100,7 +100,16 @@ if (network::get('action') != '') {
         }
         echo '</ul>';
       }
-      echo '<p>Orphaned Metadata: <b>'.sizeof($orphaned['metadata']).'</b></p>';
+      echo '<p>Orphaned Gamelist Metadata: <b>'.sizeof($orphaned['gamelist']).'</b></p>';
+      if (sizeof($orphaned['gamelist']) <= 5) {
+        echo '<ul>';
+        foreach ($orphaned['gamelist'] as $item) {
+          $rom = rom::read($item);
+          echo '<li>'.$rom['name'].' ('.$rom['path'].')</li>';
+        }
+        echo '</ul>';
+      }
+      echo '<p>Orphaned DB Metadata: <b>'.sizeof($orphaned['metadata']).'</b></p>';
       if (sizeof($orphaned['metadata']) <= 5) {
         echo '<ul>';
         foreach ($orphaned['metadata'] as $item) {
@@ -117,8 +126,12 @@ if (network::get('action') != '') {
         }
         echo '</ul>';
       }
-      echo 'Do you really want to clean '.cache::getClientVariable($module->id.'_emulator').'?';
-      modal::end('Clean', 'success');
+      if ((sizeof($orphaned['rom']) + sizeof($orphaned['gamelist']) + sizeof($orphaned['metadata']) + sizeof($orphaned['media'])) > 0) {
+        echo 'Do you really want to clean '.cache::getClientVariable($module->id.'_emulator').'?';
+        modal::end('Clean', 'success');
+      } else {
+        modal::end();
+      }
       break;
     case 'confirmsave':
       modal::start('Save Changes', CONTROLLER.'?action=presave');
