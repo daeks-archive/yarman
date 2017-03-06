@@ -5,13 +5,9 @@
         $('[data-provider="datepicker"]').datepicker({
           format: "yyyy/mm/dd"
         });
-        $(function() {
-          $("[data-title='tooltip']").tooltip();
-        });
-        $(function() {
-          $("[data-title='popover']").popover({
-            trigger: 'hover'
-          });
+        $("[data-title='tooltip']").tooltip();
+        $("[data-title='popover']").popover({
+          trigger: 'hover'
         });
       };
       

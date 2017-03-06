@@ -80,7 +80,7 @@ class page
                 $item .= '<li role="separator" class="divider"></li>';
               } elseif ($dropdown->type == 'modal') {
                 $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name;
-                if(isset($dropdown->beta) && $dropdown->beta == true) {
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }
                 $item .= '</a></li>';
@@ -120,7 +120,7 @@ class page
                 $item .= '<li role="separator" class="divider"></li>';
               } elseif ($dropdown->type == 'modal') {
                 $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name;
-                if(isset($dropdown->beta) && $dropdown->beta == true) {
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }
                 $item .= '</a></li>';
@@ -184,7 +184,7 @@ class page
     echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"><br>&nbsp;<i class="fa fa-spinner fa-spin"></i> Loading...<br><br></div></div></div>';
     echo '<div class="container-fluid '.self::$devices.'">';
     echo '<div id="infobox" class="infobox">'.$infobox.'</div>';
-    if(isset($module->beta) && $module->beta == true) {
+    if (isset($module->beta) && $module->beta == true) {
       echo '<div class="alert alert-warning" id="beta" tabindex="-1"><span><b><i class="fa fa-flask fa-fw"></i> Warning</b> This module is currently in a BETA stage. Please be aware that there might be some issues.</span> <button type="button" class="btn btn-success btn-xs pull-right" data-dismiss="alert">Agreed</button></div>';
     }
   }
