@@ -9,25 +9,17 @@ class rom
   
   public static function config($id, $data = array())
   {
-    $config = db::instance()->read('roms', 'id='.db::instance()->quote($id));
-    if (sizeof($config) == 1) {
-      return current($config);
+    if (sizeof($data) > 0) {
+      $data['id'] = $id;
+      db::instance()->write('roms', $data, 'id='.db::instance()->quote($id));
+      return $data;
     } else {
-      if (sizeof($data) > 0) {
-        $data['id'] = $id;
-        db::instance()->write('roms', $data, 'id='.db::instance()->quote($id));
-        return $data;
+      $config = db::instance()->read('roms', 'id='.db::instance()->quote($id));
+      if (sizeof($config) == 1) {
+        return current($config);
       } else {
         return array('id' => $id, 'name' => $id);
       }
-    }
-  }
-  
-  public static function create($id, $data)
-  {
-    if (sizeof(db::instance()->read('roms', 'id='.db::instance()->quote($id))) == 0) {
-      $data['id'] = $id;
-      return db::instance()->write('roms', $data);
     }
   }
    

@@ -29,6 +29,10 @@
     {
       "name" : "sha1",
       "type" : "text"
+    },
+    {
+      "name" : "sync",
+      "type" : "integer"
     }
   ]
 }
