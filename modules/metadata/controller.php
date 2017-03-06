@@ -1,5 +1,6 @@
 <?php
 
+set_time_limit(300);
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {

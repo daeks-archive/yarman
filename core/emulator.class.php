@@ -151,7 +151,7 @@ class emulator
     return xml::write('gameList', $output, $xml);
   }
   
-  public static function sync($emulator, $include = array())
+  public static function sync($emulator, $include = array(), $hash = false)
   {
     $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
     $config = db::instance()->read('emulators', 'id='.db::instance()->quote($emulator));
@@ -165,7 +165,6 @@ class emulator
     $count = 0;
     
     db::instance()->delete('roms', "emulator='".$emulator."'");
-    db::instance()->delete('metadata', "emulator='".$emulator."'");
     if (file_exists($romspath.DIRECTORY_SEPARATOR.$emulator)) {
       foreach (scandir($romspath.DIRECTORY_SEPARATOR.$emulator) as $item) {
         if (is_file($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
@@ -174,18 +173,30 @@ class emulator
               if ($config['blacklist'] != '') {
                 if (strpos($config['blacklist'], pathinfo($item, PATHINFO_EXTENSION)) === false) {
                   $count += 1;
-                  $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item));
+                  $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
+                  $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file));
+                  if ($hash) {
+                    $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+                  }
                   rom::create(rom::uniqid($emulator, $item), $data);
                 }
               } else {
                 $count += 1;
-                $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item));
+                $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
+                $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file));
+                if ($hash) {
+                  $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+                }
                 rom::create(rom::uniqid($emulator, $item), $data);
               }
             }
           } else {
             $count += 1;
-            $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item));
+            $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
+            $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file));
+            if ($hash) {
+              $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+            }
             rom::create(rom::uniqid($emulator, $item), $data);
           }
         }

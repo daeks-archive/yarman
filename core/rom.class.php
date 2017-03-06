@@ -74,7 +74,9 @@ class rom
         $field = current(db::instance()->read('fields', 'id='.db::instance()->quote($key)));
         if ($field['type'] == 'upload') {
           if ($value != '') {
-            unlink($value);
+            if (file_exists($value)) {
+              unlink($value);
+            }
           }
         }
       }

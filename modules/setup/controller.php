@@ -1,6 +1,6 @@
 <?php
 
-set_time_limit(180);
+set_time_limit(300);
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
@@ -52,10 +52,10 @@ if (network::get('action') != '') {
             $output .=  '<div class="progress-bar progress-bar-striped active '.$color.'" role="progressbar" style="width: '.$percent.'%;">'.$percent.'%</div>';
             $output .=  '</div></p>';
           }
-          $output .= '<p>Now installing <b>'.$next['name'].'</b>...</p>';
+          $output .= '<p>Now syncing <b>'.$next['name'].'</b>...</p>';
           $output .= '<div class="alert alert-warning" role="alert"><b>Warning</b> Depending on your romset this might take a while.</div>';
         } else {
-          $output .= '<p>Installed <b>'.$current['name'].'</b>...</p>';
+          $output .= '<p>Synced <b>'.$current['name'].'</b>...</p>';
         }
         $output .= '</fieldset></form>';
         network::send(301, $output, 'core.sync();');

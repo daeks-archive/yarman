@@ -17,6 +17,18 @@
     {
       "name" : "size",
       "type" : "integer"
+    },
+    {
+      "name" : "crc32",
+      "type" : "text"
+    },
+    {
+      "name" : "md5",
+      "type" : "text"
+    },
+    {
+      "name" : "sha1",
+      "type" : "text"
     }
   ]
 }
