@@ -11,7 +11,7 @@ class emulator
     if (sizeof($config) == 1) {
       return current($config);
     } else {
-      return array('id' => $emulator, 'name' => $emulator);
+      return array();
     }
   }
   
@@ -174,37 +174,16 @@ class emulator
               if ($config['blacklist'] != '') {
                 if (strpos($config['blacklist'], pathinfo($item, PATHINFO_EXTENSION)) === false) {
                   $count += 1;
-                  $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
-                  $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
-                  if ($hash || filesize($file) <= self::$size) {
-                    $data['crc32'] = strtoupper(hash_file('crc32b', $file));
-                    $data['md5'] = strtoupper(hash_file('md5', $file));
-                    $data['sha1'] = strtoupper(hash_file('sha1', $file));
-                  }
-                  rom::config(rom::uniqid($emulator, $item), $data);
+                  self::handle($romspath, $emulator, $item, $hash);
                 }
               } else {
                 $count += 1;
-                $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
-                $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
-                if ($hash || filesize($file) <= self::$size) {
-                  $data['crc32'] = strtoupper(hash_file('crc32b', $file));
-                  $data['md5'] = strtoupper(hash_file('md5', $file));
-                  $data['sha1'] = strtoupper(hash_file('sha1', $file));
-                }
-                rom::config(rom::uniqid($emulator, $item), $data);
+                self::handle($romspath, $emulator, $item, $hash);
               }
             }
           } else {
             $count += 1;
-            $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
-            $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
-            if ($hash || filesize($file) <= self::$size) {
-              $data['crc32'] = strtoupper(hash_file('crc32b', $file));
-              $data['md5'] = strtoupper(hash_file('md5', $file));
-              $data['sha1'] = strtoupper(hash_file('sha1', $file));
-            }
-            rom::config(rom::uniqid($emulator, $item), $data);
+            self::handle($romspath, $emulator, $item, $hash);
           }
         }
         if (is_dir($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item)) {
@@ -265,11 +244,57 @@ class emulator
     return $count;
   }
   
+  private static function handle($path, $emulator, $item, $hash)
+  {
+    $rom = rom::config(rom::uniqid($emulator, $item));
+    $file = $path.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
+    
+    if (sizeof($rom) == 0) {
+      $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
+      if ($hash || filesize($file) <= self::$size) {
+        $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+        $data['md5'] = strtoupper(hash_file('md5', $file));
+        $data['sha1'] = strtoupper(hash_file('sha1', $file));
+      }
+      rom::config(rom::uniqid($emulator, $item), $data);
+    } else {
+      if ($rom['size'] == filesize($file)) {
+        $data = array('sync' => 1);
+        if ($hash || filesize($file) <= self::$size) {
+          if ($rom['crc32'] == '') {
+            $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+          }
+          if ($rom['md5'] == '') {
+            $data['md5'] = strtoupper(hash_file('md5', $file));
+          }
+          if ($rom['sha1'] == '') {
+            $data['sha1'] = strtoupper(hash_file('sha1', $file));
+          }
+        }
+        rom::config(rom::uniqid($emulator, $item), $data);
+      } else {
+        $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file), 'sync' => 1);
+        if ($hash || filesize($file) <= self::$size) {
+          $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+          $data['md5'] = strtoupper(hash_file('md5', $file));
+          $data['sha1'] = strtoupper(hash_file('sha1', $file));
+        }
+        rom::config(rom::uniqid($emulator, $item), $data);
+      }
+    }
+  }
+  
   public static function clean($emulator)
   {
-    $output = array('metadata' => array(), 'media' => array());
+    $output = array('rom' => array(), 'metadata' => array(), 'media' => array());
     $media = array();
     $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
+    foreach (db::instance()->read('roms', 'emulator='.db::instance()->quote($emulator)) as $data) {
+      if (!file_exists($romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$data['name'])) {
+        db::instance()->delete('roms', 'id='.db::instance()->quote($data['id']));
+      }
+    }
+    
     foreach (db::instance()->read('metadata', 'emulator='.db::instance()->quote($emulator)) as $data) {
       if ($data['path'] == '') {
         array_push($output['metadata'], $data['id']);

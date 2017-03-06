@@ -18,7 +18,7 @@ class rom
       if (sizeof($config) == 1) {
         return current($config);
       } else {
-        return array('id' => $id, 'name' => $id);
+        return array();
       }
     }
   }

@@ -49,7 +49,11 @@ if (network::get('action') != '') {
       modal::start('Sync Emulator', CONTROLLER.'?action=syncemulator', 'POST');
       $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
       echo '<div class="checkbox"><label><input type="checkbox" name="hash" value="1">(Optional) Hash large roms - This is a very time-intensive process.</label></div><br>';
-      echo '<label>Select fields to be synced with '.$emulator['name'].'</label>';
+      if (sizeof($emulator) > 0) {
+        echo '<label>Select fields to be synced with '.$emulator['name'].'</label>';
+      } else {
+        echo '<label>Select fields to be synced with '.cache::getClientVariable($module->id.'_emulator').'</label>';
+      }
       foreach (db::instance()->read('fields') as $field) {
         if ($field['import']) {
           echo '<div class="checkbox">';
@@ -87,6 +91,15 @@ if (network::get('action') != '') {
     case 'clean':
       modal::start('Clean Orphaned', CONTROLLER.'?action=clean');
       $orphaned = metadata::clean(cache::getClientVariable($module->id.'_emulator'));
+      echo '<p>Orphaned Rom: <b>'.sizeof($orphaned['rom']).'</b></p>';
+      if (sizeof($orphaned['rom']) <= 5) {
+        echo '<ul>';
+        foreach ($orphaned['rom'] as $item) {
+          $rom = rom::read($item);
+          echo '<li>'.$rom['name'].'</li>';
+        }
+        echo '</ul>';
+      }
       echo '<p>Orphaned Metadata: <b>'.sizeof($orphaned['metadata']).'</b></p>';
       if (sizeof($orphaned['metadata']) <= 5) {
         echo '<ul>';
@@ -120,7 +133,11 @@ if (network::get('action') != '') {
       if ($config['SaveGamelistsOnExit'] == 'true') {
         echo '<div class="alert alert-warning" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><b>Warning</b> You have enabled "SAVE METADATA ON EXIT".<br>Please close your EmulationStation before exporting your gamelist!</span></div>';
       }
-      echo '<label>Select fields to be exported for '.$emulator['name'].'</label>';
+      if (sizeof($emulator) > 0) {
+        echo '<label>Select fields to be exported for '.$emulator['name'].'</label>';
+      } else {
+        echo '<label>Select fields to be exported for '.cache::getClientVariable($module->id.'_emulator').'</label>';
+      }
       foreach (db::instance()->read('fields') as $field) {
         if ($field['export']) {
           echo '<div class="checkbox">';
