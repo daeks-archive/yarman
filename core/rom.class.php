@@ -7,13 +7,19 @@ class rom
     return md5($emulator.pathinfo($id, PATHINFO_BASENAME));
   }
   
-  public static function config($id)
+  public static function config($id, $data = array())
   {
     $config = db::instance()->read('roms', 'id='.db::instance()->quote($id));
     if (sizeof($config) == 1) {
       return current($config);
     } else {
-      return array('id' => $id, 'name' => $id);
+      if (sizeof($array) > 0) {
+        $data['id'] = $id;
+        db::instance()->write('roms', $data, 'id='.db::instance()->quote($id));
+        return $data;
+      } else {
+        return array('id' => $id, 'name' => $id);
+      }
     }
   }
   

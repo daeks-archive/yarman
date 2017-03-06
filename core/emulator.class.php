@@ -3,6 +3,7 @@
 class emulator
 {
   public static $gamelist = 'gamelist.xml';
+  public static $size = 5242880;
 
   public static function config($emulator)
   {
@@ -10,7 +11,9 @@ class emulator
     if (sizeof($config) == 1) {
       return current($config);
     } else {
-      return array('id' => $emulator, 'name' => $emulator);
+      $data = array('id' => $emulator, 'name' => $emulator);
+      db::instance()->write('emulators', $data, 'id='.db::instance()->quote($emulator));
+      return $data;
     }
   }
   
@@ -175,8 +178,10 @@ class emulator
                   $count += 1;
                   $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
                   $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file));
-                  if ($hash) {
+                  if ($hash || filesize($file) <= self::$size) {
                     $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+                    $data['md5'] = strtoupper(hash_file('md5', $file));
+                    $data['sha1'] = strtoupper(hash_file('sha1', $file));
                   }
                   rom::create(rom::uniqid($emulator, $item), $data);
                 }
@@ -184,8 +189,10 @@ class emulator
                 $count += 1;
                 $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
                 $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file));
-                if ($hash) {
+                if ($hash || filesize($file) <= self::$size) {
                   $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+                  $data['md5'] = strtoupper(hash_file('md5', $file));
+                  $data['sha1'] = strtoupper(hash_file('sha1', $file));
                 }
                 rom::create(rom::uniqid($emulator, $item), $data);
               }
@@ -194,8 +201,10 @@ class emulator
             $count += 1;
             $file = $romspath.DIRECTORY_SEPARATOR.$emulator.DIRECTORY_SEPARATOR.$item;
             $data = array('name' => $item, 'emulator' => $emulator, 'size' => filesize($file));
-            if ($hash) {
+            if ($hash || filesize($file) <= self::$size) {
               $data['crc32'] = strtoupper(hash_file('crc32b', $file));
+              $data['md5'] = strtoupper(hash_file('md5', $file));
+              $data['sha1'] = strtoupper(hash_file('sha1', $file));
             }
             rom::create(rom::uniqid($emulator, $item), $data);
           }

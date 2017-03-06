@@ -8,7 +8,7 @@
     "dropdown" : [
       {
         "id" : "reset",
-        "name" : "Reset YARMan to Default",
+        "name" : "Reset YARMan",
         "type" : "modal",
         "external" : "/modules/control/dialog.php?action=reset"
       },

@@ -1,6 +1,6 @@
 <?php
 
-set_time_limit(300);
+set_time_limit(600);
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
@@ -87,7 +87,7 @@ if (network::get('action') != '') {
       break;
     case 'syncemulator':
       cache::unsetClientVariable($module->id.'_id');
-      emulator::sync(cache::getClientVariable($module->id.'_emulator'), $_POST['include']);
+      emulator::sync(cache::getClientVariable($module->id.'_emulator'), $_POST['include'], isset($_POST['hash']));
       network::success('Successfully Synced Emulator', 'core.metadata.reset();');
       break;
     case 'syncrom':

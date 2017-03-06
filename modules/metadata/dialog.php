@@ -48,6 +48,7 @@ if (network::get('action') != '') {
     case 'syncemulator':
       modal::start('Sync Emulator', CONTROLLER.'?action=syncemulator', 'POST');
       $emulator = emulator::config(cache::getClientVariable($module->id.'_emulator'));
+      echo '<div class="checkbox"><label><input type="checkbox" name="hash" value="1">(Optional) Hash large roms - This is a very time-intensive process.</label></div><br>';
       echo '<label>Select fields to be synced with '.$emulator['name'].'</label>';
       foreach (db::instance()->read('fields') as $field) {
         if ($field['import']) {

@@ -9,7 +9,11 @@
             if (obj.status == 200) {
               if (obj.data == 0) {
                 $('.modal-content').load('/modules/setup/dialog.php?action=sync',function (result) {
-                  $('.modal').modal({show:true});
+                  $('.modal').modal({
+                    show:true,
+                    backdrop: 'static',
+                    keyboard: false
+                  });
                   $('.modal').css('display', 'block');
                   var $dialog = $('.modal').find('.modal-dialog');
                   var offset = ($(window).height() - $dialog.height()) / 2;
@@ -61,6 +65,7 @@
                 } else if (obj.status == 301) {
                   var data = $('<textarea/>').html(obj.data).val();
                   $target.html(data);
+                  $(".progress-bar").addClass('active');
                   eval(obj.event);
                 }
               } catch (e) {

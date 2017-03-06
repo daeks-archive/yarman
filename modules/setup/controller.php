@@ -1,6 +1,6 @@
 <?php
 
-set_time_limit(300);
+set_time_limit(600);
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
@@ -23,8 +23,14 @@ if (network::get('action') != '') {
         if (sizeof($emulator) >= 2) {
           $next = next($emulator);
         }
-        emulator::sync($current['id']);
-        $output .= '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-body" action="'.CONTROLLER.'?action=sync" method="GET"><fieldset>';
+        emulator::sync($current['id'], array(), isset($_GET['hash']));
+        $output .= '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-body" ';
+        if (network::get('hash') != '') {
+          $output .= 'action="'.CONTROLLER.'?action=sync&hash='.network::get('hash').'"';
+        } else {
+          $output .= 'action="'.CONTROLLER.'?action=sync"';
+        }        
+        $output .= ' method="GET"><fieldset>';
         if (sizeof($next) > 0) {
           if (sizeof($emulator) > 1) {
             $totalroms = 0;
@@ -49,10 +55,14 @@ if (network::get('action') != '') {
               $color = 'progress-bar-success';
             }
             $output .=  '<div class="progress">';
-            $output .=  '<div class="progress-bar progress-bar-striped active '.$color.'" role="progressbar" style="width: '.$percent.'%;">'.$percent.'%</div>';
+            $output .=  '<div class="progress-bar progress-bar-striped '.$color.'" role="progressbar" style="width: '.$percent.'%;">'.$percent.'%</div>';
             $output .=  '</div></p>';
           }
-          $output .= '<p>Now syncing <b>'.$next['name'].'</b>...</p>';
+          if  (network::get('hash') != '') {
+            $output .= '<p>Now syncing & hashing <b>'.$next['name'].'</b>...</p>';
+          } else {
+            $output .= '<p>Now syncing <b>'.$next['name'].'</b>...</p>';
+          }
           $output .= '<div class="alert alert-warning" role="alert"><b>Warning</b> Depending on your romset this might take a while.</div>';
         } else {
           $output .= '<p>Synced <b>'.$current['name'].'</b>...</p>';
