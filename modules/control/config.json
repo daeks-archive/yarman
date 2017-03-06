@@ -8,9 +8,18 @@
     "dropdown" : [
       {
         "id" : "backup",
-        "name" : "Backup YARMan",
-        "type" : "async",
-        "external" : "/modules/control/controller.php?action=backup"
+        "name" : "Backup YARMan DB",
+        "type" : "modal",
+        "external" : "/modules/control/dialog.php?action=backup"
+      },
+      {
+        "id" : "restore",
+        "name" : "Restore YARMan DB",
+        "type" : "modal",
+        "external" : "/modules/control/dialog.php?action=restore"
+      },
+      {
+        "type" : "spacer"
       },
       {
         "id" : "reset",

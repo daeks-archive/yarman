@@ -39,14 +39,19 @@ class db
   public function backup($name = 'core')
   {
     if (file_exists(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb)) {
-      copy(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb, DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.bak');
+      copy(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb, DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.'.time().'.bak');
     }
   }
   
-  public function restore($name = 'core')
+  public function restore($name = 'core', $time = '')
   {
-    if (file_exists(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.bak')) {
-      copy(DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.bak', DATA.DIRECTORY_SEPARATOR.$name.$this->sdb);
+    $backup = DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.bak';
+    if ($time != '') {
+      $backup = DATA.DIRECTORY_SEPARATOR.$name.$this->sdb.'.'.$time.'.bak';
+    }
+    if (file_exists($backup)) {
+      copy($backup, DATA.DIRECTORY_SEPARATOR.$name.$this->sdb);
+      unlink($backup);
     }
   }
   
