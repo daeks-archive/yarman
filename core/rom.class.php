@@ -13,7 +13,7 @@ class rom
     if (sizeof($config) == 1) {
       return current($config);
     } else {
-      if (sizeof($array) > 0) {
+      if (sizeof($data) > 0) {
         $data['id'] = $id;
         db::instance()->write('roms', $data, 'id='.db::instance()->quote($id));
         return $data;
