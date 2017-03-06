@@ -29,7 +29,7 @@ if (network::get('action') != '') {
           $output .= 'action="'.CONTROLLER.'?action=sync&hash='.network::get('hash').'"';
         } else {
           $output .= 'action="'.CONTROLLER.'?action=sync"';
-        }        
+        }
         $output .= ' method="GET"><fieldset>';
         if (sizeof($next) > 0) {
           if (sizeof($emulator) > 1) {
@@ -58,7 +58,7 @@ if (network::get('action') != '') {
             $output .=  '<div class="progress-bar progress-bar-striped '.$color.'" role="progressbar" style="width: '.$percent.'%;">'.$percent.'%</div>';
             $output .=  '</div></p>';
           }
-          if  (network::get('hash') != '') {
+          if (network::get('hash') != '') {
             $output .= '<p>Now syncing & hashing <b>'.$next['name'].'</b>...</p>';
           } else {
             $output .= '<p>Now syncing <b>'.$next['name'].'</b>...</p>';
