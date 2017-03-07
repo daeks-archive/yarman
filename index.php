@@ -10,9 +10,8 @@ foreach ($modules as $moduleconfig) {
   if (isset($tmp->dashboard)) {
     foreach ($tmp->dashboard as $item) {
       $target = $item->panel;
-      if (strpos($target, URL_SEPARATOR) !== 0) {
-        $target = str_replace(BASE, '', MODULES.URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$target);
-        $target = 'http://localhost:'.$_SERVER['SERVER_PORT'].$target;
+      if (strpos($target, DIRECTORY_SEPARATOR) !== 0) {
+        $target = MODULES.DIRECTORY_SEPARATOR.$tmp->id.DIRECTORY_SEPARATOR.$target;
       }
       
       $parts = explode(' ', $item->grid);
@@ -53,8 +52,22 @@ foreach ($fieldset as $key => $row) {
     echo '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
     ksort($column);
     foreach ($column as $key => $panel) {
-      echo network::getRemoteContent($panel);
-      //echo cache::getRemoteCache(cache::setRemoteCache($panel, $panel, 300));
+      $offset = strpos($panel, '?');
+      if ($offset !== false) {
+        $params = substr($panel, $offset+1);
+        $include = substr($panel, 0, $offset);
+        foreach (explode('&', $params) as $value) {
+          $parts = explode('=', $value);
+          if (sizeof($parts) == 2) {
+            $_GET[$parts[0]] = $parts[1];
+          } else {
+            $_GET[$parts[0]] = '';
+          }
+        }
+        include($include);
+      } else {
+        include($panel);
+      }
     }
     echo '</div>';
   }
