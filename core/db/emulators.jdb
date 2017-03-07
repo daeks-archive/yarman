@@ -107,7 +107,7 @@
     },
     {
       "id" : "megadrive",
-      "name" : "Megadrive / Genesis",
+      "name" : "Megadrive",
       "whitelist" : "smd bin md iso zip"
     },
     {
@@ -129,6 +129,11 @@
       "id" : "gba",
       "name" : "Game Boy Advance",
       "whitelist" : "gba zip"
+    },
+    {
+      "id" : "genesis",
+      "name" : "Genesis",
+      "whitelist" : "smd bin md iso zip"
     },
     {
       "id" : "fds",

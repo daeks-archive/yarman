@@ -13,7 +13,7 @@ if (network::get('action') != '') {
             $total = 0;
             $totalroms = 0;
             foreach ($emulators as $emulator) {
-              if (isset($emulator['count']) && $emulator['count'] != '') {
+              if ($emulator['count'] != '') {
                 $totalroms += $emulator['count'];
                 $total += 1;
               }

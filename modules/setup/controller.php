@@ -10,16 +10,21 @@ if (network::get('action') != '') {
       foreach (db::instance()->read('emulators') as $emulator) {
         if (isset($emulator['count'])) {
           if ($emulator['count'] == '') {
-            $emulator['count'] = sizeof(db::instance()->read('roms', 'emulator='.db::instance()->quote($emulator['id'])));
-            db::instance()->write('emulators', array('count' => $emulator['count']), 'id='.db::instance()->quote($emulator['id']));
+            $total += 1;
           }
-          $total += $emulator['count'];
         }
       }
       network::success(''.$total);
       break;
     case 'sync':
       $output = '';
+      if (network::post('romspath') != '') {
+        db::instance()->write('config', array('value' => network::post('romspath')), "id='roms_path'");
+      }
+      if (network::post('metadatapath') != '') {
+        db::instance()->write('config', array('value' => network::post('metadatapath')), "id='metadata_path'");
+      }
+      
       $emulator = db::instance()->read('emulators', 'count is null');
       if (sizeof($emulator) >= 1) {
         $current = current($emulator);
@@ -27,12 +32,16 @@ if (network::get('action') != '') {
         if (sizeof($emulator) >= 2) {
           $next = next($emulator);
         }
-        emulator::sync($current['id'], array(), isset($_GET['hash']));
+        emulator::sync($current['id'], array(), (isset($_GET['hash']) || isset($_POST['hash'])));
         $output .= '<form class="form-horizontal" id="modal-data" name="modal-data" data-validate="modal" data-toggle="modal" data-target="#modal-body" ';
         if (network::get('hash') != '') {
           $output .= 'action="'.CONTROLLER.'?action=sync&hash='.network::get('hash').'"';
         } else {
-          $output .= 'action="'.CONTROLLER.'?action=sync"';
+          if (network::post('hash') != '') {
+            $output .= 'action="'.CONTROLLER.'?action=sync&hash='.network::post('hash').'"';
+          } else {
+            $output .= 'action="'.CONTROLLER.'?action=sync"';
+          }
         }
         $output .= ' method="GET"><fieldset>';
         if (sizeof($next) > 0) {

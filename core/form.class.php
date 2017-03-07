@@ -64,7 +64,7 @@ class form
   
   public static function getString($obj, $value = '')
   {
-    $data = '<div class="form-group">';
+    $data = '';
     if (isset($obj['name']) && $obj['name'] != '') {
       $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
     }
@@ -82,13 +82,12 @@ class form
       $data .= ' maxlength="'.$obj['maxlength'].'"';
     }
     $data .= '/>';
-    $data .= '</div>';
     return $data;
   }
   
   public static function getInteger($obj, $value = '')
   {
-    $data = '<div class="form-group">';
+    $data = '';
     if (isset($obj['name']) && $obj['name'] != '') {
       $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
     }
@@ -106,13 +105,12 @@ class form
       $data .= ' maxlength="'.$obj['maxlength'].'"';
     }
     $data .= '/>';
-    $data .= '</div>';
     return $data;
   }
   
   public static function getDouble($obj, $value = '')
   {
-    $data = '<div class="form-group">';
+    $data = '';
     if (isset($obj['name']) && $obj['name'] != '') {
       $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
     }
@@ -130,13 +128,12 @@ class form
       $data .= ' maxlength="'.$obj['maxlength'].'"';
     }
     $data .= '/>';
-    $data .= '</div>';
     return $data;
   }
   
   public static function getText($obj, $value = '')
   {
-    $data = '<div class="form-group">';
+    $data = '';
     if (isset($obj['name']) && $obj['name'] != '') {
       $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
     }
@@ -150,7 +147,6 @@ class form
     $data .= '>';
     $data .= $value;
     $data .= '</textarea>';
-    $data .= '</div>';
     return $data;
   }
   
@@ -183,7 +179,7 @@ class form
         $parsed = '';
       }
     }
-    $data = '<div class="form-group">';
+    $data = '';
     if (isset($obj['name']) && $obj['name'] != '') {
       $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
     }
@@ -204,13 +200,12 @@ class form
     }
     $data .= '/>';
     $data .= '</div>';
-    $data .= '</div>';
     return $data;
   }
   
   public static function getBoolean($obj, $value = '')
   {
-    $data = '<div class="form-group">';
+    $data = '';
     if (isset($obj['name']) && $obj['name'] != '') {
       $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
     }
@@ -234,7 +229,6 @@ class form
     }
     $data .= ' value="false">False</option>';
     $data .= '</select>';
-    $data .= '</div>';
     return $data;
   }
   
@@ -274,7 +268,7 @@ class form
   
   public static function getUpload($obj, $value = '')
   {
-    $data = '<div class="form-group">';
+    $data = '';
     if (isset($obj['name']) && $obj['name'] != '') {
       $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
     }
@@ -296,7 +290,6 @@ class form
     $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file"><i class="fa fa-file-image-o fa-fw"></i>';
     $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
     $data .= '</span></label>';
-    $data .= '</div>';
     $data .= '</div>';
     return $data;
   }

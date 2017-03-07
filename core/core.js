@@ -7,7 +7,7 @@
           try {
             var obj = $.parseJSON(data);
             if (obj.status == 200) {
-              if (obj.data == 0) {
+              if (obj.data > 0) {
                 $('.modal-content').load('/modules/setup/dialog.php?action=sync',function (result) {
                   $('.modal').modal({
                     show:true,
