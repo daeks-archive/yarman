@@ -12,7 +12,7 @@ foreach ($modules as $moduleconfig) {
       $target = $item->panel;
       if (strpos($target, URL_SEPARATOR) !== 0) {
         $target = str_replace(BASE, '', MODULES.URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$target);
-        $target = 'http://'.$_SERVER['HTTP_HOST'].$target;
+        $target = 'http://localhost:'.$_SERVER['SERVER_PORT'].$target;
       }
       
       $parts = explode(' ', $item->grid);
