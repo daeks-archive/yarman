@@ -13,34 +13,48 @@
     {
       "name" : "value",
       "type" : "text"
+    },
+    {
+      "name" : "readonly",
+      "type" : "boolean"
+    },
+    {
+      "name" : "validator",
+      "type" : "text"
     }
   ],
   "data" : [
     {
       "id" : "user_path",
       "name" : "RetroPie User Directory",
-      "value" : "/home/%USER%"
+      "value" : "/home/%USER%",
+      "validator" : "data-fv-notempty"
     },
     {
       "id" : "es_path",
       "name" : "Location of EmulationStation",
-      "value" : "/home/%USER%/.emulationstation"
+      "value" : "/home/%USER%/.emulationstation",
+      "validator" : "data-fv-notempty"
     },
     {
       "id" : "roms_path",
       "name" : "Location of your roms",
-      "value" : "/home/%USER%/RetroPie/roms"
+      "value" : "/home/%USER%/RetroPie/roms",
+      "validator" : "data-fv-notempty"
     },
     {
       "id" : "metadata_path",
       "name" : "Location of your gamelists",
-      "value" : "/home/%USER%/.emulationstation/gamelists"
+      "value" : "/home/%USER%/.emulationstation/gamelists",
+      "validator" : "data-fv-notempty"
     }
     ,
     {
       "id" : "news_feed",
       "name" : "RetroPie Newsfeed URL",
-      "value" : "https://retropie.org.uk/feed/"
+      "readonly" : true,
+      "value" : "https://retropie.org.uk/feed/",
+      "validator" : "data-fv-notempty"
     }
   ]
 }

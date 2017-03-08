@@ -9,11 +9,22 @@ if (network::get('action') != '') {
         case 'db':
           cache::setClientVariable('admin_id', network::get('id'));
           $output = '';
+          $output .= '<label>Datebase Statistics</label><br><ul>';
+          foreach (array_slice(scandir(DATA), 2) as $item) {
+            if (pathinfo($item, PATHINFO_EXTENSION) == 'sdb') {
+              $output .= '<li>'.$item.' (Size: '.round(filesize(DATA.DIRECTORY_SEPARATOR.$item)/1024/1024, 2).'MB)<ul>';
+              foreach (db::instance(pathinfo($item, PATHINFO_FILENAME))->read('schema') as $item) {
+                $output .= '<li>Table '.$item['id'].' (v'.$item['version'].')</li>';
+              }
+              $output .= '</ul></li>';
+            }
+          }
+          $output .= '</ul>';
           $output .= '<label>Datebase Backup</label>';
           $output .= '<br><button class="btn btn-success" type="submit" data-toggle="modal" data-target="#modal" href="/modules/control/dialog.php?action=backup">Backup YARMan DB</button>';
           $output .= ' <button class="btn btn-warning" type="submit" data-toggle="modal" data-target="#modal" href="/modules/control/dialog.php?action=restore">Restore YARMan DB</button>';
-          $output .= '<br><br><label>Reset</label>';
-          $output .= '<br><button class="btn btn-danger btn-xs" type="submit" data-toggle="modal" data-target="#modal" href="/modules/control/dialog.php?action=reset">Reset YARMan</button>';
+          $output .= '<br><hr><label>Reset '.NAME.'</label>';
+          $output .= '<br><button class="btn btn-danger btn-xs" type="submit" data-toggle="modal" data-target="#modal" href="/modules/control/dialog.php?action=reset">Reset</button>';
           network::success($output);
           break;
         default:
