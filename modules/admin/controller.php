@@ -24,7 +24,7 @@ if (network::get('action') != '') {
         default:
           network::error('invalid id - '.network::get('id'));
           break;
-        }
+      }
       break;
     default:
       network::error('invalid action - '.network::get('action'));

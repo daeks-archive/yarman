@@ -308,7 +308,7 @@ class form
       $data .= '<table class="table table-hover">';
       $data .= '<thead><tr>';
       foreach (current($array) as $key => $item) {
-        iF (!isset($options[$key]['hidden'])) {
+        if (!isset($options[$key]['hidden'])) {
           if (isset($options[$key]['width']) && $options[$key]['width'] != '') {
             $data .= '<th width="'.$options[$key]['width'].';">'.strtoupper($key).'</th>';
           } else {
