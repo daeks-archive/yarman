@@ -11,8 +11,8 @@
 #
 
 rp_module_id="yarman"
-rp_module_desc=" YARMan Web (Yet Another RetroPie Manager) on port 80"
-rp_module_help="PHP and JQuery based web frontend for managing your retropie installation"
+rp_module_desc=" YARMan Web (Yet Another RetroPie Manager)"
+rp_module_help="PHP and JQuery based web frontend on port 80 for managing your retropie installation"
 rp_module_section="exp"
 
 function depends_yarman() {

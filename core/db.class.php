@@ -158,13 +158,15 @@ class db
           $stmt->closeCursor();
         }
       } else {
-        $tmp = '';
-        foreach ($data as $key => $value) {
-          $tmp .= '?,';
+        if (array_key_exists('id', $data)) {
+          $tmp = '';
+          foreach ($data as $key => $value) {
+            $tmp .= '?,';
+          }
+          $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', array_keys($data)).') VALUES ('.rtrim($tmp, ',').')');
+          $stmt->execute(array_values($data));
+          $stmt->closeCursor();
         }
-        $stmt = $this->handle->prepare('INSERT INTO '.$module.' ('.implode(',', array_keys($data)).') VALUES ('.rtrim($tmp, ',').')');
-        $stmt->execute(array_values($data));
-        $stmt->closeCursor();
       }
     }
   }

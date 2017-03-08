@@ -63,7 +63,7 @@
       
       var save = function (loadurl, target) {
         var editor = ace.edit(target);
-        $.post(loadurl, 'data=' + editor.getValue(), function (data) {
+        $.post(loadurl, { data: editor.getValue() }, function (data) {
           try {
             var obj = $.parseJSON(data);
             if (obj.status == 200) {

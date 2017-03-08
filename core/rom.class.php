@@ -78,6 +78,10 @@ class rom
           }
         }
       }
+      
+      $emulator = emulator::config($rom['emulator']);
+      db::instance()->write('emulators', array('count' => $emulator['count'] - 1), 'id='.db::instance()->quote($rom['emulator']));
+      
       db::instance()->delete('roms', 'id='.db::instance()->quote($id));
       db::instance()->delete('metadata', 'id='.db::instance()->quote($id));
     }

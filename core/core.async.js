@@ -2,18 +2,19 @@
     
     var async = (function () {
       
-      var time;
+      var time = [];
       
       var init = function () {
         $(document).ajaxSend(function (event, request, settings) {
           $('#loading').removeClass('hidden');
-          core.async.time = new Date().getTime();
+          core.async.time[btoa(settings.url)] = new Date().getTime();
         });
 
         $(document).ajaxComplete(function (event, request, settings) {
           $('#loading').addClass('hidden');
-          core.async.time = (new Date().getTime() - core.async.time) / 1000;
-          $('#async').html('- queried in ' + core.async.time + 's');
+          core.async.time[btoa(settings.url)] = (new Date().getTime() - core.async.time[btoa(settings.url)]) / 1000;
+          $('#async').html('- queried in ' + core.async.time[btoa(settings.url)] + 's');
+          delete core.async.time[btoa(settings.url)];
         });
       
         $(document.body).on('click', '[data-toggle="async"]', function (e) {
