@@ -44,7 +44,8 @@ if (network::get('action') != '') {
       echo '<option value="" selected>-- Select Backup --</option>';
       foreach (array_slice(scandir(DATA), 2) as $item) {
         if (pathinfo($item, PATHINFO_EXTENSION) == 'bak') {
-          echo '<option value="'.$item.'">'.$item.'</option>';
+          $parts = explode('.', pathinfo($item, PATHINFO_FILENAME));
+          echo '<option value="'.$item.'">'.$item.' ('.date('Y/m/d H:i:s', $parts[2]).')</option>';
         }
       }
       echo '</select>';
