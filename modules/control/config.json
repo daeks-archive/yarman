@@ -1,6 +1,13 @@
 {
   "id" : "control",
   "name" : "",
+  "config" : [
+    {
+      "id" : "db",
+      "name" : "Database Settings",
+      "target" : "/modules/control/dialog.php?action=config&id=db"
+    }
+  ],
   "menu" : {
     "position" : "right",
     "order" : 99999,
@@ -11,27 +18,6 @@
         "name" : "Administration",
         "type" : "external",
         "external" : "/modules/admin/"
-      },
-      {
-        "id" : "backup",
-        "name" : "Backup YARMan DB",
-        "type" : "modal",
-        "external" : "/modules/control/dialog.php?action=backup"
-      },
-      {
-        "id" : "restore",
-        "name" : "Restore YARMan DB",
-        "type" : "modal",
-        "external" : "/modules/control/dialog.php?action=restore"
-      },
-      {
-        "type" : "spacer"
-      },
-      {
-        "id" : "reset",
-        "name" : "Reset YARMan",
-        "type" : "modal",
-        "external" : "/modules/control/dialog.php?action=reset"
       },
       {
         "type" : "spacer"

@@ -48,7 +48,43 @@
           });
           return false;
         });
-
+        
+        $(document.body).on('click', '[data-toggle="tab"]', function (e) {
+          e.preventDefault();
+          $('.nav').children('li').each(function () {
+            $(this).removeClass('active');
+          });
+          $(this).parent().addClass('active');
+          var loadurl = $(this).attr('data-query');
+          var target = $($(this).attr('data-target'));
+          $.get(loadurl, function (data) {
+            try {
+              var obj = $.parseJSON(data);
+              if (obj.status == 200) {
+                if (obj.event.length > 0) {
+                  if (obj.data.length > 0) {
+                    core.message.toast('success', false, obj.data);
+                  }
+                  eval(obj.event);
+                } else {
+                  var data = $('<textarea/>').html(obj.data).val();
+                  target.html(data);
+                  core.validator.init();
+                  core.form.init();
+                  core.proxy.init();
+                }
+              } else if (obj.status == 500) {
+                core.message.toast('danger', false, obj.data);
+              } else {
+                core.message.toast('danger', true, obj.data);
+              }
+            } catch (e) {
+              core.message.infobox('danger', 0, e.message + '<br>' + data);
+            }
+          });
+          return false;
+        });
+        
         $('[data-toggle="select"]').on('change', function (e) {
           e.preventDefault();
           var loadurl = $(this).attr('data-query') + encodeURIComponent($(this).val());

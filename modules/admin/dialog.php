@@ -4,12 +4,12 @@ require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
   switch (network::get('action')) {
-    case 'view':
+    case 'config':
       switch (network::get('id')) {
         case 'config':
-          cache::setClientVariable($module->id.'_id', network::get('id'));
+          cache::setClientVariable('admin_id', network::get('id'));
           $output = '';
-          $output .= '<form class="form-horizontal" id="data" name="data" data-toggle="post" data-validate="modal" data-query="'.CONTROLLER.'?action=save" method="POST"><fieldset>';
+          $output .= '<form class="form-horizontal" id="data" name="data" data-toggle="post" data-validate="modal" data-query="/modules/admin/controller.php?action=save" method="POST"><fieldset>';
           foreach (db::instance()->read('config') as $item) {
             $output .= form::getString($item, $item['value']).'<br>';
           }

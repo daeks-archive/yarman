@@ -4,6 +4,23 @@ require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
   switch (network::get('action')) {
+    case 'config':
+      switch (network::get('id')) {
+        case 'db':
+          cache::setClientVariable('admin_id', network::get('id'));
+          $output = '';
+          $output .= '<label>Datebase Backup</label>';
+          $output .= '<br><button class="btn btn-success" type="submit" data-toggle="modal" data-target="#modal" href="/modules/control/dialog.php?action=backup">Backup YARMan DB</button>';
+          $output .= ' <button class="btn btn-warning" type="submit" data-toggle="modal" data-target="#modal" href="/modules/control/dialog.php?action=restore">Restore YARMan DB</button>';
+          $output .= '<br><br><label>Reset</label>';
+          $output .= '<br><button class="btn btn-danger btn-xs" type="submit" data-toggle="modal" data-target="#modal" href="/modules/control/dialog.php?action=reset">Reset YARMan</button>';
+          network::success($output);
+          break;
+        default:
+          network::error('invalid id - '.network::get('id'));
+          break;
+      }
+      break;
     case 'backup':
       modal::start('Backup '.NAME.' Database', CONTROLLER.'?action=backup');
       echo 'Do you really want to backup the database?';

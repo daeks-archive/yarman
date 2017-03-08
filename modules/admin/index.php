@@ -18,6 +18,10 @@ foreach ($modules as $moduleconfig) {
 ksort($fieldset);
 if (cache::getClientVariable($module->id.'_id') == '') {
   cache::setClientVariable($module->id.'_id', key($fieldset));
+} else {
+  if (!isset($fieldset[cache::getClientVariable($module->id.'_id')])) {
+    cache::setClientVariable($module->id.'_id', key($fieldset));
+  }
 }
 
 echo '<div class="row">';
@@ -29,7 +33,7 @@ foreach ($fieldset as $key => $item) {
   if (cache::getClientVariable($module->id.'_id') == $key) {
     echo 'class="active"';
   }
-  echo '><a href="#" data-toggle="async" data-query="'.$item['target'].'" data-target="#panel">'.$item['name'].'</a></li>';
+  echo '><a href="#" data-toggle="tab" data-query="'.$item['target'].'" data-target="#panel">'.$item['name'].'</a></li>';
 }
 echo '</ul>';
 echo '<br>';
