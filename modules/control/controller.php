@@ -22,8 +22,7 @@ if (network::get('action') != '') {
       network::success('Successfully Backup '.NAME, 'true');
       break;
     case 'restart':
-      es::stop();
-      es::start();
+      es::restart();
       network::success('Successfully Restarted Emulationstation', 'true');
       break;
     case 'reboot':

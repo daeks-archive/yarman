@@ -2,9 +2,18 @@
 
 class es
 {
-  public static function start()
+  public static function start($tty = 1)
   {
-    return shell_exec('export HOME='.current(db::instance()->read('config', "id='user_path'"))['value'].' && emulationstation > /dev/null 2>/dev/null &');
+    $commands = array();
+    array_push($commands, 'export HOME='.current(db::instance()->read('config', "id='user_path'"))['value']);
+    array_push($commands, 'sudo openvt -c '.$tty.' -s -f clear');
+    array_push($commands, 'sudo openvt -c '.$tty.' -s -f emulationstation 2>&1 &');
+    return shell_exec(implode(' && ', $commands));
+  }
+  
+  public static function restart()
+  {
+    return shell_exec('touch /tmp/es-restart && killall emulationstation');
   }
   
   public static function stop()
