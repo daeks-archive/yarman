@@ -241,6 +241,7 @@ if (network::get('action') != '') {
       }
       break;
     default:
+      network::error('invalid action - '.network::get('action'));
       break;
   }
 }

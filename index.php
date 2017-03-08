@@ -9,7 +9,7 @@ foreach ($modules as $moduleconfig) {
   $tmp = json_decode(file_get_contents($moduleconfig));
   if (isset($tmp->dashboard)) {
     foreach ($tmp->dashboard as $item) {
-      $target = $item->panel;
+      $target = $item->target;
       if (strpos($target, DIRECTORY_SEPARATOR) !== 0) {
         $target = MODULES.DIRECTORY_SEPARATOR.$tmp->id.DIRECTORY_SEPARATOR.$target;
       }

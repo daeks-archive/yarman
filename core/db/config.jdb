@@ -7,6 +7,10 @@
       "type" : "text primary key not null"
     },
     {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
       "name" : "value",
       "type" : "text"
     }
@@ -14,23 +18,28 @@
   "data" : [
     {
       "id" : "user_path",
+      "name" : "RetroPie User Directory",
       "value" : "/home/%USER%"
     },
     {
       "id" : "es_path",
+      "name" : "Location of EmulationStation",
       "value" : "/home/%USER%/.emulationstation"
     },
     {
       "id" : "roms_path",
+      "name" : "Location of your roms",
       "value" : "/home/%USER%/RetroPie/roms"
     },
     {
       "id" : "metadata_path",
+      "name" : "Location of your gamelists",
       "value" : "/home/%USER%/.emulationstation/gamelists"
     }
     ,
     {
       "id" : "news_feed",
+      "name" : "RetroPie Newsfeed URL",
       "value" : "https://retropie.org.uk/feed/"
     }
   ]

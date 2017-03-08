@@ -7,6 +7,12 @@
     "icon" : "gear",
     "dropdown" : [
       {
+        "id" : "admin",
+        "name" : "Administration",
+        "type" : "external",
+        "external" : "/modules/admin/"
+      },
+      {
         "id" : "backup",
         "name" : "Backup YARMan DB",
         "type" : "modal",

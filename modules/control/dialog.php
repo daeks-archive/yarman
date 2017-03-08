@@ -38,6 +38,7 @@ if (network::get('action') != '') {
       modal::end('Reboot', 'danger');
       break;
     default:
+      network::error('invalid action - '.network::get('action'));
       break;
   }
 }

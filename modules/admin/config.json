@@ -1,0 +1,11 @@
+{
+  "id" : "admin",
+  "name" : "Administration",
+  "config" : [
+      {
+        "id" : "config",
+        "name" : "General Settings",
+        "target" : "/modules/admin/dialog.php?action=view&id=config"
+      }
+    ]
+}

@@ -90,6 +90,12 @@ class page
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }
                 $item .= '</a></li>';
+              } elseif ($dropdown->type == 'external') {
+                $item .= '<li><a href="'.$dropdown->external.'"">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
               }
             }
             $item .= '</ul>';
@@ -132,6 +138,12 @@ class page
                 $item .= '</a></li>';
               } elseif ($dropdown->type == 'async') {
                 $item .= '<li><a data-toggle="async" href="#" data-target="#modal" data-query="'.$dropdown->external.'">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
+              } elseif ($dropdown->type == 'external') {
+                $item .= '<li><a href="'.$dropdown->external.'"">'.$dropdown->name;
                 if (isset($dropdown->beta) && $dropdown->beta == true) {
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }

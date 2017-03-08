@@ -22,6 +22,7 @@ if (network::get('action') != '') {
       modal::end('Sync', 'success', 'modal-install');
       break;
     default:
+      network::error('invalid action - '.network::get('action'));
       break;
   }
 }

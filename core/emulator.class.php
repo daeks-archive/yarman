@@ -20,19 +20,21 @@ class emulator
     if ($emulator == null) {
       $output = array();
       $romspath = current(db::instance()->read('config', "id='roms_path'"))['value'];
-      $emulators = array_slice(scandir($romspath), 2);
-      foreach ($emulators as $emulator) {
-        $config = db::instance()->read('emulators', 'id='.db::instance()->quote($emulator));
-        $tmp = array();
-        if (sizeof($config) == 1) {
-          $tmp = current($config);
-        } else {
-          $tmp['id'] = $emulator;
-          $tmp['name'] = '~ '.$emulator;
-          $roms = array_slice(scandir($romspath.DIRECTORY_SEPARATOR.$emulator), 2);
-          $tmp['count'] = sizeof($roms);
+      if (file_exists($romspath)) {
+        $emulators = array_slice(scandir($romspath), 2);
+        foreach ($emulators as $emulator) {
+          $config = db::instance()->read('emulators', 'id='.db::instance()->quote($emulator));
+          $tmp = array();
+          if (sizeof($config) == 1) {
+            $tmp = current($config);
+          } else {
+            $tmp['id'] = $emulator;
+            $tmp['name'] = '~ '.$emulator;
+            $roms = array_slice(scandir($romspath.DIRECTORY_SEPARATOR.$emulator), 2);
+            $tmp['count'] = sizeof($roms);
+          }
+          array_push($output, $tmp);
         }
-        array_push($output, $tmp);
       }
       return $output;
     } else {

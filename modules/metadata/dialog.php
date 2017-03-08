@@ -178,6 +178,7 @@ if (network::get('action') != '') {
       modal::end('Delete', 'danger');
       break;
     default:
+      network::error('invalid action - '.network::get('action'));
       break;
   }
 }

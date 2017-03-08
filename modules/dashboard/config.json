@@ -10,35 +10,35 @@
     },
   "dashboard" : [
     {
-      "panel" : "dialog.php?action=panel&id=beta",
+      "target" : "dialog.php?action=panel&id=beta",
       "grid" : "1 4 8 right 1"
     },
     {
-      "panel" : "dialog.php?action=panel&id=welcome",
+      "target" : "dialog.php?action=panel&id=welcome",
       "grid" : "1 4 8 right 2"
     },
     {
-      "panel" : "dialog.php?action=panel&id=news",
+      "target" : "dialog.php?action=panel&id=news",
       "grid" : "1 4 8 left 1"
     },
     {
-      "panel" : "dialog.php?action=panel&id=cputemp",
+      "target" : "dialog.php?action=panel&id=cputemp",
       "grid" : "2 4 8 right 1"
     },
     {
-      "panel" : "dialog.php?action=panel&id=system",
+      "target" : "dialog.php?action=panel&id=system",
       "grid" : "2 4 8 left 1"
     },
     {
-      "panel" : "dialog.php?action=panel&id=memswap",
+      "target" : "dialog.php?action=panel&id=memswap",
       "grid" : "3 4 8 right 1"
     },
     {
-      "panel" : "dialog.php?action=panel&id=storage",
+      "target" : "dialog.php?action=panel&id=storage",
       "grid" : "3 4 8 left 1"
     },
     {
-      "panel" : "dialog.php?action=panel&id=network",
+      "target" : "dialog.php?action=panel&id=network",
       "grid" : "4 4 8 right 1"
     }
   ]
