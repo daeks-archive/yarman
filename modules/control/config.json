@@ -26,7 +26,6 @@
       {
         "id" : "restart",
         "name" : "Restart Emulationstation",
-        "beta" : true,
         "type" : "modal",
         "external" : "/modules/control/dialog.php?action=restart"
       },

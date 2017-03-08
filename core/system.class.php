@@ -2,6 +2,16 @@
 
 class system
 {
+  public static function exec($command)
+  {
+    if (file_exists(SCRIPTS.DIRECTORY_SEPARATOR.$command)) {
+      $commands = file_get_contents(SCRIPTS.DIRECTORY_SEPARATOR.$command);
+      return shell_exec($commands);
+    } else {
+      return false;
+    }
+  }
+
   public static function reboot()
   {
     return shell_exec('sudo reboot &');

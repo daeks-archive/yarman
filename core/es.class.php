@@ -13,6 +13,7 @@ class es
   
   public static function restart()
   {
+    echo self::stopGame();
     return shell_exec('touch /tmp/es-restart && killall emulationstation');
   }
   
@@ -35,9 +36,14 @@ class es
     return $output;
   }
   
-  public static function startRom($system, $id)
+  public static function startGame($system, $id)
   {
     return shell_exec('/opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ '.$system.' \''.current(db::instance()->read('config', "id='rom_path'"))['value'].DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$id.'\'');
+  }
+  
+  public static function stopGame()
+  {
+    return system::exec('killgame.sh');
   }
 }
 
