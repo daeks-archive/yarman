@@ -21,6 +21,10 @@ if (network::get('action') != '') {
       db::instance()->backup();
       network::success('Successfully Backup '.NAME, 'true');
       break;
+    case 'stop':
+      es::stopGame();
+      network::success('Successfully Stopped Emulator', 'true');
+      break;
     case 'restart':
       es::restart();
       network::success('Successfully Restarted Emulationstation', 'true');

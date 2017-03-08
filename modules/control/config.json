@@ -24,6 +24,12 @@
         "type" : "spacer"
       },
       {
+        "id" : "stop",
+        "name" : "Stop Current Emulator",
+        "type" : "async",
+        "external" : "/modules/control/controller.php?action=stop"
+      },
+      {
         "id" : "restart",
         "name" : "Restart Emulationstation",
         "type" : "modal",

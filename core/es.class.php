@@ -13,7 +13,7 @@ class es
   
   public static function restart()
   {
-    echo self::stopGame();
+    self::stopGame();
     return shell_exec('touch /tmp/es-restart && killall emulationstation');
   }
   
@@ -43,6 +43,7 @@ class es
   
   public static function stopGame()
   {
+    //return shell_exec('kill $(pgrep -P $(pgrep -f "bash /opt/retropie/supplementary/runcommand/runcommand.sh"))');
     return system::exec('killgame.sh');
   }
 }

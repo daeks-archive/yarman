@@ -46,6 +46,7 @@
               core.message.infobox('danger', 0, e.message + '<br>' + data);
             }
           });
+          $('.dropdown.open .dropdown-toggle').dropdown('toggle');
           return false;
         });
         

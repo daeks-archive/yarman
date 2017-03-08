@@ -6,7 +6,7 @@ class system
   {
     if (file_exists(SCRIPTS.DIRECTORY_SEPARATOR.$command)) {
       $commands = file_get_contents(SCRIPTS.DIRECTORY_SEPARATOR.$command);
-      return shell_exec($commands);
+      return shell_exec('chmod +x '.SCRIPTS.DIRECTORY_SEPARATOR.$command.' && sh '.SCRIPTS.DIRECTORY_SEPARATOR.$command);
     } else {
       return false;
     }
