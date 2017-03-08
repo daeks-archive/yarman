@@ -106,7 +106,7 @@ class metadata
     $data .= '<div class="row">';
     $data .= '<div class="col-sm-12">';
     
-    $data .= '<form id="rom-data" name="rom-data" role="form" class="scrollbar" data-validate="form" data-toggle="post" data-query="'.CONTROLLER.'?action=save" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
+    $data .= '<form id="rom-data" name="rom-data" role="form" class="scrollbar" data-validate="form" data-toggle="post" data-query="'.CONTROLLER.'?action=save&id=metadata" style="overflow-y: auto !important; overflow-x: hidden !important;"><fieldset>';
     $tabindex = 1;
     ksort($fieldset);
     foreach ($fieldset as $key => $row) {

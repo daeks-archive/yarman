@@ -142,6 +142,50 @@
             } catch (e) {
               core.message.infobox('danger', 0, e.message + '<br>' + data);
             }
+            $('button[data-validate="post"]').prop('disabled', true);
+          });
+          return false;
+        });
+        
+        $(document.body).on('submit', '[data-toggle="form"]', function (e) {
+          e.preventDefault();
+          var loadurl = $(this).attr('data-query');
+          var target = $($(this).attr('data-target'));
+          
+          var dataset = [];
+          $(this).find('tr').each(function () {
+            if ($(this).attr('id')) {
+              var tmp = new Object();
+              tmp['id'] = $(this).attr('id');
+              $(this).find('input').each(function () {
+                tmp[$(this).attr('id')] = $(this).val();
+              });
+              dataset.push(tmp);
+            }
+          });
+          
+          $.post(loadurl, {data: JSON.stringify(dataset)}, function (data) {
+            try {
+              var obj = $.parseJSON(data);
+              if (obj.status == 200) {
+                if (obj.event.length > 0) {
+                  if (obj.data.length > 0) {
+                    core.message.toast('success', false, obj.data);
+                  }
+                  eval(obj.event);
+                } else {
+                  var data = $('<textarea/>').html(obj.data).val();
+                  target.html(data);
+                }
+              } else if (obj.status == 500) {
+                core.message.toast('danger', false, obj.data);
+              } else {
+                core.message.toast('danger', true, obj.data);
+              }
+            } catch (e) {
+              core.message.infobox('danger', 0, e.message + '<br>' + data);
+            }
+            $('button[data-validate="form"]').prop('disabled', true);
           });
           return false;
         });

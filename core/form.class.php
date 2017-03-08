@@ -300,6 +300,57 @@ class form
     $data .= '</div>';
     return $data;
   }
+  
+  public static function getTable($array, $options = array())
+  {
+    $data = '';
+    if (sizeof($array) > 0) {
+      $data .= '<table class="table table-hover">';
+      $data .= '<thead><tr>';
+      foreach (current($array) as $key => $item) {
+        iF (!isset($options[$key]['hidden'])) {
+          if (isset($options[$key]['width']) && $options[$key]['width'] != '') {
+            $data .= '<th width="'.$options[$key]['width'].';">'.strtoupper($key).'</th>';
+          } else {
+            $data .= '<th>'.strtoupper($key).'</th>';
+          }
+        }
+      }
+      $data .= '</tr></thead><tbody>';
+      foreach ($array as $item) {
+        $data .= '<tr id="'.$item['id'].'" name= "'.$item['id'].'">';
+        foreach ($item as $key => $value) {
+          if (array_key_exists($key, $options)) {
+            if (!isset($options[$key]['hidden'])) {
+              $data .= '<td><div class="form-group" style="margin-bottom: 0px !important;">';
+              $data .= '<input type="text" class="form-control" id="'.$key.'" name="'.$key.'" value="'.$value.'"';
+              if (isset($options[$key]['validator']) && $options[$key]['validator'] != '') {
+                $data .= ' data-fv '.$options[$key]['validator'];
+              }
+              if (isset($options[$key]['readonly']) && $options[$key]['readonly'] == true) {
+                $data .= ' disabled';
+              }
+              if (isset($options[$key]['index'])) {
+                $data .= ' tabindex="'.$options[$key]['index'].'"';
+              }
+              if (isset($options[$key]['maxlength']) && is_int($options[$key]['maxlength'])) {
+                $data .= ' maxlength="'.$options[$key]['maxlength'].'"';
+              }
+              $data .= '/>';
+              $data .= '</div></td>';
+            }
+          } else {
+            $data .= '<td><div class="form-group" style="margin-bottom: 0px !important;">';
+            $data .= '<input type="text" class="form-control" id="'.$key.'" name="'.$key.'" value="'.$value.'">';
+            $data .= '</div></td>';
+          }
+        };
+        $data .= '</tr>';
+      }
+      $data .= '</tbody></table>';
+    }
+    return $data;
+  }
 }
   
 ?>

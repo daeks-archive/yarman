@@ -11,6 +11,9 @@ foreach ($modules as $moduleconfig) {
   if (isset($tmp->config)) {
     foreach ($tmp->config as $item) {
       $fieldset[$item->id] = array('name' => $item->name, 'target' => $item->target);
+      if (isset($item->icon)) {
+        $fieldset[$item->id]['icon'] = $item->icon;
+      }
     }
   }
 }
@@ -33,7 +36,11 @@ foreach ($fieldset as $key => $item) {
   if (cache::getClientVariable($module->id.'_id') == $key) {
     echo 'class="active"';
   }
-  echo '><a href="#" data-toggle="tab" data-query="'.$item['target'].'" data-target="#panel">'.$item['name'].'</a></li>';
+  echo '><a href="#" data-toggle="tab" data-query="'.$item['target'].'" data-target="#panel">';
+  if (isset($item['icon'])) {
+    echo '<i class="fa fa-'.$item['icon'].' fa-fw"></i> ';
+  }
+  echo $item['name'].'</a></li>';
 }
 echo '</ul>';
 echo '<br>';

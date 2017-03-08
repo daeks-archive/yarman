@@ -177,6 +177,25 @@ if (network::get('action') != '') {
       echo 'Do you really want to delete '.$rom['name'].'?';
       modal::end('Delete', 'danger');
       break;
+    case 'config':
+      switch (network::get('id')) {
+        case 'fields':
+          cache::setClientVariable('admin_id', network::get('id'));
+          $output = '';
+          $fields = db::instance()->read('fields', "type!='key'");
+          $output .= '<form class="form" data-validate="form" data-toggle="form" data-query="/modules/metadata/controller.php?action=save&id=fields" method="POST"><fieldset>';
+          $options = array();
+          $options['id'] = array('readonly' => true);
+          $output .= form::getTable($fields, $options);
+          $output .= '<button class="btn btn-success" disabled data-validate="form">Save Changes</button>';
+          $output .= '</fieldset></form><br><br>';
+          network::success($output);
+          break;
+        default:
+          network::error('invalid id - '.network::get('id'));
+          break;
+      }
+      break;
     default:
       network::error('invalid action - '.network::get('action'));
       break;

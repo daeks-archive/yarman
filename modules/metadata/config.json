@@ -2,6 +2,14 @@
   "id" : "metadata",
   "name" : "Metadata Editor",
   "beta" : true,
+  "config" : [
+    {
+      "id" : "fields",
+      "name" : "Fields",
+      "icon" : "table",
+      "target" : "/modules/metadata/dialog.php?action=config&id=fields"
+    }
+  ],
   "menu" : {
     "position" : "left",
     "order" : 2,

@@ -73,13 +73,29 @@ if (network::get('action') != '') {
       network::success('', "$('[data-toggle=\"post\"]').submit();");
       break;
     case 'save':
-      $data = array();
-      $data['emulator'] = cache::getClientVariable($module->id.'_emulator');
-      foreach ($_POST as $key => $value) {
-        $data[$key] = $value;
+      switch (network::get('id')) {
+        case 'metadata':
+          $data = array();
+          $data['emulator'] = cache::getClientVariable($module->id.'_emulator');
+          foreach ($_POST as $key => $value) {
+            $data[$key] = $value;
+          }
+          rom::write(network::post('id'), $data);
+          network::success('Successfully Saved Rom', 'true');
+          break;
+        case 'fields':
+          if (network::post('data') != '') {
+            foreach (json_decode(network::post('data'), true) as $key => $item) {
+              $item['id'] = trim($item['id']);
+              db::instance()->write('fields', $item, 'id='.db::instance()->quote($item['id']));
+            }
+          }
+          network::success('Successfully saved fields', 'true');
+          break;
+        default:
+          network::error('invalid id - '.network::get('id'));
+          break;
       }
-      rom::write(network::post('id'), $data);
-      network::success('Successfully Saved Rom', 'true');
       break;
     case 'export':
       emulator::write(cache::getClientVariable($module->id.'_emulator'), $_POST['include']);

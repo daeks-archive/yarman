@@ -4,7 +4,8 @@
   "config" : [
     {
       "id" : "db",
-      "name" : "Database Settings",
+      "name" : "Database",
+      "icon" : "database",
       "target" : "/modules/control/dialog.php?action=config&id=db"
     }
   ],
