@@ -182,6 +182,7 @@ if (network::get('action') != '') {
         case 'fields':
           cache::setClientVariable('admin_id', network::get('id'));
           $output = '';
+          $output .= '<div class="alert alert-warning" id="beta" tabindex="-1"><span><b><i class="fa fa-flask fa-fw"></i> Warning</b> This module is currently in a BETA stage. Please be aware that there might be some issues.</span> <button type="button" class="btn btn-success btn-xs pull-right" data-dismiss="alert">Agreed</button></div>';
           $fields = db::instance()->read('fields', "type!='key'");
           $output .= '<form class="form" data-validate="form" data-toggle="form" data-query="/modules/metadata/controller.php?action=save&id=fields" method="POST"><fieldset>';
           $options = array();

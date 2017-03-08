@@ -57,6 +57,7 @@ if (network::get('action') != '') {
       break;
     case 'restart':
       modal::start('Restart Emulationstation', CONTROLLER.'?action=restart');
+      echo '<div class="alert alert-warning" id="beta" tabindex="-1"><span><b><i class="fa fa-flask fa-fw"></i> Warning</b><br><br>Restarting EmulationStation is currently not working correctly.</span></div>';
       echo 'Do you really want to restart emulationstation?';
       modal::end('Restart', 'warning');
       break;
