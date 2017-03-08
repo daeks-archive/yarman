@@ -14,9 +14,14 @@ if (network::get('action') != '') {
         $readonly = true;
       }
       
-      echo form::getString(array('id' => 'romspath', 'name' => 'Location of your roms', 'readonly' => $readonly), current(db::instance()->read('config', "id='roms_path'"))['value']);
+      $romspath = current(db::instance()->read('config', "id='roms_path'"));
+      $romspath['readonly'] = $readonly;
+      echo form::getString($romspath, $romspath['value']);
       echo '<div class="checkbox"><label><input type="checkbox" name="hash" value="1">(Optional) Hash large roms - This is a very time-intensive process.</label></div><br>';
-      echo form::getString(array('id' => 'metadatapath', 'name' => 'Location of your gamelists', 'readonly' => $readonly), current(db::instance()->read('config', "id='metadata_path'"))['value']).'<br>';
+      
+      $metadatapath = current(db::instance()->read('config', "id='metadata_path'"));
+      $metadatapath['readonly'] = $readonly;
+      echo form::getString($metadatapath, $metadatapath['value']).'<br>';
       echo '<div class="alert alert-info" role="alert"><b>Info</b> Syncing emulators can be done also manually later.</div>';
       echo '<div class="alert alert-warning" role="alert"><b>Warning</b> Depending on your romset this might take a while.</div>';
       modal::end('Sync', 'success', 'modal-install');
