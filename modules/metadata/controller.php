@@ -1,5 +1,6 @@
 <?php
 
+set_time_limit(600);
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
@@ -10,32 +11,25 @@ if (network::get('action') != '') {
         cache::unsetClientVariable($module->id.'_id');
         $output = '';
         if (cache::getClientVariable($module->id.'_filter') != '') {
-          $romdata = rom::readAll(network::get('emulator'));
-          foreach (emulator::readRomlist(network::get('emulator')) as $rom) {
-            $offset = array_search($rom, array_column($romdata, 'id'));
-            $data = null;
-            if ($offset >= 0) {
-              if (isset($romdata[$offset])) {
-                $data = $romdata[$offset];
-              }
-            }
+          foreach (emulator::read(network::get('emulator')) as $rom) {
+            $data = rom::read($rom['id']);
             if (cache::getClientVariable($module->id.'_filter') == 'nodata') {
-              if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
-                $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+              if (!isset($data) || isset($data) && !isset($data['name']) || isset($data) &&  $data['name'] == '') {
+                $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
               }
             } elseif (cache::getClientVariable($module->id.'_filter') == 'noimage') {
-              if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
-                $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+              if (!isset($data) || isset($data) && !isset($data['image']) || isset($data) &&  $data['image'] == '') {
+                $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
               }
             } elseif (cache::getClientVariable($module->id.'_filter') == 'novideo') {
-              if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
-                $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+              if (!isset($data) || isset($data) && !isset($data['video']) || isset($data) && $data['video'] == '') {
+                $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
               }
             }
           }
         } else {
-          foreach (emulator::readRomlist(network::get('emulator')) as $rom) {
-            $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+          foreach (emulator::read(network::get('emulator')) as $rom) {
+            $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
           }
         }
         network::success($output);
@@ -48,28 +42,23 @@ if (network::get('action') != '') {
     case 'filter':
       cache::setClientVariable($module->id.'_filter', network::get('type'));
       cache::unsetClientVariable($module->id.'_id');
-      $romdata = rom::readAll(cache::getClientVariable($module->id.'_emulator'));
       $output = '';
-      foreach (emulator::readRomlist(cache::getClientVariable($module->id.'_emulator')) as $rom) {
+      foreach (emulator::read(cache::getClientVariable($module->id.'_emulator')) as $rom) {
         if (network::get('type') == '') {
-          $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+          $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
         } else {
-          $offset = array_search(rom::parse($rom), array_column($romdata, 'id'));
-          $data = null;
-          if (isset($romdata[$offset])) {
-            $data = $romdata[$offset];
-          }
+          $data = rom::read($rom['id']);
           if (network::get('type') == 'nodata') {
-            if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
-              $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+            if (!isset($data) || isset($data) && !isset($data['name']) || isset($data) &&  $data['name'] == '') {
+              $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
             }
           } elseif (network::get('type') == 'noimage') {
-            if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
-              $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+            if (!isset($data) || isset($data) && !isset($data['image']) || isset($data) &&  $data['image'] == '') {
+              $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
             }
           } elseif (network::get('type') == 'novideo') {
-            if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
-              $output .= '<option value="'.$rom.'">'.$rom.'</option>';
+            if (!isset($data) || isset($data) && !isset($data['video']) || isset($data) && $data['video'] == '') {
+              $output .= '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
             }
           }
         }
@@ -77,22 +66,53 @@ if (network::get('action') != '') {
       network::success($output);
       break;
     case 'clean':
-      $orphaned = metadata::findOrphaned(cache::getClientVariable($module->id.'_emulator'));
-      foreach ($orphaned['media'] as $item) {
-        unlink($item);
-      }
-      rom::clean(cache::getClientVariable($module->id.'_emulator'), $orphaned['metadata']);
+      emulator::clean(cache::getClientVariable($module->id.'_emulator'));
       network::success('', "$('#metadata-clean').addClass('disabled');");
       break;
     case 'presave':
       network::success('', "$('[data-toggle=\"post\"]').submit();");
       break;
     case 'save':
-      rom::write(cache::getClientVariable($module->id.'_emulator'), network::post('id'), $_POST);
-      network::success('Successfully Saved Gamelist', 'true');
+      switch (network::get('id')) {
+        case 'metadata':
+          $data = array();
+          $data['emulator'] = cache::getClientVariable($module->id.'_emulator');
+          foreach ($_POST as $key => $value) {
+            $data[$key] = $value;
+          }
+          rom::write(network::post('id'), $data);
+          network::success('Successfully Saved Rom', 'true');
+          break;
+        case 'fields':
+          if (network::post('data') != '') {
+            foreach (json_decode(network::post('data'), true) as $key => $item) {
+              $item['id'] = trim($item['id']);
+              db::instance()->write('fields', $item, 'id='.db::instance()->quote($item['id']));
+            }
+          }
+          network::success('Successfully saved fields', 'true');
+          break;
+        default:
+          network::error('invalid id - '.network::get('id'));
+          break;
+      }
+      break;
+    case 'export':
+      emulator::write(cache::getClientVariable($module->id.'_emulator'), $_POST['include']);
+      network::success('Successfully Exported Gamelist', 'core.metadata.reset();');
+      break;
+    case 'syncemulator':
+      cache::unsetClientVariable($module->id.'_id');
+      emulator::sync(cache::getClientVariable($module->id.'_emulator'), $_POST['include'], isset($_POST['hash']));
+      network::success('Successfully Synced Emulator', 'core.metadata.reset();');
+      break;
+    case 'syncrom':
+      cache::unsetClientVariable($module->id.'_id');
+      rom::sync(cache::getClientVariable($module->id.'_emulator'), cache::getClientVariable($module->id.'_id'), $_POST['include']);
+      network::success('Successfully Synced Rom', 'core.metadata.reload();');
       break;
     case 'delete':
-      rom::delete(cache::getClientVariable($module->id.'_emulator'), network::get('id'));
+      rom::delete(network::get('id'));
       cache::unsetClientVariable($module->id.'_id');
       network::success('Successfully Deleted Rom', 'core.metadata.reset();');
       break;

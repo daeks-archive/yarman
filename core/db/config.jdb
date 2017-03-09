@@ -1,27 +1,60 @@
 {
   "version" : 1,
-  "type" : "install",
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
+      "name" : "value",
+      "type" : "text"
+    },
+    {
+      "name" : "readonly",
+      "type" : "boolean"
+    },
+    {
+      "name" : "validator",
+      "type" : "text"
+    }
+  ],
   "data" : [
     {
       "id" : "user_path",
-      "value" : "/home/%USER%"
+      "name" : "RetroPie User Directory",
+      "value" : "/home/%USER%",
+      "validator" : "data-fv-notempty"
     },
     {
       "id" : "es_path",
-      "value" : "/home/%USER%/.emulationstation"
+      "name" : "Location of EmulationStation",
+      "value" : "/home/%USER%/.emulationstation",
+      "validator" : "data-fv-notempty"
     },
     {
       "id" : "roms_path",
-      "value" : "/home/%USER%/RetroPie/roms"
+      "name" : "Location of your roms",
+      "value" : "/home/%USER%/RetroPie/roms",
+      "validator" : "data-fv-notempty"
     },
     {
       "id" : "metadata_path",
-      "value" : "/home/%USER%/.emulationstation/gamelists"
+      "name" : "Location of your gamelists",
+      "value" : "/home/%USER%/.emulationstation/gamelists",
+      "validator" : "data-fv-notempty"
     }
     ,
     {
       "id" : "news_feed",
-      "value" : "https://retropie.org.uk/feed/"
+      "name" : "RetroPie Newsfeed URL",
+      "readonly" : true,
+      "value" : "https://retropie.org.uk/feed/",
+      "validator" : "data-fv-notempty"
     }
   ]
 }

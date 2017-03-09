@@ -2,6 +2,16 @@
 
 class system
 {
+  public static function exec($command)
+  {
+    if (file_exists(SCRIPTS.DIRECTORY_SEPARATOR.$command)) {
+      $commands = file_get_contents(SCRIPTS.DIRECTORY_SEPARATOR.$command);
+      return shell_exec('chmod +x '.SCRIPTS.DIRECTORY_SEPARATOR.$command.' && sh '.SCRIPTS.DIRECTORY_SEPARATOR.$command);
+    } else {
+      return false;
+    }
+  }
+
   public static function reboot()
   {
     return shell_exec('sudo reboot &');
@@ -9,35 +19,37 @@ class system
 
   public static function getCPUTemp()
   {
-    return round(shell_exec('cat /sys/class/thermal/thermal_zone0/temp')/1000, 2);
+    return round(shell_exec('cat /sys/devices/virtual/thermal/thermal_zone0/temp')/1000, 2);
   }
           
   public static function getGPUTemp()
   {
-    return str_replace(array('temp=', '\'C'), array('', ''), shell_exec('vcgencmd measure_temp'));
+    return round(str_replace(array('temp=', '\'C'), array('', ''), shell_exec('vcgencmd measure_temp')), 2);
   }
   
   public static function getUptime()
   {
-    return shell_exec('uptime');
+    $input = explode(' ', shell_exec('cat /proc/uptime'));
+    $dtF = new \DateTime('@0');
+    $dtT = new \DateTime('@'.round($input[0], 0));
+    return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes,  %s seconds');
+    //return shell_exec('uptime');
   }
   
   public static function getCPUFreq()
   {
-    return round(shell_exec('vcgencmd measure_clock arm | sed -e "s/frequency(45)=//g"')/1000000, 0);
+    return round(shell_exec('sudo cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq')/1000, 0);
+  }
+  
+  public static function getGPUVoltage()
+  {
+    return str_replace(array('volt=', 'V'), array('', ''), shell_exec('vcgencmd measure_volts core'));
   }
   
   public static function getLoadAverage()
   {
-    $input = shell_exec('uptime');
-    $output = array();
-    $regexp = '/load average:\s([0-9.]*),\s([0-9.]*),\s([0-9.]*)/';
-    if (preg_match($regexp, preg_replace('/\s+/', ' ', $input), $match)) {
-      $output['1min'] = $match[1];
-      $output['5min'] = $match[2];
-      $output['15min'] = $match[3];
-    }
-    return $output;
+    $input = explode(' ', shell_exec('cat /proc/loadavg'));
+    return array('1min' => $input[0], '5min' => $input[1], '15min' => $input[2]);
   }
   
   public static function getStorage()
@@ -55,6 +67,7 @@ class system
   
   public static function getMemory()
   {
+    //$input = shell_exec('cat /proc/meminfo');
     $input = shell_exec('free');
     $output = array();
     $regexp = '/Mem:\s([0-9]*)\s([0-9]*)\s([0-9]*)\s([0-9]*)\s([0-9]*)\s([0-9]*)\s-\/\+\sbuffers\/cache:\s([0-9]*)\s([0-9]*)/';
@@ -79,7 +92,18 @@ class system
       $output['used'] = $match[2];
       $output['free'] = $match[3];
     }
-    
+    return $output;
+  }
+  
+  public static function getLAN()
+  {
+    $output = array('rx_bytes' => shell_exec('cat /sys/class/net/eth0/statistics/rx_bytes'), 'tx_bytes' => shell_exec('cat /sys/class/net/eth0/statistics/tx_bytes'));
+    return $output;
+  }
+  
+  public static function getWLAN()
+  {
+    $output = array('rx_bytes' => shell_exec('cat /sys/class/net/wlan0/statistics/rx_bytes'), 'tx_bytes' => shell_exec('cat /sys/class/net/wlan0/statistics/tx_bytes'));
     return $output;
   }
 }

@@ -1,19 +1,39 @@
 {
   "id" : "control",
   "name" : "",
+  "config" : [
+    {
+      "id" : "db",
+      "name" : "Database",
+      "icon" : "database",
+      "target" : "/modules/control/dialog.php?action=config&id=db"
+    }
+  ],
   "menu" : {
     "position" : "right",
     "order" : 99999,
     "icon" : "gear",
     "dropdown" : [
       {
+        "id" : "admin",
+        "name" : "Administration",
+        "type" : "external",
+        "external" : "/modules/admin/"
+      },
+      {
+        "type" : "spacer"
+      },
+      {
+        "id" : "stop",
+        "name" : "Stop Current Emulator",
+        "type" : "async",
+        "external" : "/modules/control/controller.php?action=stop"
+      },
+      {
         "id" : "restart",
         "name" : "Restart Emulationstation",
         "type" : "modal",
         "external" : "/modules/control/dialog.php?action=restart"
-      },
-      {
-        "type" : "spacer"
       },
       {
         "id" : "reboot",

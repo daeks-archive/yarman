@@ -2,7 +2,7 @@
   
 class form
 {
-  public static function getField($config, $id, $value = '', $emulator = '')
+  public static function getField($config, $id, $value = '')
   {
     foreach ($config as $obj) {
       if ($obj['id'] == $id) {
@@ -29,11 +29,20 @@ class form
           case 'date':
             $data = self::getDate($obj, $value);
             break;
+          case 'thumbnail':
+            $data = self::getImage($obj, $value);
+            break;
+          case 'marquee':
+            $data = self::getImage($obj, $value);
+            break;
           case 'image':
-            $data = self::getImage($obj, $emulator, $value);
+            $data = self::getImage($obj, $value);
+            break;
+          case 'video':
+            $data = self::getVideo($obj, $value);
             break;
           case 'upload':
-            $data = self::getUpload($obj, $emulator, $value);
+            $data = self::getUploadPreview($obj, $value);
             break;
           case 'boolean':
             $data = self::getBoolean($obj, $value);
@@ -49,9 +58,6 @@ class form
   
   public static function getHidden($obj, $value = '')
   {
-    if ($obj['id'] == 'id') {
-      $value = rom::parse($value);
-    }
     $data = '<input type="hidden" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"/>';
     return $data;
   }
@@ -216,13 +222,14 @@ class form
       $data .= ' tabindex="'.$obj['index'].'"';
     }
     $data .= '>"';
+    $data .= '<option value=""></option>';
     $data .= '<option';
     if ($value == 'true') {
       $data .= ' selected';
     }
     $data .= ' value="true">True</option>';
     $data .= '<option';
-    if ($value == '' || $value == 'false') {
+    if ($value == 'false') {
       $data .= ' selected';
     }
     $data .= ' value="false">False</option>';
@@ -231,21 +238,41 @@ class form
     return $data;
   }
   
-  public static function getImage($obj, $emulator, $id)
+  public static function getImage($obj, $id)
   {
     $data = '';
     if ($id != '') {
-      if (isset($obj['name']) && $obj['name'] != '') {
-        $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+      $rom = rom::read($id);
+      if (isset($rom[$obj['type']]) && $rom[$obj['type']] != '') {
+        if (isset($obj['name']) && $obj['name'] != '') {
+          $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+        }
+        $data .= '<div class="thumbnail">';
+        $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&type='.$obj['type'].'&id='.$id.'">';
+        $data .= '</div>';
       }
-      $data .= '<div class="thumbnail">';
-      $data .= '<img style="max-height: 245px" src="/core/proxy.php?action=render&emulator='.$emulator.'&type='.$obj['type'].'&id='.rawurlencode(pathinfo($id, PATHINFO_BASENAME)).'">';
-      $data .= '</div>';
     }
     return $data;
   }
   
-  public static function getUpload($obj, $emulator, $value = '')
+  public static function getVideo($obj, $id)
+  {
+    $data = '';
+    if ($id != '') {
+      $rom = rom::read($id);
+      if (isset($rom[$obj['type']]) && $rom[$obj['type']] != '') {
+        if (isset($obj['name']) && $obj['name'] != '') {
+          $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+        }
+        $data .= '<div class="thumbnail">';
+        $data .= '<video style="max-height: 245px" controls><source src="/core/proxy.php?action=render&type='.$obj['type'].'&id='.$id.'">No HTML5 Support</video>';
+        $data .= '</div>';
+      }
+    }
+    return $data;
+  }
+  
+  public static function getUpload($obj, $value = '')
   {
     $data = '<div class="form-group">';
     if (isset($obj['name']) && $obj['name'] != '') {
@@ -267,10 +294,89 @@ class form
     }
     $data .= '/>';
     $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file"><i class="fa fa-file-image-o fa-fw"></i>';
-    $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&emulator='.$emulator.'&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
+    $data .= '<input type="file" id="object" name="object[]" data-toggle="simpleproxy" data-query="/core/proxy.php?action=upload&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
     $data .= '</span></label>';
     $data .= '</div>';
     $data .= '</div>';
+    return $data;
+  }
+  
+  public static function getUploadPreview($obj, $value = '')
+  {
+    $data = '<div class="form-group">';
+    if (isset($obj['name']) && $obj['name'] != '') {
+      $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+    }
+    $data .= '<div class="input-group">';
+    $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
+    if (isset($obj['validator']) && $obj['validator'] != '') {
+      $data .= ' data-fv '.$obj['validator'];
+    }
+    if (isset($obj['readonly']) && $obj['readonly'] == true) {
+      $data .= ' disabled';
+    }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
+    }
+    if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+      $data .= ' maxlength="'.$obj['maxlength'].'"';
+    }
+    $data .= '/>';
+    $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file" data-toggle="modal" href="/core/proxy.php?action=dialog&type='.$obj['id'].'" data-target="#modal"><i class="fa fa-file-image-o fa-fw"></i>';
+    $data .= '</span></label>';
+    $data .= '</div>';
+    $data .= '</div>';
+    return $data;
+  }
+  
+  public static function getTable($array, $options = array())
+  {
+    $data = '';
+    if (sizeof($array) > 0) {
+      $data .= '<table class="table table-hover">';
+      $data .= '<thead><tr>';
+      foreach (current($array) as $key => $item) {
+        if (!isset($options[$key]['hidden'])) {
+          if (isset($options[$key]['width']) && $options[$key]['width'] != '') {
+            $data .= '<th width="'.$options[$key]['width'].';">'.strtoupper($key).'</th>';
+          } else {
+            $data .= '<th>'.strtoupper($key).'</th>';
+          }
+        }
+      }
+      $data .= '</tr></thead><tbody>';
+      foreach ($array as $item) {
+        $data .= '<tr id="'.$item['id'].'" name= "'.$item['id'].'">';
+        foreach ($item as $key => $value) {
+          if (array_key_exists($key, $options)) {
+            if (!isset($options[$key]['hidden'])) {
+              $data .= '<td><div class="form-group" style="margin-bottom: 0px !important;">';
+              $data .= '<input type="text" class="form-control" id="'.$key.'" name="'.$key.'" value="'.$value.'"';
+              if (isset($options[$key]['validator']) && $options[$key]['validator'] != '') {
+                $data .= ' data-fv '.$options[$key]['validator'];
+              }
+              if (isset($options[$key]['readonly']) && $options[$key]['readonly'] == true) {
+                $data .= ' disabled';
+              }
+              if (isset($options[$key]['index'])) {
+                $data .= ' tabindex="'.$options[$key]['index'].'"';
+              }
+              if (isset($options[$key]['maxlength']) && is_int($options[$key]['maxlength'])) {
+                $data .= ' maxlength="'.$options[$key]['maxlength'].'"';
+              }
+              $data .= '/>';
+              $data .= '</div></td>';
+            }
+          } else {
+            $data .= '<td><div class="form-group" style="margin-bottom: 0px !important;">';
+            $data .= '<input type="text" class="form-control" id="'.$key.'" name="'.$key.'" value="'.$value.'">';
+            $data .= '</div></td>';
+          }
+        };
+        $data .= '</tr>';
+      }
+      $data .= '</tbody></table>';
+    }
     return $data;
   }
 }

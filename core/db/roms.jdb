@@ -1,0 +1,42 @@
+{
+  "version" : 1,
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "emulator",
+      "type" : "text"
+    },
+    {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
+      "name" : "type",
+      "type" : "text"
+    },
+    {
+      "name" : "size",
+      "type" : "integer"
+    },
+    {
+      "name" : "crc32",
+      "type" : "text"
+    },
+    {
+      "name" : "md5",
+      "type" : "text"
+    },
+    {
+      "name" : "sha1",
+      "type" : "text"
+    },
+    {
+      "name" : "sync",
+      "type" : "integer"
+    }
+  ]
+}

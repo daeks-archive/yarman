@@ -8,6 +8,7 @@ if ($module != null) {
   define('DIALOG', 'dialog.php');
   
   config::includes(MODULES.DIRECTORY_SEPARATOR.$module->id);
+  db::instance()->install($module->id);
 }
 
 ?>

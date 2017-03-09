@@ -2,13 +2,7 @@
 
 require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
-
-$config = es::config();
-if ($config['SaveGamelistsOnExit'] == 'true') {
-  page::start('<div class="alert alert-warning" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span>Please disable "Save Gamelist on Exit" in your emulationstation!</span></div>');
-} else {
-  page::start();
-}
+page::start();
 
 echo '<div class="row">';
 echo '<div class="col-sm-4" id="panel-left" name="panel-left">';
@@ -16,16 +10,24 @@ echo '<div class="col-sm-4" id="panel-left" name="panel-left">';
 echo '<div class="row">';
 echo '<div class="col-sm-8">';
 // RENDER EMULATORS
+echo '<div class="input-group">';
+echo '<span class="input-group-btn"><button class="btn btn-default" data-toggle="modal" href="'.DIALOG.'?action=syncemulator" data-target="#modal"><em class="fa fa-refresh"></em></button></span>';
 echo '<select name="nav-emulator" id="nav-emulator" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&emulator=" data-target="#nav-romlist">';
 echo '<option value="" selected>-- Select Emulator --</option>';
-foreach (emulator::readAll() as $emulator) {
+foreach (emulator::read() as $emulator) {
   echo '<option';
   if (cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
     echo ' selected';
   }
-  echo ' value="'.$emulator['id'].'">'.$emulator['name'].' ('.$emulator['count'].')</option>';
+  echo ' value="'.$emulator['id'].'">'.$emulator['name'];
+  if (isset($emulator['count']) && $emulator['count'] != '' && $emulator['count'] > 0) {
+    echo ' ('.$emulator['count'].')';
+  }
+  echo '</option>';
 }
 echo '</select>';
+echo '<span class="input-group-btn"><button class="btn btn-default" data-toggle="modal" href="'.DIALOG.'?action=export" data-target="#modal"><em class="fa fa-download"></em></button></span>';
+echo '</div>';
 echo '</div>';
 // RENDER FILTER
 echo '<div class="col-sm-4">';
@@ -59,47 +61,43 @@ echo '</div>';
 // RENDER ROMLIST
 echo '<br><select name="nav-romlist" id="nav-romlist" class="form-control" data-toggle="select" data-query="'.DIALOG.'?action=render&tab=metadata&id=" data-target="#panel-right">';
 $first = null;
+$romlist = null;
 if (cache::getClientVariable($module->id.'_emulator') != '') {
-  $romlist = emulator::readRomlist(cache::getClientVariable($module->id.'_emulator'));
+  $romlist = emulator::read(cache::getClientVariable($module->id.'_emulator'));
   if (cache::getClientVariable($module->id.'_filter') != '') {
-    $romdata = rom::readAll(cache::getClientVariable($module->id.'_emulator'));
     foreach ($romlist as $rom) {
-      $offset = array_search(rom::parse($rom), array_column($romdata, 'id'));
-      $data = null;
-      if (isset($romdata[$offset])) {
-        $data = $romdata[$offset];
-      }
+      $data = rom::read($rom['id']);
       if (cache::getClientVariable($module->id.'_filter') == 'nodata') {
-        if (!isset($data) || isset($data) && !isset($data['fields']['name']) || isset($data['fields']) &&  $data['fields']['name'] == '') {
+        if (!isset($data) || isset($data) && !isset($data['name']) || isset($data) &&  $data['name'] == '') {
           if ($first == null) {
             $first = $rom;
           }
-          echo '<option value="'.$rom.'">'.$rom.'</option>';
+          echo '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
         }
       } elseif (cache::getClientVariable($module->id.'_filter') == 'noimage') {
-        if (!isset($data) || isset($data) && !isset($data['fields']['image']) || isset($data['fields']) &&  $data['fields']['image'] == '') {
+        if (!isset($data) || isset($data) && !isset($data['image']) || isset($data) &&  $data['image'] == '') {
           if ($first == null) {
             $first = $rom;
           }
-          echo '<option value="'.$rom.'">'.$rom.'</option>';
+          echo '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
         }
       } elseif (cache::getClientVariable($module->id.'_filter') == 'novideo') {
-        if (!isset($data) || isset($data['fields']) && !isset($data['fields']['video']) || isset($data['fields']) && $data['fields']['video'] == '') {
+        if (!isset($data) || isset($data) && !isset($data['video']) || isset($data) && $data['video'] == '') {
           if ($first == null) {
             $first = $rom;
           }
-          echo '<option value="'.$rom.'">'.$rom.'</option>';
+          echo '<option value="'.$rom['id'].'">'.$rom['name'].'</option>';
         }
       }
     }
   } else {
-    $first = $romlist[0];
+    $first = reset($romlist);
     foreach ($romlist as $rom) {
       echo '<option';
-      if (cache::getClientVariable($module->id.'_id') == $rom) {
+      if (cache::getClientVariable($module->id.'_id') == $rom['id']) {
         echo ' selected';
       }
-      echo ' value="'.rom::parse($rom).'">'.$rom.'</option>';
+      echo ' value="'.$rom['id'].'">'.$rom['name'].'</option>';
     }
   }
 }
@@ -118,7 +116,8 @@ if (cache::getClientVariable($module->id.'_emulator') != '' && cache::getClientV
 } else {
   if (cache::getClientVariable($module->id.'_emulator') != '') {
     if ($first != null) {
-      echo metadata::render('metadata', cache::getClientVariable($module->id.'_emulator'), $first);
+      cache::setClientVariable($module->id.'_id', $first['id']);
+      echo metadata::render('metadata', cache::getClientVariable($module->id.'_emulator'), $first['id']);
     }
   }
 }

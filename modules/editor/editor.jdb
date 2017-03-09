@@ -1,6 +1,20 @@
 {
   "version" : 1,
-  "type" : "install",
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "type",
+      "type" : "text"
+    },
+    {
+      "name" : "value",
+      "type" : "text"
+    }
+  ],
   "data" : [
     {
       "id" : "es_systems",

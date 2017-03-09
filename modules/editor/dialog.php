@@ -11,6 +11,7 @@ if (network::get('action') != '') {
       modal::end('Save', 'success');
       break;
     default:
+      network::error('invalid action - '.network::get('action'));
       break;
   }
 }

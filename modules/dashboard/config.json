@@ -1,0 +1,45 @@
+{
+  "id" : "dashboard",
+  "name" : "Dashboard",
+  "menu" : {
+    "position" : "left",
+    "order" : 0,
+    "icon" : "bar-chart",
+    "external" : "/",
+    "target" : "_self"
+    },
+  "dashboard" : [
+    {
+      "target" : "dialog.php?action=panel&id=beta",
+      "grid" : "1 4 8 right 1"
+    },
+    {
+      "target" : "dialog.php?action=panel&id=welcome",
+      "grid" : "1 4 8 right 2"
+    },
+    {
+      "target" : "dialog.php?action=panel&id=news",
+      "grid" : "1 4 8 left 1"
+    },
+    {
+      "target" : "dialog.php?action=panel&id=cputemp",
+      "grid" : "2 4 8 right 1"
+    },
+    {
+      "target" : "dialog.php?action=panel&id=system",
+      "grid" : "2 4 8 left 1"
+    },
+    {
+      "target" : "dialog.php?action=panel&id=memswap",
+      "grid" : "3 4 8 right 1"
+    },
+    {
+      "target" : "dialog.php?action=panel&id=storage",
+      "grid" : "3 4 8 left 1"
+    },
+    {
+      "target" : "dialog.php?action=panel&id=network",
+      "grid" : "4 4 8 right 1"
+    }
+  ]
+}

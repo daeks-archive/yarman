@@ -78,7 +78,8 @@ class network
       curl_setopt($ch, CURLOPT_USERAGENT, self::$agent);
       return curl_exec($ch);
     } else {
-      return file_get_contents($url);
+      $ctx = stream_context_create(array('http' => array('timeout' => 5)));
+      return file_get_contents($url, false, $ctx);
     }
   }
 }
