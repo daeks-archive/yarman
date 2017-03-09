@@ -42,7 +42,7 @@ class form
             $data = self::getVideo($obj, $value);
             break;
           case 'upload':
-            $data = self::getUpload($obj, $value);
+            $data = self::getUploadPreview($obj, $value);
             break;
           case 'boolean':
             $data = self::getBoolean($obj, $value);
@@ -294,7 +294,35 @@ class form
     }
     $data .= '/>';
     $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file"><i class="fa fa-file-image-o fa-fw"></i>';
-    $data .= '<input type="file" id="object" name="object[]" data-toggle="proxy" data-query="/core/proxy.php?action=upload&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
+    $data .= '<input type="file" id="object" name="object[]" data-toggle="simpleproxy" data-query="/core/proxy.php?action=upload&type='.$obj['id'].'" data-key="#id" data-target="#'.$obj['id'].'" accept="'.(isset($obj['whitelist'])?str_replace(' ', ',', $obj['whitelist']):'').'" style="display: none;">';
+    $data .= '</span></label>';
+    $data .= '</div>';
+    $data .= '</div>';
+    return $data;
+  }
+  
+  public static function getUploadPreview($obj, $value = '')
+  {
+    $data = '<div class="form-group">';
+    if (isset($obj['name']) && $obj['name'] != '') {
+      $data .= '<label for="'.$obj['id'].'">'.$obj['name'].'</label>';
+    }
+    $data .= '<div class="input-group">';
+    $data .= '<input type="text" class="form-control" id="'.$obj['id'].'" name="'.$obj['id'].'" value="'.$value.'"';
+    if (isset($obj['validator']) && $obj['validator'] != '') {
+      $data .= ' data-fv '.$obj['validator'];
+    }
+    if (isset($obj['readonly']) && $obj['readonly'] == true) {
+      $data .= ' disabled';
+    }
+    if (isset($obj['index'])) {
+      $data .= ' tabindex="'.$obj['index'].'"';
+    }
+    if (isset($obj['maxlength']) && is_int($obj['maxlength'])) {
+      $data .= ' maxlength="'.$obj['maxlength'].'"';
+    }
+    $data .= '/>';
+    $data .= '<label class="input-group-btn"><span class="btn btn-default btn-file" data-toggle="modal" href="/core/proxy.php?action=dialog&type='.$obj['id'].'" data-target="#modal"><i class="fa fa-file-image-o fa-fw"></i>';
     $data .= '</span></label>';
     $data .= '</div>';
     $data .= '</div>';
