@@ -8,7 +8,7 @@ if (network::get('action') != '') {
         $rom = rom::read(network::get('id'));
         if (isset($rom[network::get('type')])) {
           if (file_exists($rom[network::get('type')]) && is_readable($rom[network::get('type')])) {
-            switch (pathinfo($rom[network::get('type')], PATHINFO_EXTENSION)) {
+            switch (strtolower(pathinfo($rom[network::get('type')], PATHINFO_EXTENSION))) {
               case 'jpg':
                 $mime = 'image/jpeg';
                 break;
