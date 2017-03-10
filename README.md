@@ -6,7 +6,7 @@ This is a webbased frontend for RetroPie containing several functions to maintai
 
 - Download scriptmodule to your local installation with
 
-```curl https://raw.githubusercontent.com/daeks/yarman/master/scriptmodules/supplementary/yarman_default.sh -o ~/RetroPie-Setup/scriptmodules/supplementary/yarman.sh```
+```curl https://raw.githubusercontent.com/daeks/yarman/master/scriptmodules/supplementary/yarman.sh -o ~/RetroPie-Setup/scriptmodules/supplementary/yarman.sh```
   
 - Start RetroPie Setup and go to the experimental section for installing.
 - Access YARMan from browser by http://retropie:8080/
