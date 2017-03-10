@@ -1,10 +1,11 @@
 {
   "id" : "help",
-  "name" : "",
+  "name" : "Docs",
   "menu" : {
     "position" : "right",
     "order" : 999,
     "icon" : "book",
-    "external" : "https://retropie.org.uk/docs/"
+    "external" : "https://retropie.org.uk/docs/",
+    "target" : "_blank"
     }
 }

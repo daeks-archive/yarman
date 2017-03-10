@@ -55,7 +55,7 @@
               core.message.toast('danger', true, obj.data);
             }
           } catch (e) {
-            core.message.infobox('danger', 0, e.message + data);
+            core.message.infobox('danger', 0, e.message + '<br>' + data);
           }
         });
         return false;
@@ -63,7 +63,7 @@
       
       var save = function (loadurl, target) {
         var editor = ace.edit(target);
-        $.post(loadurl, 'data=' + editor.getValue(), function (data) {
+        $.post(loadurl, { data: editor.getValue() }, function (data) {
           try {
             var obj = $.parseJSON(data);
             if (obj.status == 200) {
@@ -82,15 +82,20 @@
               core.message.toast('danger', true, obj.data);
             }
           } catch (e) {
-            core.message.infobox('danger', 0, e.message + data);
+            core.message.infobox('danger', 0, e.message + '<br>' + data);
           }
         });
+      };
+      
+      var reload = function () {
+        $('#nav-editor').trigger("change");
       };
       
       return {
         init: init,
         load: load,
-        save: save
+        save: save,
+        reload: reload
       };
     })();
 

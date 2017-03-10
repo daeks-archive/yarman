@@ -10,7 +10,7 @@ echo '<div class="row">';
 echo '<div class="col-sm-4">';
 echo '<select name="nav-emulator" id="nav-emulator" class="form-control" data-toggle="select" data-query="'.CONTROLLER.'?action=change&emulator=" data-target="#nav-editor">';
 echo '<option value="">Show General Config</option>';
-foreach (emulator::readAll(false) as $emulator) {
+foreach (emulator::read() as $emulator) {
   echo '<option';
   if (cache::getClientVariable($module->id.'_emulator') == $emulator['id']) {
     echo ' selected';
@@ -21,9 +21,10 @@ echo '</select>';
 echo '</div>';
 echo '<div class="col-sm-8">';
 echo '<div class="input-group">';
+echo '<span class="input-group-btn"><button class="btn btn-default" onclick="core.editor.reload();"><em class="fa fa-refresh"></em></button></span>';
 echo '<select name="nav-editor" id="nav-editor" class="form-control" data-mode="ini" data-query="'.CONTROLLER.'?action=view&id=" data-target="module-content">';
 echo '<option value="" selected>-- Select Config File --</option>';
-foreach (db::read($module->id) as $item) {
+foreach (db::instance()->read($module->id) as $item) {
   if (cache::getClientVariable($module->id.'_emulator') == '') {
     if ($item['type'] == 'file') {
       if (strpos($item['value'], '%') === false) {

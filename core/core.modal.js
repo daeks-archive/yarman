@@ -2,10 +2,11 @@
     
     var modal = (function () {
       var init = function () {
+        $('.modal').on('show.bs.modal', core.modal.center);
         $('.modal').on('loaded.bs.modal', core.modal.center);
         $('.modal').on('hidden.bs.modal', function (e) {
           $('.modal').removeData('bs.modal');
-          $('#modal-content').html('');
+          $('#modal-content').html('<br>&nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i> Loading...<br><br>');
         });
 
         $(window).on('resize', function () {
@@ -13,8 +14,10 @@
         });
 
         $('.modal').on('success.form.fv', function (event) {
-          if ($('form[data-toggle="modal"]').length > 0) {
-            var $form = $('form[data-toggle="modal"]');
+          $('button[data-query="modal-data"]').html('<i id="loading" class="fa fa-spinner fa-spin"></i> ' + $('button[data-query="modal-data"]').html());
+          $('button[data-query="modal-data"]').prop('disabled', true);
+          if ($('#modal-data').length > 0) {
+            var $form = $('#modal-data');
             var $target = $($form.attr('data-target'));
 
             $.ajax({
@@ -45,7 +48,7 @@
                   }
                 } catch (e) {
                   $('.modal').modal('hide');
-                  core.message.infobox('danger', 0, e.message + data);
+                  core.message.infobox('danger', 0, e.message + '<br>' + data);
                 }
               }
             });

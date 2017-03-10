@@ -2,9 +2,19 @@
 
 class es
 {
-  public static function start()
+  public static function start($tty = 1)
   {
-    return shell_exec('export HOME='.db::read('config', 'user_path').' && emulationstation > /dev/null 2>/dev/null &');
+    $commands = array();
+    array_push($commands, 'export HOME='.current(db::instance()->read('config', "id='user_path'"))['value']);
+    array_push($commands, 'sudo openvt -c '.$tty.' -s -f clear');
+    array_push($commands, 'sudo openvt -c '.$tty.' -s -f emulationstation 2>&1 &');
+    return shell_exec(implode(' && ', $commands));
+  }
+  
+  public static function restart()
+  {
+    self::stopGame();
+    return shell_exec('touch /tmp/es-restart && killall emulationstation');
   }
   
   public static function stop()
@@ -14,7 +24,7 @@ class es
   
   public static function config()
   {
-    $content = file_get_contents(db::read('config', 'es_path').DIRECTORY_SEPARATOR.'es_settings.cfg');
+    $content = file_get_contents(current(db::instance()->read('config', "id='es_path'"))['value'].DIRECTORY_SEPARATOR.'es_settings.cfg');
     $content = str_replace('<?xml version="1.0"?>', '<?xml version="1.0"?><settings>', $content).'</settings>';
     $xml = json_decode(json_encode(simplexml_load_string($content)), true);
     $output = array();
@@ -26,9 +36,15 @@ class es
     return $output;
   }
   
-  public static function startRom($system, $id)
+  public static function startGame($system, $id)
   {
-    return shell_exec('/opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ '.$system.' \''.db::read('config', 'rom_path').DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$id.'\'');
+    return shell_exec('/opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ '.$system.' \''.current(db::instance()->read('config', "id='rom_path'"))['value'].DIRECTORY_SEPARATOR.$system.DIRECTORY_SEPARATOR.$id.'\'');
+  }
+  
+  public static function stopGame()
+  {
+    //return shell_exec('kill $(pgrep -P $(pgrep -f "bash /opt/retropie/supplementary/runcommand/runcommand.sh"))');
+    return system::exec('killgame.sh');
   }
 }
 

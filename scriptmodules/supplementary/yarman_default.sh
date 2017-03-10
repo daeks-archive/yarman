@@ -11,20 +11,32 @@
 #
 
 rp_module_id="yarman"
-rp_module_desc=" YARMan Web (Yet Another RetroPie Manager) on port 8080"
-rp_module_help="PHP and JQuery based web frontend for managing your retropie installation"
+rp_module_desc=" YARMan Web (Yet Another RetroPie Manager)"
+rp_module_help="PHP and JQuery based web frontend on port 8080 for managing your retropie installation"
 rp_module_section="exp"
+rp_module_flags="noinstclean"
 
 function depends_yarman() {
-    getDepends sqlite3 php5 php5-sqlite
+    local depends=(sqlite3 php5 php5-sqlite)
+    isPlatform "x86" && depends=(sqlite php php-sqlite)
+    getDepends "${depends[@]}"
 }
 
-function install_bin_yarman() {
-    gitPullOrClone "$md_inst" "https://github.com/daeks/yarman"
+function sources_yarman() {
+    gitPullOrClone "$md_build" "https://github.com/daeks/yarman"
 }
 
-function configure_yarman() {
+function install_yarman() {
     killall php
+    if [ -d "$md_inst/data" ]; then
+      cp $md_inst/data/*.sdb "$md_build/data"
+      cp $md_inst/data/*.bak "$md_build/data"
+    fi
+    rm -r "$md_inst"
+    cp -r "$md_build/." "$md_inst"
+}
+
+function configure_yarman() {    
     echo $user > "$md_inst/data/user"
     php -S 0.0.0.0:8080 -t "$md_inst" > /dev/null 2>&1 &
 

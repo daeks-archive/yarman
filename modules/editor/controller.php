@@ -9,7 +9,7 @@ if (network::get('action') != '') {
         cache::setClientVariable($module->id.'_emulator', network::get('emulator'));
         cache::unsetClientVariable($module->id.'_id');
         $output = '<option value="" selected>-- Select Config File --</option>';
-        foreach (db::read($module->id) as $item) {
+        foreach (db::instance()->read($module->id) as $item) {
           if (strpos($item['value'], '%EMULATOR%') !== false && $item['type'] == 'file') {
             $item['value'] = str_replace('%EMULATOR%', network::get('emulator'), $item['value']);
             $output .= '<option value="'.$item['id'].'">'.$item['value'].'</option>';
@@ -20,7 +20,7 @@ if (network::get('action') != '') {
         cache::unsetClientVariable($module->id.'_emulator');
         cache::unsetClientVariable($module->id.'_id');
         $output = '<option value="" selected>-- Select Config File --</option>';
-        foreach (db::read($module->id) as $item) {
+        foreach (db::instance()->read($module->id) as $item) {
           if ($item['type'] == 'file') {
             if (strpos($item['value'], '%') === false) {
               $output .= '<option value="'.$item['id'].'">'.$item['value'].'</option>';
@@ -39,7 +39,7 @@ if (network::get('action') != '') {
         cache::setClientVariable($module->id.'_id', network::get('id'));
         $parts = explode('@', network::get('id'));
         $output = '';
-        foreach (db::read($module->id) as $item) {
+        foreach (db::instance()->read($module->id) as $item) {
           if (sizeof($parts) == 2) {
             if ($item['id'] == $parts[1]) {
               $item['value'] = str_replace('%EMULATOR%', cache::getClientVariable($module->id.'_emulator'), $item['value']);
@@ -67,26 +67,35 @@ if (network::get('action') != '') {
       break;
     case 'save':
       $parts = explode('@', cache::getClientVariable($module->id.'_id'));
-      foreach (db::read($module->id) as $item) {
+      foreach (db::instance()->read($module->id) as $item) {
         if (sizeof($parts) == 2) {
           if ($item['id'] == $parts[1]) {
             $item['value'] = str_replace('%EMULATOR%', cache::getClientVariable($module->id.'_emulator'), $item['value']);
             if (file_exists($item['value'].DIRECTORY_SEPARATOR.$parts[0])) {
-              copy($item['value'].DIRECTORY_SEPARATOR.$parts[0], $item['value'].DIRECTORY_SEPARATOR.$parts[0].'.bak');
-              file_put_contents($item['value'].DIRECTORY_SEPARATOR.$parts[0], $_POST['data']);
+              if (is_writeable($item['value'].DIRECTORY_SEPARATOR.$parts[0])) {
+                copy($item['value'].DIRECTORY_SEPARATOR.$parts[0], $item['value'].DIRECTORY_SEPARATOR.$parts[0].'.bak');
+                file_put_contents($item['value'].DIRECTORY_SEPARATOR.$parts[0], $_POST['data']);
+                network::success('Successfully Saved File', 'true');
+              } else {
+                network::error('Permission denied', 'true');
+              }
             }
           }
         } else {
           if ($item['id'] == cache::getClientVariable($module->id.'_id')) {
             $item['value'] = str_replace('%EMULATOR%', cache::getClientVariable($module->id.'_emulator'), $item['value']);
             if (file_exists($item['value'])) {
-              copy($item['value'], $item['value'].'.bak');
-              file_put_contents($item['value'], $_POST['data']);
+              if (is_writeable($item['value'])) {
+                copy($item['value'], $item['value'].'.bak');
+                file_put_contents($item['value'], $_POST['data']);
+                network::success('Successfully Saved File', 'true');
+              } else {
+                network::error('Permission denied', 'true');
+              }
             }
           }
         }
       }
-      network::success('Successfully Saved File', 'true');
       break;
     default:
       network::error('invalid action - '.network::get('action'));

@@ -12,6 +12,7 @@ define('DB', BASE.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'db');
 define('DATA', BASE.DIRECTORY_SEPARATOR.'data');
 define('CACHE', BASE.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'cache');
 define('MODULES', BASE.DIRECTORY_SEPARATOR.'modules');
+define('SCRIPTS', BASE.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'scripts');
 
 define('MODULE', 'config.json');
 define('URL_SEPARATOR', '/');
@@ -21,6 +22,7 @@ define('FILE_COMPRESS', false);
 
 config::includes(INC);
 session::construct();
+db::instance()->construct();
 
 class config
 {

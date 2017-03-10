@@ -31,3 +31,12 @@ body {
   cursor: inherit;
   display: block;
 }
+.dropzone {
+  display: block;
+  outline: 2px dashed #92b0b3;
+  padding: 50px 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #d7cfcf;
+}

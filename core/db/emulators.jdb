@@ -1,6 +1,28 @@
 {
   "version" : 1,
-  "type" : "install",
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
+      "name" : "whitelist",
+      "type" : "text"
+    },
+    {
+      "name" : "blacklist",
+      "type" : "text"
+    },
+    {
+      "name" : "count",
+      "type" : "integer"
+    }
+  ],
   "data" : [
     {
       "id" : "3do",
@@ -85,7 +107,7 @@
     },
     {
       "id" : "megadrive",
-      "name" : "Megadrive / Genesis",
+      "name" : "Megadrive",
       "whitelist" : "smd bin md iso zip"
     },
     {
@@ -107,6 +129,16 @@
       "id" : "gba",
       "name" : "Game Boy Advance",
       "whitelist" : "gba zip"
+    },
+    {
+      "id" : "genesis",
+      "name" : "Genesis",
+      "whitelist" : "smd bin md iso zip"
+    },
+    {
+      "id" : "fds",
+      "name" : "Family Computer Disk System",
+      "whitelist" : "fds"
     },
     {
       "id" : "intellivision",
@@ -146,8 +178,8 @@
       "whitelist" : ""
     },
     {
-      "id" : "Neo Geo Pocket",
-      "name" : "ngp",
+      "id" : "ngp",
+      "name" : "Neo Geo Pocket",
       "whitelist" : "ngp zip"
     },
     {
@@ -184,6 +216,12 @@
       "id" : "pcengine",
       "name" : "TurbGrafx-16",
       "whitelist" : "pce cue zip"
+    },
+    {
+      "id" : "ports",
+      "name" : "Ports",
+      "whitelist" : "sh",
+      "blacklist" : "folder"
     },
     {
       "id" : "psx",

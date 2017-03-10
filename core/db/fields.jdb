@@ -1,12 +1,70 @@
 {
   "version" : 1,
-  "type" : "install",
+  "type" : "alter",
+  "schema" : [
+    {
+      "name" : "id",
+      "type" : "text primary key not null"
+    },
+    {
+      "name" : "guid",
+      "type" : "text"
+    },
+    {
+      "name" : "name",
+      "type" : "text"
+    },
+    {
+      "name" : "type",
+      "type" : "text"
+    },
+    {
+      "name" : "readonly",
+      "type" : "boolean"
+    },
+    {
+      "name" : "maxlength",
+      "type" : "integer"
+    },
+    {
+      "name" : "rowcount",
+      "type" : "integer"
+    },
+    {
+      "name" : "validator",
+      "type" : "text"
+    },
+    {
+      "name" : "container",
+      "type" : "text"
+    },
+    {
+      "name" : "grid",
+      "type" : "text"
+    },
+    {
+      "name" : "path",
+      "type" : "text"
+    },
+    {
+      "name" : "whitelist",
+      "type" : "text"
+    },
+    {
+      "name" : "import",
+      "type" : "boolean"
+    },
+    {
+      "name" : "export",
+      "type" : "boolean"
+    }
+  ],
   "data" : [
     {
       "id" : "id",
-      "guid" : "path",
       "type" : "key",
-      "readonly" : true
+      "import" : false,
+      "export" : false
     },
     {
       "id" : "name",
@@ -14,9 +72,11 @@
       "name" : "Name",
       "type" : "string",
       "maxlength" : 255,
-      "validator" : "data-fv-notempty",
+      "validator" : "",
       "container" : "metadata",
-      "grid" : "1 8 4 left 2"
+      "grid" : "1 8 4 left 2",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "genre",
@@ -25,7 +85,9 @@
       "type" : "string",
       "maxlength" : 255,
       "container" : "metadata",
-      "grid" : "1 8 4 left 3"
+      "grid" : "1 8 4 left 3",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "developer",
@@ -34,7 +96,9 @@
       "type" : "string",
       "maxlength" : 255,
       "container" : "metadata",
-      "grid" : "1 8 4 left 4"
+      "grid" : "1 8 4 left 4",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "publisher",
@@ -43,7 +107,9 @@
       "type" : "string",
       "maxlength" : 255,
       "container" : "metadata",
-      "grid" : "1 8 4 left 5"
+      "grid" : "1 8 4 left 5",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "releasedate",
@@ -52,7 +118,9 @@
       "type" : "date",
       "validator" : "data-fv-date data-fv-date-format=\"YYYY/MM/DD\"",
       "container" : "metadata",
-      "grid" : "2 6 6 left 1"
+      "grid" : "2 6 6 left 1",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "players",
@@ -60,7 +128,8 @@
       "name" : "Players",
       "type" : "integer",
       "container" : "metadata",
-      "grid" : "2 6 6 right 1"
+      "grid" : "2 6 6 right 1",
+      "export" : true
     },
     {
       "id" : "rating",
@@ -68,7 +137,9 @@
       "name" : "Rating",
       "type" : "double",
       "container" : "metadata",
-      "grid" : "3 6 6 left 1"
+      "grid" : "3 6 6 left 1",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "desc",
@@ -77,7 +148,9 @@
       "type" : "text",
       "rowcount" : 10,
       "container" : "metadata",
-      "grid" : "4 12 0 left 1"
+      "grid" : "4 12 0 left 1",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "path",
@@ -87,15 +160,19 @@
       "readonly": true,
       "validator" : "data-fv-notempty",
       "container" : "media",
-      "grid" : "1 8 4 left 1"
+      "grid" : "1 8 4 left 1",
+      "import" : true,
+      "export" : true
     },
     {
-      "id" : "image_metadata",
-      "guid" : "image",
+      "id" : "image_preview",
+      "guid" : "id",
       "name" : "Image Preview",
       "type" : "image",
       "container" : "metadata",
-      "grid" : "1 8 4 right 1"
+      "grid" : "1 8 4 right 1",
+      "import" : false,
+      "export" : false
     },
     {
       "id" : "image",
@@ -105,7 +182,9 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".jpg .png",
       "container" : "media",
-      "grid" : "1 8 4 left 2"
+      "grid" : "1 8 4 left 2",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "video",
@@ -115,7 +194,19 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".mp4",
       "container" : "media",
-      "grid" : "1 8 4 left 3"
+      "grid" : "1 8 4 left 3",
+      "import" : true,
+      "export" : true
+    },
+    {
+      "id" : "video_preview",
+      "guid" : "id",
+      "name" : "Video Preview",
+      "type" : "video",
+      "container" : "media",
+      "grid" : "1 8 4 right 1",
+      "import" : false,
+      "export" : false
     },
     {
       "id" : "marquee",
@@ -125,7 +216,9 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".jpg .png",
       "container" : "media",
-      "grid" : "1 8 4 left 4"
+      "grid" : "1 8 4 left 4",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "thumbnail",
@@ -135,7 +228,9 @@
       "path" : "/home/%USER%/.emulationstation/downloaded_images",
       "whitelist" : ".jpg .png",
       "container" : "media",
-      "grid" : "1 8 4 left 5"
+      "grid" : "1 8 4 left 5",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "playcount",
@@ -144,7 +239,9 @@
       "type" : "integer",
       "readonly" : true,
       "container" : "metadata",
-      "grid" : "5 6 6 left 1"
+      "grid" : "5 6 6 left 1",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "lastplayed",
@@ -153,7 +250,9 @@
       "type" : "date",
       "readonly": true,
       "container" : "metadata",
-      "grid" : "5 6 6 right 1"
+      "grid" : "5 6 6 right 1",
+      "import" : true,
+      "export" : true
     },
     {
       "id" : "favorite",
@@ -161,7 +260,9 @@
       "name" : "Favorite",
       "type" : "boolean",
       "container" : "metadata",
-      "grid" : "3 6 6 right 1"
+      "grid" : "3 6 6 right 1",
+      "import" : true,
+      "export" : true
     }
   ]
 }

@@ -11,12 +11,14 @@
 #
 
 rp_module_id="yarman"
-rp_module_desc=" YARMan Web (Yet Another RetroPie Manager) on port 80"
-rp_module_help="PHP and JQuery based web frontend for managing your retropie installation"
+rp_module_desc=" YARMan Web (Yet Another RetroPie Manager)"
+rp_module_help="PHP and JQuery based web frontend on port 80 for managing your retropie installation"
 rp_module_section="exp"
 
 function depends_yarman() {
-    getDepends apache2 sqlite3 php5 php5-sqlite
+    local depends=(apache2 sqlite3 php5 php5-sqlite)
+    isPlatform "x86" && depends=(apache2 sqlite php php-sqlite)
+    getDepends "${depends[@]}"
 }
 
 function sources_yarman() {
@@ -25,7 +27,8 @@ function sources_yarman() {
 
 function install_yarman() {
     if [ -d "/var/www/html/data" ]; then
-      cp -r "/var/www/html/data/." "$md_build/data"
+      cp /var/www/html/data/*.sdb "$md_build/data"
+      cp /var/www/html/data/*.bak "$md_build/data"
     fi
     echo $user > "$md_build/data/user"
     rm -rf "/var/www/html/*"

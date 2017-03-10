@@ -1,0 +1,18 @@
+{
+  "id" : "admin",
+  "name" : "Administration",
+  "config" : [
+      {
+        "id" : "config",
+        "name" : "General",
+        "icon" : "cogs",
+        "target" : "/modules/admin/dialog.php?action=config&id=config"
+      },
+      {
+        "id" : "emulators",
+        "name" : "Emulators",
+        "icon" : "gamepad",
+        "target" : "/modules/admin/dialog.php?action=config&id=emulators"
+      }
+    ]
+}

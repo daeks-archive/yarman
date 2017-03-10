@@ -79,7 +79,23 @@ class page
               if ($dropdown->type == 'spacer') {
                 $item .= '<li role="separator" class="divider"></li>';
               } elseif ($dropdown->type == 'modal') {
-                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name.'</a></li>';
+                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
+              } elseif ($dropdown->type == 'async') {
+                $item .= '<li><a data-toggle="async" href="#" data-target="#modal" data-query="'.$dropdown->external.'">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
+              } elseif ($dropdown->type == 'external') {
+                $item .= '<li><a href="'.$dropdown->external.'"">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
               }
             }
             $item .= '</ul>';
@@ -91,7 +107,7 @@ class page
               $item .= '<li>';
             }
             if (isset($tmp->menu->external)) {
-              $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
+              $item .= '<a href="'.$tmp->menu->external.'" target="'.$tmp->menu->target.'">';
             } else {
               $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
             }
@@ -115,7 +131,23 @@ class page
               if ($dropdown->type == 'spacer') {
                 $item .= '<li role="separator" class="divider"></li>';
               } elseif ($dropdown->type == 'modal') {
-                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name.'</a></li>';
+                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
+              } elseif ($dropdown->type == 'async') {
+                $item .= '<li><a data-toggle="async" href="#" data-target="#modal" data-query="'.$dropdown->external.'">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
+              } elseif ($dropdown->type == 'external') {
+                $item .= '<li><a href="'.$dropdown->external.'"">'.$dropdown->name;
+                if (isset($dropdown->beta) && $dropdown->beta == true) {
+                  $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
+                }
+                $item .= '</a></li>';
               }
             }
             $item .= '</ul>';
@@ -127,7 +159,7 @@ class page
               $item .= '<li>';
             }
             if (isset($tmp->menu->external)) {
-              $item .= '<a href="'.$tmp->menu->external.'" target="_blank">';
+              $item .= '<a href="'.$tmp->menu->external.'" target="'.$tmp->menu->target.'">';
             } else {
               $item .= '<a href="/'.basename(MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.'">';
             }
@@ -173,9 +205,12 @@ class page
     echo '</div>';
     // END LEFT
     echo '</div>';
-    echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"></div></div></div>';
+    echo '<div class="modal" id="modal" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content" id="modal-content"><br>&nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i> Loading...<br><br></div></div></div>';
     echo '<div class="container-fluid '.self::$devices.'">';
     echo '<div id="infobox" class="infobox">'.$infobox.'</div>';
+    if (isset($module->beta) && $module->beta == true) {
+      echo '<div class="alert alert-warning" id="beta" tabindex="-1"><span><b><i class="fa fa-flask fa-fw"></i> Warning</b> This module is currently in a BETA stage. Please be aware that there might be some issues.</span> <button type="button" class="btn btn-success btn-xs pull-right" data-dismiss="alert">Agreed</button></div>';
+    }
   }
           
   public static function end()

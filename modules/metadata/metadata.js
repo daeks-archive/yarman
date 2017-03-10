@@ -4,6 +4,17 @@
       var init = function () {
         $(window).resize(function () {
           var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
+          if ($('#beta')) {
+            height = height - $('#beta').height() - 50;
+            $('#beta').bind('closed.bs.alert', function () {
+              var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
+              var size = Math.round(height / 20);
+              
+              $("#nav-romlist").attr("size", size);
+              $("#nav-romlist").css("height", height);
+              $("#rom-data").css("height", height);
+            });
+          }
           var size = Math.round(height / 20);
            
           $("#nav-romlist").attr("size", size);
@@ -29,9 +40,14 @@
         $('#nav-emulator').trigger('change');
       }
       
+      var reload = function () {
+        $('#nav-romlist').trigger('change');
+      }
+      
       return {
         init: init,
-        reset: reset
+        reset: reset,
+        reload: reload
       };
     })();
 
