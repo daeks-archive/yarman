@@ -18,9 +18,9 @@ rp_module_flags="noinstclean"
 function depends_yarman() {
     local depends=(sqlite3)
     if isPlatform "x86"; then
-        depends=(php php-sqlite3)
+        depends+=(php php-sqlite3)
     else
-        depends=(php5 php5-sqlite)
+        depends+=(php5 php5-sqlite)
     fi
     getDepends "${depends[@]}"
 }
