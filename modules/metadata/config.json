@@ -1,19 +1,18 @@
 {
   "id" : "metadata",
-  "name" : "Metadata Editor",
-  "beta" : true,
+  "name" : "Gamelist",
   "config" : [
     {
       "id" : "fields",
       "name" : "Fields",
       "icon" : "table",
-      "target" : "/modules/metadata/dialog.php?action=config&id=fields"
+      "target" : "dialog.php?action=config&id=fields"
     }
   ],
   "menu" : {
     "position" : "left",
     "order" : 2,
-    "icon" : "files-o"
+    "icon" : "server"
     },
   "dashboard" : [
     {

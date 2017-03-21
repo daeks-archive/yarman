@@ -1,7 +1,7 @@
 <?php
 
 set_time_limit(600);
-require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
+require(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
   switch (network::get('action')) {
@@ -10,7 +10,12 @@ if (network::get('action') != '') {
       foreach (db::instance()->read('emulators') as $emulator) {
         if (isset($emulator['count'])) {
           if ($emulator['count'] == '') {
-            $total += 1;
+            $roms = db::instance()->read('roms', 'emulator='.db::instance()->quote($emulator['id']));
+            if (sizeof($roms) >= 1) {
+              db::instance()->write('emulators', array('count' => sizeof($roms)), 'id='.db::instance()->quote($emulator['id']));
+            } else {
+              $total += 1;
+            }
           }
         }
       }

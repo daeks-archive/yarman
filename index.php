@@ -10,8 +10,9 @@ foreach ($modules as $moduleconfig) {
   if (isset($tmp->dashboard)) {
     foreach ($tmp->dashboard as $item) {
       $target = $item->target;
-      if (strpos($target, DIRECTORY_SEPARATOR) !== 0) {
-        $target = MODULES.DIRECTORY_SEPARATOR.$tmp->id.DIRECTORY_SEPARATOR.$target;
+      if (strpos($target, URL_SEPARATOR) == 0) {
+        $target = MODULES.URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$item->target;
+        $target = str_replace(URL_SEPARATOR, DIRECTORY_SEPARATOR, $target);
       }
       
       $parts = explode(' ', $item->grid);
@@ -52,22 +53,7 @@ foreach ($fieldset as $key => $row) {
     echo '<div class="'.str_replace(array('left-', 'right-'), array('',''), $key).'">';
     ksort($column);
     foreach ($column as $key => $panel) {
-      $offset = strpos($panel, '?');
-      if ($offset !== false) {
-        $params = substr($panel, $offset+1);
-        $include = substr($panel, 0, $offset);
-        foreach (explode('&', $params) as $value) {
-          $parts = explode('=', $value);
-          if (sizeof($parts) == 2) {
-            $_GET[$parts[0]] = $parts[1];
-          } else {
-            $_GET[$parts[0]] = '';
-          }
-        }
-        include($include);
-      } else {
-        include($panel);
-      }
+      page::load($panel);
     }
     echo '</div>';
   }

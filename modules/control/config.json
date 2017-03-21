@@ -6,7 +6,7 @@
       "id" : "db",
       "name" : "Database",
       "icon" : "database",
-      "target" : "/modules/control/dialog.php?action=config&id=db"
+      "target" : "dialog.php?action=config&id=db"
     }
   ],
   "menu" : {
@@ -27,19 +27,19 @@
         "id" : "stop",
         "name" : "Stop Current Emulator",
         "type" : "async",
-        "external" : "/modules/control/controller.php?action=stop"
+        "external" : "controller.php?action=stop"
       },
       {
         "id" : "restart",
         "name" : "Restart Emulationstation",
         "type" : "modal",
-        "external" : "/modules/control/dialog.php?action=restart"
+        "external" : "dialog.php?action=restart"
       },
       {
         "id" : "reboot",
         "name" : "Reboot",
         "type" : "modal",
-        "external" : "/modules/control/dialog.php?action=reboot"
+        "external" : "dialog.php?action=reboot"
       }
     ]
   }

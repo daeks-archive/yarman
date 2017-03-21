@@ -1,7 +1,7 @@
 <?php
 
 set_time_limit(600);
-require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
+require(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
   switch (network::get('action')) {
@@ -112,7 +112,7 @@ if (network::get('action') != '') {
       network::success('Successfully Synced Rom', 'core.metadata.reload();');
       break;
     case 'delete':
-      rom::delete(network::get('id'));
+      rom::delete(network::get('id'), network::get('config'));
       cache::unsetClientVariable($module->id.'_id');
       network::success('Successfully Deleted Rom', 'core.metadata.reset();');
       break;

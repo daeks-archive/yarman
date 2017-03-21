@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
+require(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
   switch (network::get('action')) {
@@ -175,6 +175,9 @@ if (network::get('action') != '') {
       modal::start('Delete Item', CONTROLLER.'?action=delete&id='.cache::getClientVariable($module->id.'_id'));
       $rom = rom::config(cache::getClientVariable($module->id.'_id'));
       echo 'Do you really want to delete '.$rom['name'].'?';
+      echo '<div class="checkbox"><label><input type="checkbox" checked name="config[]" value="rom">Delete Rom</label></div>';
+      echo '<div class="checkbox"><label><input type="checkbox" checked name="config[]" value="metadata">Delete Metadata from database</label></div>';
+      echo '<div class="checkbox"><label><input type="checkbox" checked name="config[]" value="media">Delete Media Objects</label></div>';
       modal::end('Delete', 'danger');
       break;
     case 'config':

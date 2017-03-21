@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
+require(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 page::start();
 echo '<div class="row">';
@@ -22,7 +22,7 @@ echo '</div>';
 echo '<div class="col-sm-8">';
 echo '<div class="input-group">';
 echo '<span class="input-group-btn"><button class="btn btn-default" onclick="core.editor.reload();"><em class="fa fa-refresh"></em></button></span>';
-echo '<select name="nav-editor" id="nav-editor" class="form-control" data-mode="ini" data-query="'.CONTROLLER.'?action=view&id=" data-target="module-content">';
+echo '<select name="nav-editor" id="nav-editor" class="form-control" data-query="'.CONTROLLER.'?action=view&id=" data-target="module-content">';
 echo '<option value="" selected>-- Select Config File --</option>';
 foreach (db::instance()->read($module->id) as $item) {
   if (cache::getClientVariable($module->id.'_emulator') == '') {

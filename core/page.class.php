@@ -79,13 +79,21 @@ class page
               if ($dropdown->type == 'spacer') {
                 $item .= '<li role="separator" class="divider"></li>';
               } elseif ($dropdown->type == 'modal') {
-                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name;
+                $target = $dropdown->external;
+                if (strpos($target, URL_SEPARATOR) !== 0) {
+                  $target = str_replace(BASE, '', MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$dropdown->external;
+                }
+                $item .= '<li><a data-toggle="modal" href="'.$target.'" data-target="#modal">'.$dropdown->name;
                 if (isset($dropdown->beta) && $dropdown->beta == true) {
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }
                 $item .= '</a></li>';
               } elseif ($dropdown->type == 'async') {
-                $item .= '<li><a data-toggle="async" href="#" data-target="#modal" data-query="'.$dropdown->external.'">'.$dropdown->name;
+                $target = $dropdown->external;
+                if (strpos($target, URL_SEPARATOR) !== 0) {
+                  $target = str_replace(BASE, '', MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$dropdown->external;
+                }
+                $item .= '<li><a data-toggle="async" href="#" data-target="#modal" data-query="'.$target.'">'.$dropdown->name;
                 if (isset($dropdown->beta) && $dropdown->beta == true) {
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }
@@ -101,10 +109,14 @@ class page
             $item .= '</ul>';
             $item .= '</li>';
           } else {
-            if ($module != null && $tmp->id == $module->id) {
+            if ($module !== null && $tmp->id == $module->id) {
               $item .= '<li class="active">';
             } else {
-              $item .= '<li>';
+              if ($module == null && $tmp->menu->order == 0) {
+                $item .= '<li class="active">';
+              } else {
+                $item .= '<li>';
+              }
             }
             if (isset($tmp->menu->external)) {
               $item .= '<a href="'.$tmp->menu->external.'" target="'.$tmp->menu->target.'">';
@@ -131,13 +143,21 @@ class page
               if ($dropdown->type == 'spacer') {
                 $item .= '<li role="separator" class="divider"></li>';
               } elseif ($dropdown->type == 'modal') {
-                $item .= '<li><a data-toggle="modal" href="'.$dropdown->external.'" data-target="#modal">'.$dropdown->name;
+                $target = $dropdown->external;
+                if (strpos($target, URL_SEPARATOR) !== 0) {
+                  $target = str_replace(BASE, '', MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$dropdown->external;
+                }
+                $item .= '<li><a data-toggle="modal" href="'.$target.'" data-target="#modal">'.$dropdown->name;
                 if (isset($dropdown->beta) && $dropdown->beta == true) {
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }
                 $item .= '</a></li>';
               } elseif ($dropdown->type == 'async') {
-                $item .= '<li><a data-toggle="async" href="#" data-target="#modal" data-query="'.$dropdown->external.'">'.$dropdown->name;
+                $target = $dropdown->external;
+                if (strpos($target, URL_SEPARATOR) !== 0) {
+                  $target = str_replace(BASE, '', MODULES).URL_SEPARATOR.$tmp->id.URL_SEPARATOR.$dropdown->external;
+                }
+                $item .= '<li><a data-toggle="async" href="#" data-target="#modal" data-query="'.$target.'">'.$dropdown->name;
                 if (isset($dropdown->beta) && $dropdown->beta == true) {
                   $item .= ' <i class="fa fa-flask fa-fw" data-title="tooltip" data-placement="left" title="BETA"></i>';
                 }
@@ -231,6 +251,42 @@ class page
     echo '</div>';
     echo '</body>';
     echo '</html>';
+  }
+  
+  public static function load($target)
+  {
+    $offset = strpos($target, '?');
+    if ($offset !== false) {
+      $params = substr($target, $offset+1);
+      $include = substr($target, 0, $offset);
+      foreach (explode('&', $params) as $value) {
+        $parts = explode('=', $value);
+        if (sizeof($parts) == 2) {
+          $_GET[$parts[0]] = $parts[1];
+        } else {
+          $_GET[$parts[0]] = '';
+        }
+      }
+      ob_start();
+      include($include);
+      $input = ob_get_clean();
+      $tmp = json_decode($input);
+      if (isset($tmp->data)) {
+        echo html_entity_decode($tmp->data);
+      } else {
+        echo $input;
+      }
+    } else {
+      ob_start();
+      include($target);
+      $input = ob_get_clean();
+      $tmp = json_decode($input);
+      if (isset($tmp->data)) {
+        echo html_entity_decode($tmp->data);
+      } else {
+        echo $input;
+      }
+    }
   }
 }
 

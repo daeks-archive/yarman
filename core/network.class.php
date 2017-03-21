@@ -23,7 +23,17 @@ class network
   {
     $array = array();
     $array['status'] = $status;
-    $array['data'] = (($data == null) ? '' : htmlentities($data));
+    if ($data == null) {
+      $array['data'] = '';
+    } else {
+      if (is_array($data)) {
+        foreach ($data as $key => $value) {
+          $array[$key] = $value;
+        }
+      } else {
+        $array['data'] = htmlentities($data);
+      }
+    }
     $array['event'] = (($event == null) ? '' : $event);
     echo json_encode($array);
   }
