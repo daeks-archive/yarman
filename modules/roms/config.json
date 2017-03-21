@@ -1,0 +1,9 @@
+{
+  "id" : "roms",
+  "name" : "Roms",
+  "menu" : {
+    "position" : "left",
+    "order" : 1,
+    "icon" : "gamepad"
+    }
+}

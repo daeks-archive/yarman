@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
+require(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 page::start();
 
@@ -10,7 +10,7 @@ foreach ($modules as $moduleconfig) {
   $tmp = json_decode(file_get_contents($moduleconfig));
   if (isset($tmp->config)) {
     foreach ($tmp->config as $item) {
-      $fieldset[$item->id] = array('name' => $item->name, 'target' => $item->target);
+      $fieldset[$item->id] = array('id' => $tmp->id, 'name' => $item->name, 'target' => $item->target);
       if (isset($item->icon)) {
         $fieldset[$item->id]['icon'] = $item->icon;
       }
@@ -36,7 +36,11 @@ foreach ($fieldset as $key => $item) {
   if (cache::getClientVariable($module->id.'_id') == $key) {
     echo 'class="active"';
   }
-  echo '><a href="#" data-toggle="tab" data-query="'.$item['target'].'" data-target="#panel">';
+  $target = $item['target'];
+  if (strpos($target, URL_SEPARATOR) !== 0) {
+    $target = str_replace(BASE, '', MODULES).URL_SEPARATOR.$item['id'].URL_SEPARATOR.$item['target'];
+  }
+  echo '><a href="#" data-toggle="tab" data-query="'.$target.'" data-target="#panel">';
   if (isset($item['icon'])) {
     echo '<i class="fa fa-'.$item['icon'].' fa-fw"></i> ';
   }
@@ -50,42 +54,11 @@ if (cache::getClientVariable($module->id.'_id') != '') {
   if (isset($fieldset[cache::getClientVariable($module->id.'_id')])) {
     $item = $fieldset[cache::getClientVariable($module->id.'_id')];
     $target = $item['target'];
-    if (strpos($target, DIRECTORY_SEPARATOR) == 0) {
-      $target = BASE.DIRECTORY_SEPARATOR.$target;
+    if (strpos($target, URL_SEPARATOR) == 0) {
+      $target = MODULES.URL_SEPARATOR.$item['id'].URL_SEPARATOR.$item['target'];
+      $target = str_replace(URL_SEPARATOR, DIRECTORY_SEPARATOR, $target);
     }
-    
-    $offset = strpos($target, '?');
-    if ($offset !== false) {
-      $params = substr($target, $offset+1);
-      $include = substr($target, 0, $offset);
-      foreach (explode('&', $params) as $value) {
-        $parts = explode('=', $value);
-        if (sizeof($parts) == 2) {
-          $_GET[$parts[0]] = $parts[1];
-        } else {
-          $_GET[$parts[0]] = '';
-        }
-      }
-      ob_start();
-      include($include);
-      $input = ob_get_clean();
-      $tmp = json_decode($input);
-      if (isset($tmp->data)) {
-        echo html_entity_decode($tmp->data);
-      } else {
-        echo $input;
-      }
-    } else {
-      ob_start();
-      include($target);
-      $input = ob_get_clean();
-      $tmp = json_decode($input);
-      if (isset($tmp->data)) {
-        echo html_entity_decode($tmp->data);
-      } else {
-        echo $input;
-      }
-    }
+    page::load($target);
   }
 }
 echo '</div>';

@@ -1,6 +1,6 @@
 {
-  "version" : 1,
-  "type" : "alter",
+  "version" : 3,
+  "type" : "create",
   "schema" : [
     {
       "name" : "id",
@@ -11,54 +11,73 @@
       "type" : "text"
     },
     {
+      "name" : "format",
+      "type" : "text"
+    },
+    {
       "name" : "value",
       "type" : "text"
     }
   ],
   "data" : [
     {
+      "id" : "boot_config",
+      "type" : "file",
+      "format" : "text",
+      "value" : "/boot/config.txt"
+    },
+    {
       "id" : "es_systems",
       "type" : "file",
+      "format" : "xml",
       "value" : "/etc/emulationstation/es_systems.cfg"
     },
     {
       "id" : "retroarch",
       "type" : "file",
+      "format" : "ini",
       "value" : "/opt/retropie/configs/all/retroarch.cfg"
     },
     {
       "id" : "autostart",
       "type" : "file",
+      "format" : "sh",
       "value" : "/opt/retropie/configs/all/autostart.sh"
     },
     {
       "id" : "es_input",
       "type" : "file",
+      "format" : "ini",
       "value" : "/home/%USER%/.emulationstation/es_input.cfg"
     },
     {
       "id" : "retroarch",
       "type" : "file",
+      "format" : "ini",
       "value" : "/opt/retropie/configs/all/retroarch.cfg"
     },
     {
       "id" : "es_settings",
       "type" : "file",
+      "format" : "xml",
       "value" : "/home/%USER%/.emulationstation/es_settings.cfg"
     },
     {
       "id" : "emulator_retroarch",
       "type" : "file",
+      "format" : "ini",
       "value" : "/opt/retropie/configs/%EMULATOR%/retroarch.cfg"
     },
     {
       "id" : "emulators",
       "type" : "file",
+      "format" : "ini",
       "value" : "/opt/retropie/configs/%EMULATOR%/emulators.cfg"
     },
     {
       "id" : "retroarch_joypads",
       "type" : "folder",
+      "format" : "ini",
       "value" : "/opt/retropie/configs/all/retroarch-joypads"
     }
   ]

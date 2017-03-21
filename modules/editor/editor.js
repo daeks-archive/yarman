@@ -4,12 +4,12 @@
       var init = function () {
         if ($('#nav-editor').val().length > 0) {
           var element = $('#nav-editor');
-          core.editor.load(element.attr('data-query') + encodeURIComponent(element.val()), element.attr('data-target'), element.attr('data-mode'));
+          core.editor.load(element.attr('data-query') + encodeURIComponent(element.val()), element.attr('data-target'));
         }
       
         $('#nav-editor').on('change', function (e) {
           e.preventDefault();
-          return core.editor.load($(this).attr('data-query') + encodeURIComponent($(this).val()), $(this).attr('data-target'), $(this).attr('data-mode'));
+          return core.editor.load($(this).attr('data-query') + encodeURIComponent($(this).val()), $(this).attr('data-target'));
         });
         
         $('#nav-emulator').on('change', function (e) {
@@ -21,7 +21,7 @@
         });
       };
       
-      var load = function (loadurl, target, mode) {
+      var load = function (loadurl, target) {
         $('#' + target).addClass('hidden');
         $.get(loadurl, function (data) {
           try {
@@ -33,7 +33,7 @@
                 }
                 eval(obj.event);
               } else {
-                var data = $('<textarea/>').html(obj.data).val();
+                var data = $('<textarea/>').html(obj.content).val();
                 var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
                 var size = Math.round(height / 15);
              
@@ -44,7 +44,7 @@
                   minLines: size,
                   maxLines: size
                 });
-                editor.getSession().setMode('ace/mode/' + mode);
+                editor.getSession().setMode('ace/mode/' + obj.format);
                 editor.setValue(data, 1);
                 editor.gotoLine(1);
                 $('[data-toggle="modal"]').prop('disabled', false);

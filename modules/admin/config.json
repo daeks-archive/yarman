@@ -6,13 +6,13 @@
         "id" : "config",
         "name" : "General",
         "icon" : "cogs",
-        "target" : "/modules/admin/dialog.php?action=config&id=config"
+        "target" : "dialog.php?action=config&id=config"
       },
       {
         "id" : "emulators",
         "name" : "Emulators",
         "icon" : "gamepad",
-        "target" : "/modules/admin/dialog.php?action=config&id=emulators"
+        "target" : "dialog.php?action=config&id=emulators"
       }
     ]
 }

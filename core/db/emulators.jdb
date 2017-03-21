@@ -1,6 +1,6 @@
 {
-  "version" : 1,
-  "type" : "alter",
+  "version" : 2,
+  "type" : "create",
   "schema" : [
     {
       "name" : "id",
@@ -27,17 +27,17 @@
     {
       "id" : "3do",
       "name" : "3do Real Multiplayer",
-      "whitelist" : "iso"
+      "whitelist" : ".iso"
     },
     {
       "id" : "amiga",
       "name" : "Amiga",
-      "whitelist" : "adf zip dms exe adz rp9 sh uae"
+      "whitelist" : ".adf .zip .dms .exe .adz .rp9 .sh .uae"
     },
     {
       "id" : "amstradcpc",
       "name" : "Amstrad CPC",
-      "whitelist" : "dsk cpc"
+      "whitelist" : ".dsk .cpc"
     },
     {
       "id" : "arcade",
@@ -48,57 +48,57 @@
     {
       "id" : "apple2",
       "name" : "Apple II",
-      "whitelist" : "dsk"
+      "whitelist" : ".dsk"
     },
     {
       "id" : "atari2600",
       "name" : "Atari 2600",
-      "whitelist" : "bin a26 rom gz zip"
+      "whitelist" : ".bin .a26 .rom .gz .zip"
     },
     {
       "id" : "atari800",
       "name" : "Atari 800",
-      "whitelist" : "a52 bas bin car xex atr xfd dcm atr.gz xfd.gz"
+      "whitelist" : ".a52 .bas .bin .car .xex .atr .xfd .dcm .atr.gz .xfd.gz"
     },
     {
       "id" : "atari5200",
       "name" : "Atari 5200",
-      "whitelist" : "a52 bas bin car xex atr xfd dcm atr.gz xfd.gz"
+      "whitelist" : ".a52 .bas .bin .car .xex .atr .xfd .dcm .atr.gz .xfd.gz"
     },
     {
       "id" : "atari7800",
       "name" : "Atari 7800",
-      "whitelist" : "a78 bin zip"
+      "whitelist" : ".a78 .bin .zip"
     },
     {
       "id" : "atarijaguar",
       "name" : "Atari Jaguar",
-      "whitelist" : "j64 jag"
+      "whitelist" : ".j64 .jag"
     },
     {
       "id" : "atarilynx",
       "name" : "Atari Lynx",
-      "whitelist" : "lnx zip"
+      "whitelist" : ".lnx .zip"
     },
     {
       "id" : "atarist",
       "name" : "Atari ST",
-      "whitelist" : "st stx img rom raw ipf ctr"
+      "whitelist" : ".st .stx .img .rom .raw .ipf .ctr"
     },
     {
       "id" : "coco",
       "name" : "Colour Computer / Dragon 32",
-      "whitelist" : "cas wav bas asc dmk jvc os9 dsk vdk rom ccc sna"
+      "whitelist" : ".cas .wav .bas .asc .dmk .jvc .os9 .dsk .vdk .rom .ccc .sna"
     },
     {
       "id" : "c64",
       "name" : "Commondore 64",
-      "whitelist" : "crt d64 g64 t64 tap x64 zip"
+      "whitelist" : ".crt .d64 .g64 .t64 .tap .x64 .zip"
     },
     {
       "id" : "dreamcast",
       "name" : "Dreamcast",
-      "whitelist" : "cdi gdi"
+      "whitelist" : ".cdi .gdi"
     },
     {
       "id" : "fba",
@@ -108,47 +108,47 @@
     {
       "id" : "megadrive",
       "name" : "Megadrive",
-      "whitelist" : "smd bin md iso zip"
+      "whitelist" : ".smd .bin .md .iso .zip"
     },
     {
       "id" : "gamegear",
       "name" : "Game Gear",
-      "whitelist" : "gg zip"
+      "whitelist" : ".gg .zip"
     },
     {
       "id" : "gb",
       "name" : "Game Boy",
-      "whitelist" : "gb zip"
+      "whitelist" : ".gb .zip"
     },
     {
       "id" : "gbc",
       "name" : "Game Boy Color",
-      "whitelist" : "gbc zip"
+      "whitelist" : ".gbc .zip"
     },
     {
       "id" : "gba",
       "name" : "Game Boy Advance",
-      "whitelist" : "gba zip"
+      "whitelist" : ".gba .zip"
     },
     {
       "id" : "genesis",
       "name" : "Genesis",
-      "whitelist" : "smd bin md iso zip"
+      "whitelist" : ".smd .bin .md .iso .zip"
     },
     {
       "id" : "fds",
       "name" : "Family Computer Disk System",
-      "whitelist" : "fds"
+      "whitelist" : ".fds"
     },
     {
       "id" : "intellivision",
       "name" : "Intellivision",
-      "whitelist" : "int bin"
+      "whitelist" : ".int .bin"
     },
     {
       "id" : "macintosh",
       "name" : "Macintosh",
-      "whitelist" : "img rom"
+      "whitelist" : ".img .rom"
     },
     {
       "id" : "mame-mame4all",
@@ -165,12 +165,12 @@
     {
       "id" : "mastersystem",
       "name" : "Master System",
-      "whitelist" : "sms zip"
+      "whitelist" : ".sms .zip"
     },
     {
       "id" : "msx",
       "name" : "MSX",
-      "whitelist" : "rom mx1 mx2 col dsk"
+      "whitelist" : ".rom .mx1 .mx2 .col .dsk"
     },
     {
       "id" : "neogeo",
@@ -180,133 +180,133 @@
     {
       "id" : "ngp",
       "name" : "Neo Geo Pocket",
-      "whitelist" : "ngp zip"
+      "whitelist" : ".ngp .zip"
     },
     {
       "id" : "ngpc",
       "name" : "Neo Geo Pocket Color",
-      "whitelist" : "ngc zip"
+      "whitelist" : ".ngc .zip"
     },
     {
       "id" : "n64",
       "name" : "Nintendo 64",
-      "whitelist" : "z64 n64 v64"
+      "whitelist" : ".z64 .n64 .v64"
     },
     {
       "id" : "nds",
       "name" : "Nintendo DS",
-      "whitelist" : "nds bin"
+      "whitelist" : ".nds .bin"
     },
     {
       "id" : "nes",
       "name" : "Nintendo Enterainment System",
-      "whitelist" : "zip nes smc sfc fig swc mgd fds"
+      "whitelist" : ".zip .nes .smc .sfc .fig .swc .mgd .fds"
     },
     {
       "id" : "oric",
       "name" : "Oric",
-      "whitelist" : "dsk tap"
+      "whitelist" : ".dsk .tap"
     },
     {
       "id" : "pc",
       "name" : "Dos Box",
-      "whitelist" : "com sh bat exe"
+      "whitelist" : ".com .sh .bat .exe"
     },
     {
       "id" : "pcengine",
       "name" : "TurbGrafx-16",
-      "whitelist" : "pce cue zip"
+      "whitelist" : ".pce .cue .zip"
     },
     {
       "id" : "ports",
       "name" : "Ports",
-      "whitelist" : "sh",
+      "whitelist" : ".sh",
       "blacklist" : "folder"
     },
     {
       "id" : "psx",
       "name" : "Playstation 1",
-      "whitelist" : "cue cbn img iso m3u mdf pbp toc z znx"
+      "whitelist" : ".cue .cbn .img .iso .m3u .mdf .pbp .toc .z .znx"
     },
     {
       "id" : "psp",
       "name" : "PlayStation Portable",
-      "whitelist" : "cso iso pbp"
+      "whitelist" : ".cso .iso .pbp"
     },
     {
       "id" : "scummvm",
       "name" : "ScummVM",
-      "whitelist" : "sh svm"
+      "whitelist" : ".sh .svm"
     },
     {
       "id" : "sega32x",
       "name" : "Sega 32X",
-      "whitelist" : "32x smd bin md zip"
+      "whitelist" : ".32x .smd .bin .md .zip"
     },
     {
       "id" : "segacd",
       "name" : "Sega CD",
-      "whitelist" : "cue iso"
+      "whitelist" : ".cue .iso"
     },
     {
       "id" : "saturn",
       "name" : "Sega Saturn",
-      "whitelist" : "bin iso mdf"
+      "whitelist" : ".bin .iso .mdf"
     },
     {
       "id" : "sg-1000",
       "name" : "Sega SG-1000",
-      "whitelist" : "sg zip"
+      "whitelist" : ".sg .zip"
     },
     {
       "id" : "snes",
       "name" : "Super Nintendo Entertainment System",
-      "whitelist" : "zip smc sfc fig swc"
+      "whitelist" : ".zip .smc .sfc .fig .swc"
     },
     {
       "id" : "ti99",
       "name" : "TI-99/4A",
-      "whitelist" : "cfg"
+      "whitelist" : ".cfg"
     },
     {
       "id" : "trs-80",
       "name" : "TRS-80",
-      "whitelist" : "dsk"
+      "whitelist" : ".dsk"
     },
     {
       "id" : "vectrex",
       "name" : "Vectrex",
-      "whitelist" : "vec gam bin"
+      "whitelist" : ".vec .gam .bin"
     },
     {
       "id" : "videopac",
       "name" : "Videopac G7000 / Odyssey2",
-      "whitelist" : "bin"
+      "whitelist" : ".bin"
     },
     {
       "id" : "virtualboy",
       "name" : "Virtual Boy",
-      "whitelist" : "vb"
+      "whitelist" : ".vb"
     },
     {
       "id" : "wonderswan",
       "name" : "WonderSwan",
-      "whitelist" : "ws"
+      "whitelist" : ".ws"
     },
     {
       "id" : "wonderswancolor",
       "name" : "WonderSwan Color",
-      "whitelist" : "wsc"
+      "whitelist" : ".wsc"
     },
     {
       "id" : "zmachine",
       "name" : "Z-Machine",
-      "whitelist" : "dat zip z1 z2 z3 z4 z5 z6 z7 z8"
+      "whitelist" : ".dat .zip .z1 .z2 .z3 .z4 .z5 .z6 .z7 .z8"
     },
     {
       "id" : "zxspectrum",
       "name" : "ZX Spectrum",
-      "whitelist" : "sna szx z80 tap tzx gz udi mgt img trd scl dsk"
+      "whitelist" : ".sna .szx .z80 .tap .tzx .gz .udi .mgt .img .trd .scl .dsk"
     }
   ]
 }

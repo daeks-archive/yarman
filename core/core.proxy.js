@@ -12,6 +12,27 @@
                 formData: {id : $($(this).attr('data-key')).val()},
                 paramName: 'object',
                 dropZone: null,
+                add: function (e, data) {
+                  if ($(this).attr('accept')) {
+                    var accepted = $(this).attr('accept').split(",").join("|").split(".").join("");
+                    var regexp = new RegExp('(\.|\/)(' + accepted + ')$', 'i');
+                    var uploadErrors = [];
+                    
+                    $.each(data.files, function (index, file) {
+                      if (data.files[index]['type'].length && !regexp.test(data.files[index]['type'])) {
+                        uploadErrors.push(data.files[index]['name']);
+                      }
+                    });
+                    
+                    if (uploadErrors.length > 0) {
+                      core.message.toast('danger', false, 'Aborted. Unsupported file extension detected.');
+                    } else {
+                      data.submit();
+                    }
+                  } else {
+                    data.submit();
+                  }
+                },
                 done: function (e, data) {
                   try {
                     var obj = $.parseJSON(data.result);
@@ -50,6 +71,27 @@
                 formData: {id : $($(this).attr('data-key')).val(), data: $('#modal-data').serialize()},
                 paramName: 'object',
                 dropZone: $('.dropzone'),
+                add: function (e, data) {
+                  if ($(this).attr('accept')) {
+                    var accepted = $(this).attr('accept').split(",").join("|").split(".").join("");
+                    var regexp = new RegExp('(\.|\/)(' + accepted + ')$', 'i');
+                    var uploadErrors = [];
+                    
+                    $.each(data.files, function (index, file) {
+                      if (data.files[index]['type'].length && !regexp.test(data.files[index]['type'])) {
+                        uploadErrors.push(data.files[index]['name']);
+                      }
+                    });
+                    
+                    if (uploadErrors.length > 0) {
+                      core.message.toast('danger', false, 'Aborted. Unsupported file extension detected.');
+                    } else {
+                      data.submit();
+                    }
+                  } else {
+                    data.submit();
+                  }
+                },
                 done: function (e, data) {
                   try {
                     var obj = $.parseJSON(data.result);

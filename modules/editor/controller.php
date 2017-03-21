@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
+require(dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR.'config.php');
 
 if (network::get('action') != '') {
   switch (network::get('action')) {
@@ -38,20 +38,22 @@ if (network::get('action') != '') {
       if (network::get('id') != '') {
         cache::setClientVariable($module->id.'_id', network::get('id'));
         $parts = explode('@', network::get('id'));
-        $output = '';
+        $output = array();
         foreach (db::instance()->read($module->id) as $item) {
           if (sizeof($parts) == 2) {
             if ($item['id'] == $parts[1]) {
               $item['value'] = str_replace('%EMULATOR%', cache::getClientVariable($module->id.'_emulator'), $item['value']);
               if (file_exists($item['value'].DIRECTORY_SEPARATOR.$parts[0])) {
-                $output = file_get_contents($item['value'].DIRECTORY_SEPARATOR.$parts[0]);
+                $output['content'] = file_get_contents($item['value'].DIRECTORY_SEPARATOR.$parts[0]);
+                $output['format'] = $item['format'];
               }
             }
           } else {
             if ($item['id'] == network::get('id')) {
               $item['value'] = str_replace('%EMULATOR%', cache::getClientVariable($module->id.'_emulator'), $item['value']);
               if (file_exists($item['value'])) {
-                $output = file_get_contents($item['value']);
+                $output['content'] = file_get_contents($item['value']);
+                $output['format'] = $item['format'];
               }
             }
           }

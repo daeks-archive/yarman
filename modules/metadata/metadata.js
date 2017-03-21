@@ -3,7 +3,7 @@
     var metadata = (function () {
       var init = function () {
         $(window).resize(function () {
-          var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 150;
+          var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 100;
           if ($('#beta')) {
             height = height - $('#beta').height() - 50;
             $('#beta').bind('closed.bs.alert', function () {

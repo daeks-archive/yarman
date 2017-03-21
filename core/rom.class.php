@@ -58,12 +58,17 @@ class rom
     return db::instance()->write('metadata', $data, 'id='.db::instance()->quote($id));
   }
   
-  public static function delete($id)
+  public static function delete($id, $config = array('rom', 'metadata', 'media'))
   {
-    $rom = self::config($id);
-    $item = current(db::instance()->read('config', 'id='.db::instance()->quote('roms_path')))['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
-    if (is_file($item)) {
-      unlink($item);
+    if (in_array('rom', $config)) {
+      $rom = self::config($id);
+      $item = current(db::instance()->read('config', 'id='.db::instance()->quote('roms_path')))['value'].DIRECTORY_SEPARATOR.$rom['emulator'].DIRECTORY_SEPARATOR.$rom['name'];
+      if (is_file($item)) {
+        unlink($item);
+        db::instance()->delete('roms', 'id='.db::instance()->quote($id));
+        $emulator = emulator::config($rom['emulator']);
+        db::instance()->write('emulators', array('count' => $emulator['count'] - 1), 'id='.db::instance()->quote($rom['emulator']));
+      }
     }
     
     $data = db::instance()->read('metadata', 'id='.db::instance()->quote($id));
@@ -73,17 +78,16 @@ class rom
         if ($field['type'] == 'upload') {
           if ($value != '') {
             if (file_exists($value)) {
-              unlink($value);
+              if (in_array('media', $config)) {
+                unlink($value);
+              }
             }
           }
         }
       }
-      
-      $emulator = emulator::config($rom['emulator']);
-      db::instance()->write('emulators', array('count' => $emulator['count'] - 1), 'id='.db::instance()->quote($rom['emulator']));
-      
-      db::instance()->delete('roms', 'id='.db::instance()->quote($id));
-      db::instance()->delete('metadata', 'id='.db::instance()->quote($id));
+      if (in_array('metadata', $config)) {
+        db::instance()->delete('metadata', 'id='.db::instance()->quote($id));
+      }
     }
   }
   
