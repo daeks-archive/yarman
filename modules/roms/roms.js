@@ -24,7 +24,7 @@
 
         $(window).trigger('resize');
 
-        $("#rom-data").bind("scroll", function(){
+        $("#rom-data").bind("scroll", function () {
           $(window).trigger('resize');
         });
       };

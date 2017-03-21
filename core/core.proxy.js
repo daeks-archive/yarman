@@ -18,8 +18,8 @@
                     var regexp = new RegExp('(\.|\/)(' + accepted + ')$', 'i');
                     var uploadErrors = [];
                     
-                    $.each(data.files, function(index, file) {
-                      if(data.files[index]['type'].length && !regexp.test(data.files[index]['type'])) {
+                    $.each(data.files, function (index, file) {
+                      if (data.files[index]['type'].length && !regexp.test(data.files[index]['type'])) {
                         uploadErrors.push(data.files[index]['name']);
                       }
                     });
@@ -77,8 +77,8 @@
                     var regexp = new RegExp('(\.|\/)(' + accepted + ')$', 'i');
                     var uploadErrors = [];
                     
-                    $.each(data.files, function(index, file) {
-                      if(data.files[index]['type'].length && !regexp.test(data.files[index]['type'])) {
+                    $.each(data.files, function (index, file) {
+                      if (data.files[index]['type'].length && !regexp.test(data.files[index]['type'])) {
                         uploadErrors.push(data.files[index]['name']);
                       }
                     });
